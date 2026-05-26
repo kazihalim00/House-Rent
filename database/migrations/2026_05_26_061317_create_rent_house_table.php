@@ -15,11 +15,16 @@ return new class extends Migration {
             $table->string('house_name');
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('address')->nullable();
+            $table->string('address');
             $table->string('city');
             $table->enum('division', ['Sylhet', 'Dhaka', 'Chattogram', 'Khulna', 'Rajshahi']);
             $table->string('home_price');
+            $table->string('bed');
+            $table->string('bath');
+            $table->string('about');
             $table->string('home_image');
+
+
             $table->timestamps();
         });
     }

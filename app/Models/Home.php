@@ -14,6 +14,9 @@ class Home extends Model
         'city',
         'division',
         'home_price',
+        'bed',
+        'bath',
+        'about',
         'home_image',
 
     ];

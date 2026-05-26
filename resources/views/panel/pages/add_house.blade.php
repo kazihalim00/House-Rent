@@ -28,8 +28,8 @@
                     required />
 
                 <label for="address" class="form-label">Street Address (Line 1)</label>
-                <input type="text" name="address" id="address" class="form-input"
-                    placeholder="House No., Road Name, etc." required />
+                <input type="text" name="address" id="address" class="form-input" placeholder="House No., Road Name, etc."
+                    required />
 
 
 
@@ -49,6 +49,15 @@
                 <label for="home_price" class="form-label">Rental Price (TK)</label>
                 <input type="text" name="home_price" id="home_price" class="form-input"
                     placeholder="Enter your home rental price" required />
+                <label for="bed" class="form-label">Number of Bed</label>
+                <input type="text" name="bed" id="bed" class="form-input" placeholder="Enter your home's bed number"
+                    required />
+                <label for="bath" class="form-label">Number of Bath</label>
+                <input type="text" name="bath" id="bath" class="form-input" placeholder="Enter your home rental price"
+                    required />
+                <label for="about" class="form-label">About House</label>
+                <input type="text" name="about" id="about" class="form-input" placeholder="Enter your home rental price"
+                    required />
                 <label for="home_image" class="form-label">Upload your home image</label>
                 <input type="file" name="home_image" id="home_image" class="form-input" required />
 

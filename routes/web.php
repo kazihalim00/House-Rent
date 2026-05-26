@@ -13,9 +13,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', function () {
         return view('panel.pages.dashboard');
     })->name('dashboard');
-    Route::get('/house-detail', function () {
-        return view('panel.pages.house_detail');
-    })->name('house-detail');
+    Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
     Route::get('/add-house', function () {
         return view('panel.pages.add_house');
     })->name('add-house');

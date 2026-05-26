@@ -16,6 +16,9 @@ class HomeController extends Controller
             'city' => 'required',
             'division' => 'required',
             'home_price' => 'required',
+            'bed' => 'required',
+            'bath' => 'required',
+            'about' => 'required',
             'home_image' => 'required'
         ]);
 
@@ -30,12 +33,21 @@ class HomeController extends Controller
             'house_name' => $request->house_name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'address-line-1' => $request->address,
+            'address' => $request->address,
             'city' => $request->city,
             'division' => $request->division,
             'home_price' => $request->home_price,
+            'bed' => $request->bed,
+            'bath' => $request->bath,
+            'about' => $request->about,
             'home_image' => $fileName
         ]);
         return back()->with('success', 'Home added successfully!');
+    }
+
+    public function house_detail()
+    {
+        $houses = Home::latest()->get();
+        return view('panel.pages.house_detail', compact('houses'));
     }
 }

@@ -14,9 +14,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('panel.pages.dashboard');
     })->name('dashboard');
     Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
-    Route::get('/add-house', function () {
-        return view('panel.pages.add_house');
-    })->name('add-house');
+    Route::get('/add-house', function () { return view('panel.pages.add_house'); })->name('add-house');
+
+    // Corrected route to use the controller method
+    Route::get('/booking', [HomeController::class, 'showBookingPage'])->name('booking');
+
     Route::post('/add-house', [HomeController::class, 'store']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

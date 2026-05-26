@@ -7,8 +7,9 @@
         <div class="form-container">
             <img src="https://ucarecdn.com/412d5bde-bec7-49c8-94c9-f6df6434ed12/address.png" alt="Address Form Image"
                 class="form-img" />
-            <form action="https://formbold.com/s/FORM_ID" method="POST" enctype="multipart/form-data">
+            <form action="{{ url('/add-house') }}" method="POST" enctype="multipart/form-data">
                 <div style="margin-bottom: 2rem">
+                    @csrf
                     <h2 class="form-title">Add House</h2>
                     <p class="form-desc">
                         Please provide your address details below. Fields marked
@@ -16,10 +17,9 @@
                     </p>
                 </div>
 
-                <label for="fullname" class="form-label">House Name</label>
-                <input type="text" name="fullname" id="fullname" class="form-input" placeholder="Enter your full name"
+                <label for="house_name" class="form-label">House Name</label>
+                <input type="text" name="house_name" id="house_name" class="form-input" placeholder="Enter your full name"
                     required />
-
                 <label for="email" class="form-label">Email Address(User)</label>
                 <input type="email" name="email" id="email" class="form-input" placeholder="Enter your email" required />
 
@@ -27,20 +27,18 @@
                 <input type="tel" name="phone" id="phone" class="form-input" placeholder="Enter your phone number"
                     required />
 
-                <label for="address-line-1" class="form-label">Street Address (Line 1)</label>
-                <input type="text" name="address-line-1" id="address-line-1" class="form-input"
+                <label for="address" class="form-label">Street Address (Line 1)</label>
+                <input type="text" name="address" id="address" class="form-input"
                     placeholder="House No., Road Name, etc." required />
 
-                <label for="address-line-2" class="form-label">Street Address (Line 2)</label>
-                <input type="text" name="address-line-2" id="address-line-2" class="form-input"
-                    placeholder="Apartment, Suite, Floor, etc." />
+
 
                 <label for="city" class="form-label">City / Town</label>
                 <input type="text" name="city" id="city" class="form-input" placeholder="City or Town" required />
 
 
-                <label for="country" class="form-label">Division</label>
-                <select name="country" id="country" class="form-select" required>
+                <label for="division" class="form-label">Division</label>
+                <select name="division" id="division" class="form-select" required>
                     <option value="Sylhet">Sylhet</option>
                     <option value="Dhaka">Dhaka</option>
                     <option value="Chattogram">Chattogram</option>
@@ -49,7 +47,7 @@
                 </select>
 
                 <label for="home_price" class="form-label">Rental Price (TK)</label>
-                <input type="number" name="home_price" id="home_price" class="form-input"
+                <input type="text" name="home_price" id="home_price" class="form-input"
                     placeholder="Enter your home rental price" required />
                 <label for="home_image" class="form-label">Upload your home image</label>
                 <input type="file" name="home_image" id="home_image" class="form-input" required />

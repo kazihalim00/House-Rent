@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Home;
+
 class HomeController extends Controller
 {
     public function store(Request $request)
@@ -19,6 +20,7 @@ class HomeController extends Controller
             'bed' => 'required',
             'bath' => 'required',
             'about' => 'required',
+            'booking_date' => 'required',
             'home_image' => 'required'
         ]);
 
@@ -29,6 +31,7 @@ class HomeController extends Controller
             $fileName = time() . '.' . $extension;
             $file->move(public_path('/upload/img/'), $fileName);
         }
+
         Home::create([
             'house_name' => $request->house_name,
             'email' => $request->email,
@@ -40,8 +43,10 @@ class HomeController extends Controller
             'bed' => $request->bed,
             'bath' => $request->bath,
             'about' => $request->about,
+            'booking_date' => $request->booking_date,
             'home_image' => $fileName
         ]);
+
         return back()->with('success', 'Home added successfully!');
     }
 
@@ -49,5 +54,23 @@ class HomeController extends Controller
     {
         $houses = Home::latest()->get();
         return view('panel.pages.house_detail', compact('houses'));
+    }
+
+    public function showBookingPage()
+    {
+    // Fetch unique booking dates, filter out nulls, and clean the array entries
+    $dbAvailableDates = Home::whereNotNull('booking_date')
+        ->pluck('booking_date')
+        ->unique()
+        ->values()
+        ->map(function($date) {
+            // Converts any date object variant to a clean 'YYYY-MM-DD' string entry
+            return is_string($date) ? trim($date) : $date->format('Y-m-d');
+        })
+        ->toArray();
+
+    return view('panel.pages.booking', [
+        'dbAvailableDates' => $dbAvailableDates
+    ]);
     }
 }

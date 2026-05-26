@@ -13,11 +13,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', function () {
         return view('panel.pages.dashboard');
     })->name('dashboard');
+
     Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
+    Route::post('/add-user', [HomeController::class, 'add_user'])->name('add-user');
     Route::get('/add-house', function () {
         return view('panel.pages.add_house');
     })->name('add-house');
+    Route::get('/add-user', function () {
+        return view('panel.pages.add_user');
+    });
     Route::post('/add-house', [HomeController::class, 'store']);
+    Route::get('/user-list', [HomeController::class, 'user_list']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

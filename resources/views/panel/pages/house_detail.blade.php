@@ -1,8 +1,13 @@
 @extends('panel.layout')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
 
+    <div class="container mx-auto px-4 py-8">
+        <div class="text-end">
+            <a href="{{ url('/add-house') }}" class="btn btn-success">
+                Add House
+            </a>
+        </div>
         <div class="text-center mb-10">
             <h2 class="text-3xl font-bold text-gray-800 mb-4">Available Houses for Rent</h2>
             <p class="text-gray-600 max-w-2xl mx-auto">
@@ -44,7 +49,8 @@
                     <div class="bg-gray-50 px-6 py-4 flex justify-between text-center border-t border-gray-100">
 
                         <div class="w-1/3 border-r border-gray-200">
-                            <span class="block font-bold text-lg text-gray-800">{{ $house->home_price }} TK</span>
+                            <span class="block font-bold text-lg text-gray-800" style="color:green">{{ $house->home_price }}
+                                TK</span>
                             <span class="text-xs text-gray-500 uppercase font-semibold">Monthly</span>
                         </div>
 

@@ -10,6 +10,15 @@
             <form action="{{ url('/add-house') }}" method="POST" enctype="multipart/form-data">
                 <div style="margin-bottom: 2rem">
                     @csrf
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-3">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <h2 class="form-title">Add House</h2>
                     <p class="form-desc">
                         Please provide your address details below. Fields marked

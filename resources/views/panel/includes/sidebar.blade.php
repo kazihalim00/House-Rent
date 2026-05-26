@@ -27,7 +27,7 @@
 
                 </div>
             </div>
-            <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Booking</a>
+            <a href="{{ url('/booking') }}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Booking</a>
             <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Review</a>
             <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Chat</a>
 

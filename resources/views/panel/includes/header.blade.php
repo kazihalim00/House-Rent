@@ -74,13 +74,35 @@
         </div>
         <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                <span class="d-none d-lg-inline-flex">John Doe</span>
+                <img class="rounded-circle me-lg-2"
+                    src="{{ Auth::user()->user_image ? asset('upload/img/' . Auth::user()->user_image) : asset('default.png') }}"
+                    style="width: 40px; height: 40px;">
+                <span class="d-none d-lg-inline-flex">{{ Auth::user()->name }}</span>
+
             </a>
-            <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+            <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0 text-center">
+
+                <div class="py-2">
+                    <span class="badge 
+                    {{ Auth::user()->role == 'Admin' ? 'bg-success' : 'bg-warning' }}">
+                        {{ Auth::user()->role }}
+                    </span>
+                </div>
+
                 <a href="#" class="dropdown-item">My Profile</a>
                 <a href="#" class="dropdown-item">Settings</a>
-                <a href="#" class="dropdown-item">Log Out</a>
+
+                <hr class="dropdown-divider">
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a class="dropdown-item" href="javascript:void(0);"
+                        onclick="event.preventDefault(); this.closest('form').submit();">
+                        <i class="bx bx-power-off me-2"></i>
+                        Log Out
+                    </a>
+                </form>
+
             </div>
         </div>
     </div>

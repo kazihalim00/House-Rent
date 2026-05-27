@@ -1,8 +1,13 @@
 @extends('panel.layout')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
 
+    <div class="container mx-auto px-4 py-8">
+        <div class="text-end">
+            <a href="{{ url('/add-house') }}" class="btn btn-success">
+                Add House
+            </a>
+        </div>
         <div class="text-center mb-10">
             <h2 class="text-3xl font-bold text-gray-800 mb-4">Available Houses for Rent</h2>
             <p class="text-gray-600 max-w-2xl mx-auto">

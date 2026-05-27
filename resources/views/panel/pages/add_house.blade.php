@@ -10,6 +10,15 @@
             <form action="{{ url('/add-house') }}" method="POST" enctype="multipart/form-data">
                 <div style="margin-bottom: 2rem">
                     @csrf
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-3">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <h2 class="form-title">Add House</h2>
                     <p class="form-desc">
                         Please provide your address details below. Fields marked
@@ -72,13 +81,16 @@
     </div>
 
     <style>
+        /* General Body Styles */
         body {
             font-family: "Inter", sans-serif;
             background-color: #f3f4f6;
+            /* A light gray background */
             margin: 0;
             padding: 0;
         }
 
+        /* Main container to center the form */
         .main-center {
             display: flex;
             align-items: center;
@@ -88,85 +100,115 @@
             box-sizing: border-box;
         }
 
+        /* The form card itself */
         .form-container {
             margin: 0 auto;
             max-width: 570px;
             width: 100%;
             background: white;
             padding: 2.5rem;
+            /* 40px */
             border-radius: 0.75rem;
+            /* 12px */
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
                 0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
 
+        /* Form image styling */
         .form-img {
             display: block;
             margin-left: auto;
             margin-right: auto;
             margin-bottom: 2rem;
+            /* 32px */
             width: 100%;
             max-width: 200px;
             height: auto;
+            /* Maintain aspect ratio */
         }
 
+        /* Form title and description */
         .form-title {
             font-size: 1.875rem;
+            /* 30px */
             font-weight: 700;
             color: #111827;
+            /* Dark gray */
             margin-bottom: 0.5rem;
+            /* 8px */
             text-align: center;
         }
 
         .form-desc {
             color: #6b7280;
+            /* Medium gray */
             margin-bottom: 2rem;
+            /* 32px */
             font-size: 0.875rem;
+            /* 14px */
             text-align: center;
             line-height: 1.5;
         }
 
+        /* Styling for form labels */
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
+            /* 8px */
             font-size: 0.875rem;
+            /* 14px */
             font-weight: 600;
             color: #374151;
+            /* Slightly lighter dark gray */
         }
 
+        /* Unified styling for text inputs and select dropdowns */
         .form-input,
         .form-select {
             width: 100%;
             padding: 0.875rem 1.25rem;
+            /* 14px 20px */
             border: 1px solid #d1d5db;
+            /* Light gray border */
             border-radius: 0.5rem;
+            /* 8px */
             background: #ffffff;
             font-weight: 500;
             font-size: 1rem;
+            /* 16px */
             color: #111827;
             outline: none;
             box-sizing: border-box;
             transition: border-color 0.2s, box-shadow 0.2s;
             margin-bottom: 1.25rem;
+            /* 20px */
         }
 
         .form-input::placeholder {
             color: #9ca3af;
+            /* Lighter gray for placeholder */
         }
 
+        /* Focus state for inputs and selects */
         .form-input:focus,
         .form-select:focus {
             border-color: #6a64f1;
+            /* Purple accent color */
             box-shadow: 0 0 0 3px rgba(106, 100, 241, 0.2);
         }
 
+        /* Styling for the file input */
         .form-file {
             display: block;
             width: 100%;
             margin-bottom: 1.25rem;
+            /* 20px */
             font-size: 0.875rem;
+            /* 14px */
             color: #374151;
         }
 
+        /* Custom styling for file input button */
         .form-file::file-selector-button {
             margin-right: 1rem;
             padding: 0.5rem 1rem;
@@ -183,19 +225,28 @@
             background-color: #f3f4f6;
         }
 
+        /* Container for the checkbox and its label */
         .form-checkbox-row {
             display: flex;
             align-items: flex-start;
             gap: 0.75rem;
+            /* 12px */
             margin-top: 1.5rem;
+            /* 24px */
             margin-bottom: 1.5rem;
+            /* 24px */
         }
 
+        /* Styling for the checkbox */
         .form-checkbox {
             margin-top: 0.125rem;
+            /* 2px */
             height: 1.25rem;
+            /* 20px */
             width: 1.25rem;
+            /* 20px */
             border-radius: 0.25rem;
+            /* 4px */
             border: 1px solid #d1d5db;
             cursor: pointer;
             flex-shrink: 0;
@@ -206,26 +257,34 @@
             border-color: #6a64f1;
         }
 
+        /* Submit button styling */
         .form-btn {
             text-align: center;
             width: 100%;
             font-size: 1rem;
+            /* 16px */
             border-radius: 0.5rem;
+            /* 8px */
             padding: 0.875rem 1.5rem;
+            /* 14px 24px */
             border: none;
             font-weight: 600;
             background-color: #6a64f1;
+            /* Purple accent color */
             color: white;
             cursor: pointer;
             margin-top: 1.5rem;
+            /* 24px */
             transition: background-color 0.2s, box-shadow 0.2s;
         }
 
         .form-btn:hover {
             background-color: #5a54d1;
+            /* Darker purple on hover */
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+        /* --- Mobile Responsive Styles --- */
         @media (max-width: 600px) {
             .main-center {
                 padding: 1rem;
@@ -237,6 +296,7 @@
 
             .form-title {
                 font-size: 1.5rem;
+                /* 24px */
             }
         }
     </style>

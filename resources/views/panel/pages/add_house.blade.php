@@ -1,299 +1,151 @@
 @extends('panel.layout')
 
 @section('content')
-    <div class="main-center">
-        <!-- Author: FormBold Team -->
-        <!-- Learn More: https://formbold.com -->
-        <div class="form-container">
-            <img src="https://ucarecdn.com/412d5bde-bec7-49c8-94c9-f6df6434ed12/address.png" alt="Address Form Image"
-                class="form-img" />
-            <form action="{{ url('/add-house') }}" method="POST" enctype="multipart/form-data">
-                <div style="margin-bottom: 2rem">
-                    @csrf
-                    @if ($errors->any())
-                        <div class="alert alert-danger mt-3">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    <h2 class="form-title">Add House</h2>
-                    <p class="form-desc">
-                        Please provide your address details below. Fields marked
-                        with * are required.
-                    </p>
-                </div>
+    <div class="container mx-auto px-4 py-10 max-w-3xl">
 
-                <label for="house_name" class="form-label">House Name</label>
-                <input type="text" name="house_name" id="house_name" class="form-input" placeholder="Enter your full name"
-                    required />
-                <label for="email" class="form-label">Email Address(User)</label>
-                <input type="email" name="email" id="email" class="form-input" placeholder="Enter your email" required />
+        <div class="text-center border-b border-white-700/60 pb-8 mb-8 relative">
+            <div
+                class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white-400/10 to-transparent blur-xl pointer-events-none">
+            </div>
 
-                <label for="phone" class="form-label">Phone Number</label>
-                <input type="tel" name="phone" id="phone" class="form-input" placeholder="Enter your phone number"
-                    required />
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight drop-shadow-md">
+                Add House
+            </h2>
 
-                <label for="address" class="form-label">Street Address (Line 1)</label>
-                <input type="text" name="address" id="address" class="form-input" placeholder="House No., Road Name, etc."
-                    required />
+            <p class="text-gray-400 text-sm md:text-base max-w-lg mx-auto font-medium">
+                Please provide your address details below. Fields marked with <span class="text-red-400 font-bold">*</span>
+                are
+                required.
+            </p>
+        </div>
 
+        <a href="{{ url('/add-house') }}"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-5 rounded-lg shadow-lg transition duration-300 whitespace-nowrap">
+            Add House
+        </a>
+    </div>
 
+    @if ($errors->any())
+        <div class="bg-red-500/10 border border-red-500/50 text-red-400 px-5 py-4 rounded-xl mb-6">
+            <ul class="list-disc list-inside text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-                <label for="city" class="form-label">City / Town</label>
-                <input type="text" name="city" id="city" class="form-input" placeholder="City or Town" required />
+    <form action="{{ url('/add-house') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        @csrf
 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <label for="division" class="form-label">Division</label>
-                <select name="division" id="division" class="form-select" required>
+            <div>
+                <label for="house_name" class="block text-sm font-medium text-gray-300 mb-2">House Name *</label>
+                <input type="text" name="house_name" id="house_name"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                    placeholder="Enter house name" required />
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address (User)
+                    *</label>
+                <input type="email" name="email" id="email"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                    placeholder="Enter user email" required />
+            </div>
+
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number *</label>
+                <input type="tel" name="phone" id="phone"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                    placeholder="Enter phone number" required />
+            </div>
+
+            <div>
+                <label for="division" class="block text-sm font-medium text-gray-300 mb-2">Division *</label>
+                <select name="division" id="division"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none cursor-pointer"
+                    required>
+                    <option value="" class="text-gray-400">Select Division</option>
                     <option value="Sylhet">Sylhet</option>
                     <option value="Dhaka">Dhaka</option>
                     <option value="Chattogram">Chattogram</option>
                     <option value="Khulna">Khulna</option>
                     <option value="Rajshahi">Rajshahi</option>
                 </select>
+            </div>
 
-                <label for="home_price" class="form-label">Rental Price (TK)</label>
-                <input type="text" name="home_price" id="home_price" class="form-input"
-                    placeholder="Enter your home rental price" required />
-                <label for="bed" class="form-label">Number of Bed</label>
-                <input type="text" name="bed" id="bed" class="form-input" placeholder="Enter your home's bed number"
-                    required />
-                <label for="bath" class="form-label">Number of Bath</label>
-                <input type="text" name="bath" id="bath" class="form-input" placeholder="Enter your home rental price"
-                    required />
-                <label for="about" class="form-label">About House</label>
-                <input type="text" name="about" id="about" class="form-input" placeholder="Enter your home rental price"
-                    required />
-                <label for="home_image" class="form-label">Upload your home image</label>
-                <input type="file" name="home_image" id="home_image" class="form-input" required />
-
-
-                <button class=" form-btn">Submit Address</button>
-            </form>
         </div>
+
+        <div>
+            <label for="address" class="block text-sm font-medium text-gray-300 mb-2">Street Address (Line 1)
+                *</label>
+            <input type="text" name="address" id="address"
+                class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                placeholder="House No., Road Name, etc." required />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div>
+                <label for="city" class="block text-sm font-medium text-gray-300 mb-2">City / Town *</label>
+                <input type="text" name="city" id="city"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                    placeholder="City or Town" required />
+            </div>
+
+            <div>
+                <label for="home_price" class="block text-sm font-medium text-gray-300 mb-2">Rental Price (TK)
+                    *</label>
+                <input type="text" name="home_price" id="home_price"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                    placeholder="e.g. 15000" required />
+            </div>
+
+            <div>
+                <label for="bed" class="block text-sm font-medium text-gray-300 mb-2">Number of Beds *</label>
+                <input type="text" name="bed" id="bed"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                    placeholder="e.g. 3" required />
+            </div>
+
+            <div>
+                <label for="bath" class="block text-sm font-medium text-gray-300 mb-2">Number of Baths *</label>
+                <input type="text" name="bath" id="bath"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                    placeholder="e.g. 2" required />
+            </div>
+
+        </div>
+
+        <div>
+            <label for="about" class="block text-sm font-medium text-gray-300 mb-2">About House *</label>
+            <textarea name="about" id="about" rows="3"
+                class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
+                placeholder="Write a short description about the house..." required></textarea>
+        </div>
+
+        <div>
+            <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload your home image
+                *</label>
+            <input type="file" name="home_image" id="home_image"
+                class="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-xl file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 transition duration-200 cursor-pointer"
+                required />
+        </div>
+
+        <div class="pt-4">
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 flex justify-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                </svg>
+                Submit Address
+            </button>
+        </div>
+
+    </form>
     </div>
-
-    <style>
-        /* General Body Styles */
-        body {
-            font-family: "Inter", sans-serif;
-            background-color: #f3f4f6;
-            /* A light gray background */
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Main container to center the form */
-        .main-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-            box-sizing: border-box;
-        }
-
-        /* The form card itself */
-        .form-container {
-            margin: 0 auto;
-            max-width: 570px;
-            width: 100%;
-            background: white;
-            padding: 2.5rem;
-            /* 40px */
-            border-radius: 0.75rem;
-            /* 12px */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                0 4px 6px -4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Form image styling */
-        .form-img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 2rem;
-            /* 32px */
-            width: 100%;
-            max-width: 200px;
-            height: auto;
-            /* Maintain aspect ratio */
-        }
-
-        /* Form title and description */
-        .form-title {
-            font-size: 1.875rem;
-            /* 30px */
-            font-weight: 700;
-            color: #111827;
-            /* Dark gray */
-            margin-bottom: 0.5rem;
-            /* 8px */
-            text-align: center;
-        }
-
-        .form-desc {
-            color: #6b7280;
-            /* Medium gray */
-            margin-bottom: 2rem;
-            /* 32px */
-            font-size: 0.875rem;
-            /* 14px */
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        /* Styling for form labels */
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            /* 8px */
-            font-size: 0.875rem;
-            /* 14px */
-            font-weight: 600;
-            color: #374151;
-            /* Slightly lighter dark gray */
-        }
-
-        /* Unified styling for text inputs and select dropdowns */
-        .form-input,
-        .form-select {
-            width: 100%;
-            padding: 0.875rem 1.25rem;
-            /* 14px 20px */
-            border: 1px solid #d1d5db;
-            /* Light gray border */
-            border-radius: 0.5rem;
-            /* 8px */
-            background: #ffffff;
-            font-weight: 500;
-            font-size: 1rem;
-            /* 16px */
-            color: #111827;
-            outline: none;
-            box-sizing: border-box;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            margin-bottom: 1.25rem;
-            /* 20px */
-        }
-
-        .form-input::placeholder {
-            color: #9ca3af;
-            /* Lighter gray for placeholder */
-        }
-
-        /* Focus state for inputs and selects */
-        .form-input:focus,
-        .form-select:focus {
-            border-color: #6a64f1;
-            /* Purple accent color */
-            box-shadow: 0 0 0 3px rgba(106, 100, 241, 0.2);
-        }
-
-        /* Styling for the file input */
-        .form-file {
-            display: block;
-            width: 100%;
-            margin-bottom: 1.25rem;
-            /* 20px */
-            font-size: 0.875rem;
-            /* 14px */
-            color: #374151;
-        }
-
-        /* Custom styling for file input button */
-        .form-file::file-selector-button {
-            margin-right: 1rem;
-            padding: 0.5rem 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            background-color: #f9fafb;
-            color: #374151;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .form-file::file-selector-button:hover {
-            background-color: #f3f4f6;
-        }
-
-        /* Container for the checkbox and its label */
-        .form-checkbox-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            /* 12px */
-            margin-top: 1.5rem;
-            /* 24px */
-            margin-bottom: 1.5rem;
-            /* 24px */
-        }
-
-        /* Styling for the checkbox */
-        .form-checkbox {
-            margin-top: 0.125rem;
-            /* 2px */
-            height: 1.25rem;
-            /* 20px */
-            width: 1.25rem;
-            /* 20px */
-            border-radius: 0.25rem;
-            /* 4px */
-            border: 1px solid #d1d5db;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .form-checkbox:checked {
-            background-color: #6a64f1;
-            border-color: #6a64f1;
-        }
-
-        /* Submit button styling */
-        .form-btn {
-            text-align: center;
-            width: 100%;
-            font-size: 1rem;
-            /* 16px */
-            border-radius: 0.5rem;
-            /* 8px */
-            padding: 0.875rem 1.5rem;
-            /* 14px 24px */
-            border: none;
-            font-weight: 600;
-            background-color: #6a64f1;
-            /* Purple accent color */
-            color: white;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            /* 24px */
-            transition: background-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-btn:hover {
-            background-color: #5a54d1;
-            /* Darker purple on hover */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* --- Mobile Responsive Styles --- */
-        @media (max-width: 600px) {
-            .main-center {
-                padding: 1rem;
-            }
-
-            .form-container {
-                padding: 1.5rem;
-            }
-
-            .form-title {
-                font-size: 1.5rem;
-                /* 24px */
-            }
-        }
-    </style>
+    </div>
 @endsection

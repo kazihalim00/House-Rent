@@ -91,5 +91,10 @@ class HomeController extends Controller
         $users = User::latest()->get();
         return view('panel.pages.user_list', compact('users'));
     }
+    public function summery()
+    {
+        $users = User::get();
 
+        return view('panel.pages.dashboard', compact('users'));
+    }
 }

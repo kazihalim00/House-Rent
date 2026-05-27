@@ -17,7 +17,8 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+            <a href="{{ url('/') }}" class="nav-item nav-link active"><i
+                    class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                         class="fa fa-laptop me-2"></i>House Module</a>
@@ -28,8 +29,10 @@
 
                 </div>
             </div>
-            <a href="{{ url('/add-user') }}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Add User</a>
-            <a href="{{ url('/user-list') }}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>User List</a>
+            @if(Auth::user()->role == "Admin")
+                <a href="{{ url('/add-user') }}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Add User</a>
+                <a href="{{ url('/user-list') }}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>User List</a>
+            @endif
             <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Booking</a>
             <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Review</a>
             <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Chat</a>

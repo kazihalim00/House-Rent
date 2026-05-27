@@ -15,4 +15,9 @@ class Booking extends Model
     {
         return $this->belongsTo(Home::class, 'house_id');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

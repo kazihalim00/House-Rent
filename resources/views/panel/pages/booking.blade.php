@@ -242,12 +242,6 @@
             cursor: pointer;
         }
 
-        .clear-btn {
-            color: white;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
         @media(max-width:768px) {
             .calendar-wrapper {
                 grid-template-columns: 1fr;
@@ -332,8 +326,7 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:20px;">
-            <div class="clear-btn">Clear dates</div>
-            <button class="result-btn">View 6556 results</button>
+            <button class="result-btn">View results</button>
         </div>
     </div>
 

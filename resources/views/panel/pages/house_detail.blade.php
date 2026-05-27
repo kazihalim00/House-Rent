@@ -40,7 +40,7 @@
                             {{ $house->about }}
                         </p>
 
-                        <a href="{{ url('/booking?date=' . $house->booking_date) }}"
+                        <a href="{{ route('panel.pages.show', $house->id) }}"
                             class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-300">
                             View Details
                         </a>

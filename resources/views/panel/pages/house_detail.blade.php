@@ -3,6 +3,15 @@
 @section('content')
 
     <div class="container mx-auto px-4 py-8">
+        @if (session('success'))
+            <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 shadow-md rounded-r-lg flex justify-between items-center">
+                <span>{{ session('success') }}</span>
+                <button type="button" onclick="this.parentElement.style.display='none'" class="text-green-700 font-bold">
+                    &times;
+                </button>
+            </div>
+        @endif
+
         <div class="text-end">
             <a href="{{ url('/add-house') }}" class="btn btn-success">
                 Add House

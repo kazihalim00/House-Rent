@@ -58,13 +58,11 @@ class HomeController extends Controller
 
     public function showBookingPage()
     {
-    // Fetch unique booking dates, filter out nulls, and clean the array entries
     $dbAvailableDates = Home::whereNotNull('booking_date')
         ->pluck('booking_date')
         ->unique()
         ->values()
         ->map(function($date) {
-            // Converts any date object variant to a clean 'YYYY-MM-DD' string entry
             return is_string($date) ? trim($date) : $date->format('Y-m-d');
         })
         ->toArray();

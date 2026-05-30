@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('homes', function (Blueprint $table) {
-            $table->date('booking_date')->nullable()->after('about');
-        });
+        if (!Schema::hasColumn('homes', 'booking_date')) {
+            Schema::table('homes', function (Blueprint $table) {
+                $table->date('booking_date')->nullable()->after('about');
+            });
+        }
     }
 
     public function down(): void

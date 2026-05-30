@@ -138,4 +138,11 @@ class HomeController extends Controller
 
         return redirect()->route('house-detail')->with('success', 'Booking submitted successfully!');
     }
+
+
+    public function show($id)
+    {
+        $home = Home::findOrFail($id);
+        return view('panel.pages.show', compact('home'));
+    }
 }

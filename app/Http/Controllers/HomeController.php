@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Home;
 use App\Models\User;
+use App\Models\Booking;
+use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
 
@@ -23,6 +25,7 @@ class HomeController extends Controller
             'bed' => 'required',
             'bath' => 'required',
             'about' => 'required',
+            'booking_date' => 'required',
             'home_image' => 'required'
         ]);
 
@@ -33,6 +36,7 @@ class HomeController extends Controller
             $fileName = time() . '.' . $extension;
             $file->move(public_path('/upload/img/'), $fileName);
         }
+
         Home::create([
             'house_name' => $request->house_name,
             'email' => $request->email,
@@ -44,8 +48,10 @@ class HomeController extends Controller
             'bed' => $request->bed,
             'bath' => $request->bath,
             'about' => $request->about,
+            'booking_date' => $request->booking_date,
             'home_image' => $fileName
         ]);
+
         return back()->with('success', 'Home added successfully!');
     }
 
@@ -96,5 +102,53 @@ class HomeController extends Controller
         $users = User::get();
 
         return view('panel.pages.dashboard', compact('users'));
+
+    }
+
+    public function showBookingPage()
+    {
+        $dbAvailableDates = Home::whereNotNull('booking_date')
+            ->pluck('booking_date')
+            ->unique()
+            ->values()
+            ->map(function ($date) {
+                return is_string($date) ? trim($date) : $date->format('Y-m-d');
+            })
+            ->toArray();
+
+        return view('panel.pages.booking', [
+            'dbAvailableDates' => $dbAvailableDates
+        ]);
+    }
+
+    public function showBookForm($id)
+    {
+        $house = Home::findOrFail($id);
+        return view('panel.pages.book_form', compact('house'));
+    }
+
+    public function processBooking(Request $request)
+    {
+        $request->validate([
+            'house_id' => 'required|exists:homes,id',
+            'guest_name' => 'required|string|max:255',
+            'guest_email' => 'required|email',
+            'guest_phone' => 'required',
+            'check_in_date' => 'required|date|after_or_equal:today',
+        ]);
+
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
+
+        Booking::create($data);
+
+        return redirect()->route('house-detail')->with('success', 'Booking submitted successfully!');
+    }
+
+
+    public function show($id)
+    {
+        $home = Home::findOrFail($id);
+        return view('panel.pages.show', compact('home'));
     }
 }

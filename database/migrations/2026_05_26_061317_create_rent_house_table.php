@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('bed');
             $table->string('bath');
             $table->string('about');
+            $table->date('booking_date');
             $table->string('home_image');
 
 
@@ -34,6 +35,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('rent_house');
+        Schema::dropIfExists('homes');
     }
 };

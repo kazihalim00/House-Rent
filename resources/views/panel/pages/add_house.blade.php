@@ -3,149 +3,133 @@
 @section('content')
     <div class="container mx-auto px-4 py-10 max-w-3xl">
 
-        <div class="text-center border-b border-white-700/60 pb-8 mb-8 relative">
-            <div
-                class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white-400/10 to-transparent blur-xl pointer-events-none">
-            </div>
-
+        <div class="text-center border-b border-gray-700/60 pb-8 mb-8 relative">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight drop-shadow-md">
                 Add House
             </h2>
-
             <p class="text-gray-400 text-sm md:text-base max-w-lg mx-auto font-medium">
-                Please provide your address details below. Fields marked with <span class="text-red-400 font-bold">*</span>
-                are
-                required.
+                Please provide your house details below. Fields marked with
+                <span class="text-red-400 font-bold">*</span> are required.
             </p>
         </div>
 
-        <a href="{{ url('/add-house') }}"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-5 rounded-lg shadow-lg transition duration-300 whitespace-nowrap">
-            Add House
-        </a>
-    </div>
+        @if ($errors->any())
+            <div class="bg-red-500/10 border border-red-500/50 text-red-400 px-5 py-4 rounded-xl mb-6">
+                <ul class="list-disc list-inside text-sm">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    @if ($errors->any())
-        <div class="bg-red-500/10 border border-red-500/50 text-red-400 px-5 py-4 rounded-xl mb-6">
-            <ul class="list-disc list-inside text-sm">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        <form action="{{ url('/add-house') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            @csrf
 
-    <form action="{{ url('/add-house') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-        @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="house_name" class="block text-sm font-medium text-gray-300 mb-2">House Name *</label>
+                    <input type="text" name="house_name" id="house_name"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                        placeholder="Enter house name" required />
+                </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
+                    <input type="email" name="email" id="email"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                        placeholder="Enter user email" required />
+                </div>
 
-            <div>
-                <label for="house_name" class="block text-sm font-medium text-gray-300 mb-2">House Name *</label>
-                <input type="text" name="house_name" id="house_name"
-                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                    placeholder="Enter house name" required />
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number *</label>
+                    <input type="tel" name="phone" id="phone"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                        placeholder="Enter phone number" required />
+                </div>
+
+                <div>
+                    <label for="division" class="block text-sm font-medium text-gray-300 mb-2">Division *</label>
+                    <select name="division" id="division"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer"
+                        required>
+                        <option value="">Select Division</option>
+                        <option value="Sylhet">Sylhet</option>
+                        <option value="Dhaka">Dhaka</option>
+                        <option value="Chattogram">Chattogram</option>
+                        <option value="Khulna">Khulna</option>
+                        <option value="Rajshahi">Rajshahi</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="city" class="block text-sm font-medium text-gray-300 mb-2">City / Town *</label>
+                    <input type="text" name="city" id="city"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                        placeholder="City or Town" required />
+                </div>
+
+                <div>
+                    <label for="home_price" class="block text-sm font-medium text-gray-300 mb-2">Rental Price (TK) *</label>
+                    <input type="text" name="home_price" id="home_price"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                        placeholder="e.g. 15000" required />
+                </div>
+
+                <div>
+                    <label for="bed" class="block text-sm font-medium text-gray-300 mb-2">Number of Beds *</label>
+                    <input type="text" name="bed" id="bed"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                        placeholder="e.g. 3" required />
+                </div>
+
+                <div>
+                    <label for="bath" class="block text-sm font-medium text-gray-300 mb-2">Number of Baths *</label>
+                    <input type="text" name="bath" id="bath"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                        placeholder="e.g. 2" required />
+                </div>
             </div>
 
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address (User)
-                    *</label>
-                <input type="email" name="email" id="email"
-                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                    placeholder="Enter user email" required />
+                <label for="address" class="block text-sm font-medium text-gray-300 mb-2">Street Address *</label>
+                <input type="text" name="address" id="address"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                    placeholder="House No., Road Name, etc." required />
             </div>
 
             <div>
-                <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number *</label>
-                <input type="tel" name="phone" id="phone"
-                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                    placeholder="Enter phone number" required />
+                <label for="about" class="block text-sm font-medium text-gray-300 mb-2">About House *</label>
+                <textarea name="about" id="about" rows="3"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                    placeholder="Write a short description about the house..." required></textarea>
             </div>
 
             <div>
-                <label for="division" class="block text-sm font-medium text-gray-300 mb-2">Division *</label>
-                <select name="division" id="division"
-                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none cursor-pointer"
-                    required>
-                    <option value="" class="text-gray-400">Select Division</option>
-                    <option value="Sylhet">Sylhet</option>
-                    <option value="Dhaka">Dhaka</option>
-                    <option value="Chattogram">Chattogram</option>
-                    <option value="Khulna">Khulna</option>
-                    <option value="Rajshahi">Rajshahi</option>
-                </select>
-            </div>
-
-        </div>
-
-        <div>
-            <label for="address" class="block text-sm font-medium text-gray-300 mb-2">Street Address (Line 1)
-                *</label>
-            <input type="text" name="address" id="address"
-                class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                placeholder="House No., Road Name, etc." required />
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            <div>
-                <label for="city" class="block text-sm font-medium text-gray-300 mb-2">City / Town *</label>
-                <input type="text" name="city" id="city"
-                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                    placeholder="City or Town" required />
+                <label for="booking_date" class="block text-sm font-medium text-gray-300 mb-2">Booking Date *</label>
+                <input type="date" name="booking_date" id="booking_date"
+                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    min="{{ date('Y-m-d') }}" required />
             </div>
 
             <div>
-                <label for="home_price" class="block text-sm font-medium text-gray-300 mb-2">Rental Price (TK)
-                    *</label>
-                <input type="text" name="home_price" id="home_price"
-                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                    placeholder="e.g. 15000" required />
+                <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload House Image *</label>
+                <input type="file" name="home_image" id="home_image"
+                    class="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-xl file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 cursor-pointer"
+                    required />
             </div>
 
-            <div>
-                <label for="bed" class="block text-sm font-medium text-gray-300 mb-2">Number of Beds *</label>
-                <input type="text" name="bed" id="bed"
-                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                    placeholder="e.g. 3" required />
+            <div class="pt-4">
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 flex justify-center items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                    </svg>
+                    Submit
+                </button>
             </div>
 
-            <div>
-                <label for="bath" class="block text-sm font-medium text-gray-300 mb-2">Number of Baths *</label>
-                <input type="text" name="bath" id="bath"
-                    class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                    placeholder="e.g. 2" required />
-            </div>
-
-        </div>
-
-        <div>
-            <label for="about" class="block text-sm font-medium text-gray-300 mb-2">About House *</label>
-            <textarea name="about" id="about" rows="3"
-                class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 placeholder-gray-500"
-                placeholder="Write a short description about the house..." required></textarea>
-        </div>
-
-        <div>
-            <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload your home image
-                *</label>
-            <input type="file" name="home_image" id="home_image"
-                class="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-xl file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 transition duration-200 cursor-pointer"
-                required />
-        </div>
-
-        <div class="pt-4">
-            <button type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 flex justify-center items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                    <path
-                        d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
-                </svg>
-                Submit Address
-            </button>
-        </div>
-
-    </form>
-    </div>
+        </form>
     </div>
 @endsection

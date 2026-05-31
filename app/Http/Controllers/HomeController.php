@@ -55,9 +55,15 @@ class HomeController extends Controller
         return back()->with('success', 'Home added successfully!');
     }
 
-    public function house_detail()
+    public function house_detail(Request $request)
     {
-        $houses = Home::latest()->get();
+        $query = Home::query();
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('house_name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%");
+        }
+        $houses = $query->latest()->get();
         return view('panel.pages.house_detail', compact('houses'));
     }
 
@@ -92,9 +98,16 @@ class HomeController extends Controller
         return back()->with('success', 'User Created Successfully!');
     }
 
-    public function user_list()
+    public function user_list(Request $request)
     {
-        $users = User::latest()->get();
+        $query = User::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search");
+        }
+        $users = $query->latest()->get();
         return view('panel.pages.user_list', compact('users'));
     }
     public function summery()

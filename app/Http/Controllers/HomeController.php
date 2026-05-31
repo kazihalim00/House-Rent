@@ -7,6 +7,8 @@ use App\Models\Home;
 use App\Models\User;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 class HomeController extends Controller
 {
 
@@ -55,10 +57,43 @@ class HomeController extends Controller
         return back()->with('success', 'Home added successfully!');
     }
 
-    public function house_detail()
+    public function house_detail(Request $request)
     {
-        $houses = Home::latest()->get();
-        return view('panel.pages.house_detail', compact('houses'));
+        $selectedDate = $request->query('date');
+        $selectedOption = $request->query('option', 'exact');
+        $allowedOptions = ['exact', '1week', '2weeks', '3weeks'];
+        if (!in_array($selectedOption, $allowedOptions)) {
+            $selectedOption = 'exact';
+        }
+
+        $housesQuery = Home::latest();
+        $filterLabel = null;
+
+        if ($selectedDate) {
+            try {
+                $selectedCarbon = Carbon::parse($selectedDate)->startOfDay();
+                $selectedDate = $selectedCarbon->format('Y-m-d');
+
+                if ($selectedOption === 'exact') {
+                    $housesQuery->whereDate('booking_date', $selectedDate);
+                    $filterLabel = "Exactly {$selectedDate}";
+                } else {
+                    $daysMap = ['1week' => 7, '2weeks' => 14, '3weeks' => 21];
+                    $days = $daysMap[$selectedOption] ?? 7;
+                    $from = $selectedCarbon->copy()->subDays($days)->format('Y-m-d');
+                    $to = $selectedCarbon->copy()->addDays($days)->format('Y-m-d');
+                    $housesQuery->whereBetween('booking_date', [$from, $to]);
+                    $filterLabel = "Within ±{$days} days of {$selectedDate}";
+                }
+            } catch (\Exception $e) {
+                $selectedDate = null;
+                $filterLabel = null;
+            }
+        }
+
+        $houses = $housesQuery->get();
+
+        return view('panel.pages.house_detail', compact('houses', 'selectedDate', 'selectedOption', 'filterLabel'));
     }
 
     public function add_user(Request $request)

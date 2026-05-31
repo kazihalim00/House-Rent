@@ -18,6 +18,13 @@
                 Add House
             </a>
         </div>
+
+        @if ($houses->isEmpty())
+            <div class="mb-6 p-6 bg-gray-100 text-gray-700 rounded-xl shadow-sm text-center">
+                No houses found for this date filter. Please choose another available date or range.
+            </div>
+        @endif
+
         <div class="text-center mb-10">
             <h2 class="text-3xl font-bold text-gray-800 mb-4">Available Houses for Rent</h2>
             <p class="text-gray-600 max-w-2xl mx-auto">
@@ -75,7 +82,7 @@
 
                         <div class="w-1/2">
                             <span class="block font-bold text-lg text-gray-800">{{ $house->booking_date }}</span>
-                            <span class="text-xs text-gray-500 uppercase font-semibold">Booking Date</span>
+                            <span class="text-xs text-gray-500 uppercase font-semibold">Available from Date</span>
                         </div>
 
                     </div>

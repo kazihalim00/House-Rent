@@ -1,21 +1,27 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
-        Schema::table('homes', function (Blueprint $table) {
-            $table->date('booking_date')->nullable()->after('about');
-        });
+        if (!Schema::hasColumn('homes', 'booking_date')) {
+            Schema::table('homes', function (Blueprint $table) {
+                $table->date('booking_date')->nullable()->after('about');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('homes', function (Blueprint $table) {
-            $table->dropColumn('booking_date');
-        });
+        if (Schema::hasColumn('homes', 'booking_date')) {
+            Schema::table('homes', function (Blueprint $table) {
+                $table->dropColumn('booking_date');
+            });
+        }
     }
+
 };

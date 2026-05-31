@@ -7,8 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+// Temporary debug routes removed — confirmed XAMPP PHP provides pdo_mysql.
 
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [HomeController::class, 'summery'])->name('dashboard');
     Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
 
@@ -34,7 +35,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/add-user', [HomeController::class, 'add_user'])->name('add-user');
         Route::get('/user-list', [HomeController::class, 'user_list']);
     });
-
 });
 
 require __DIR__ . '/auth.php';

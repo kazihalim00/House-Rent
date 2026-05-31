@@ -3,7 +3,7 @@
 
 @section('content')
     <h2>My Dashboard</h2>
-    <p>This is an user dashboard.</p>
+    <p>This is just an user dashboard.</p>
     <!-- Sale & Revenue Start -->
     <div class="container-fluid pt-4 px-4">
         <div class="row g-4">

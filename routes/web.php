@@ -28,6 +28,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/chat', function () {
+        return view('panel.pages.chat');
+    })->name('chat');
+
     Route::middleware('admin')->group(function () {
         Route::get('/add-user', function () {
             return view('panel.pages.add_user');

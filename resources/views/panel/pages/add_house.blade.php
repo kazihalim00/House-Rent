@@ -13,13 +13,13 @@
             </p>
         </div>
 
-        @if ($errors->any())
-            <div class="bg-red-500/10 border border-red-500/50 text-red-400 px-5 py-4 rounded-xl mb-6">
-                <ul class="list-disc list-inside text-sm">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if (session('success'))
+            <div
+                class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 shadow-md rounded-r-lg flex justify-between items-center">
+                <span>{{ session('success') }}</span>
+                <button type="button" onclick="this.parentElement.style.display='none'" class="text-green-700 font-bold">
+                    &times;
+                </button>
             </div>
         @endif
 

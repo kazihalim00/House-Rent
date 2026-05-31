@@ -5,8 +5,9 @@
     <a href="#" class="sidebar-toggler flex-shrink-0">
         <i class="fa fa-bars"></i>
     </a>
-    <form class="d-none d-md-flex ms-4">
-        <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+    <form action="{{ url()->current() }}" method="GET" class="d-none d-md-flex ms-4">
+        <input id="searchInput" class="form-control bg-dark border-0" type="search" name="search" placeholder="Search"
+            value="{{ request('search') }}">
     </form>
     <div class="navbar-nav align-items-center ms-auto">
         <div class="nav-item dropdown">
@@ -107,3 +108,22 @@
         </div>
     </div>
 </nav>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+
+        if (searchInput) {
+            searchInput.addEventListener('keyup', function (e) {
+                if (this.value.trim() === '' && window.location.search !== '') {
+                    window.location.href = window.location.pathname;
+                }
+            });
+
+            searchInput.addEventListener('search', function () {
+                if (this.value.trim() === '' && window.location.search !== '') {
+                    window.location.href = window.location.pathname;
+                }
+            });
+        }
+    });
+</script>

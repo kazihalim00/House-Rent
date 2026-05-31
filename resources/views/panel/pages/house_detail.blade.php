@@ -4,7 +4,8 @@
 
     <div class="container mx-auto px-4 py-8">
         @if (session('success'))
-            <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 shadow-md rounded-r-lg flex justify-between items-center">
+            <div
+                class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 shadow-md rounded-r-lg flex justify-between items-center">
                 <span>{{ session('success') }}</span>
                 <button type="button" onclick="this.parentElement.style.display='none'" class="text-green-700 font-bold">
                     &times;
@@ -18,8 +19,8 @@
             </a>
         </div>
         <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">Available Houses for Rent</h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold text-white-800 mb-4">Available Houses for Rent</h2>
+            <p class="text-white-600 max-w-2xl mx-auto">
                 Find your dream house from our premium collection. We offer the best facilities at an affordable price.
             </p>
         </div>
@@ -57,23 +58,23 @@
 
                     <div class="bg-gray-50 px-6 py-4 flex justify-between text-center border-t border-gray-100">
 
-                        <div class="w-1/4 border-r border-gray-200">
-                            <span class="block font-bold text-lg text-gray-800">{{ $house->home_price }} TK</span>
+                        <div class="w-1/2 border-r border-gray-200">
+                            <span class="block font-bold text-lg text-green-800">{{ $house->home_price }} TK</span>
                             <span class="text-xs text-gray-500 uppercase font-semibold">Monthly</span>
                         </div>
 
                         <div class="w-1/4 border-r border-gray-200">
-                            <span class="block font-bold text-lg text-gray-800">{{ $house->bed }}</span>
+                            <span class="block font-bold text-lg text-blue-800">{{ $house->bed }}</span>
                             <span class="text-xs text-gray-500 uppercase font-semibold">Beds</span>
                         </div>
 
                         <div class="w-1/4">
-                            <span class="block font-bold text-lg text-gray-800">{{ $house->bath }}</span>
+                            <span class="block font-bold text-lg text-yellow-800">{{ $house->bath }}</span>
                             <span class="text-xs text-gray-500 uppercase font-semibold">Baths</span>
                         </div>
 
-                        <div class="w-1/4">
-                            <span class="block font-bold text-lg text-gray-800">{{ $house->booking_date }}</span>
+                        <div class="w-1/2">
+                            <span class="block font-bold text-lg text-red-800">{{ $house->booking_date }}</span>
                             <span class="text-xs text-gray-500 uppercase font-semibold">Booking Date</span>
                         </div>
 

@@ -22,6 +22,7 @@ class Home extends Model
         'about',
         'booking_date',
         'home_image',
+        'status',
 
     ];
 }

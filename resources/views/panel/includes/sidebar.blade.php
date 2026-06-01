@@ -29,9 +29,15 @@
                     <a href="{{ url('/house-detail') }}" class="dropdown-item">House Detail</a>
                 </div>
             </div>
-            <a href="{{ url('/booking') }}" class="nav-item nav-link">
-                <i class="fa fa-th me-2"></i>Booking
-            </a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fa fa-calendar me-2"></i>Booking
+                </a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="{{ url('/booking') }}" class="dropdown-item">Booking Calendar</a>
+                    <a href="{{ url('/booking-list') }}" class="dropdown-item">Booking List</a>
+                </div>
+            </div>
             @if(Auth::user()->role == "Admin")
                 <a href="{{ url('/add-user') }}" class="nav-item nav-link">
                     <i class="fa fa-th me-2"></i>Add User

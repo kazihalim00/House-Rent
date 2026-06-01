@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/add-house', [HomeController::class, 'store']);
 
     Route::get('/booking', [HomeController::class, 'showBookingPage'])->name('booking');
+    Route::get('/booking-list', [HomeController::class, 'bookingList'])->name('booking.list');
     Route::get('/book-house/{id}', [HomeController::class, 'showBookForm'])->name('book.house');
     Route::post('/book-house', [HomeController::class, 'processBooking'])->name('book.store');
     Route::get('/house/{id}', [HomeController::class, 'show'])->name('panel.pages.show');

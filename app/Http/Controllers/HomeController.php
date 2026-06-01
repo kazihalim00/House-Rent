@@ -186,6 +186,7 @@ class HomeController extends Controller
             'guest_email' => 'required|email',
             'guest_phone' => 'required',
             'check_in_date' => 'required|date|after_or_equal:today',
+            'booking_duration' => 'required|integer|min:1',
         ]);
 
         $data = $request->all();

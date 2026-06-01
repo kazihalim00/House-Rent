@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Booking extends Model
 {
     protected $fillable = [
-        'user_id', 'house_id', 'guest_name', 'guest_email', 'guest_phone', 'check_in_date'
+        'user_id', 'house_id', 'guest_name', 'guest_email', 'guest_phone', 'check_in_date', 'booking_duration'
     ];
 
     public function house(): BelongsTo

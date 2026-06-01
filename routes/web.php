@@ -34,9 +34,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('admin')->group(function () {
         Route::get('/add-user', function () {
             return view('panel.pages.add_user');
+
         });
         Route::post('/add-user', [HomeController::class, 'add_user'])->name('add-user');
         Route::get('/user-list', [HomeController::class, 'user_list']);
+        Route::get('/admin/pending-houses', [HomeController::class, 'pending_houses'])->name('admin.pending_houses');
+        Route::post('/admin/approve-house/{id}', [HomeController::class, 'approve_house'])->name('admin.approve_house');
+        Route::post('/admin/reject-house/{id}', [HomeController::class, 'reject_house'])->name('admin.reject_house');
     });
 });
 

@@ -15,21 +15,30 @@
                     <table class="min-w-full table-auto">
                         <thead class="bg-gray-50 border-b border-gray-100">
                             <tr>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Guest Name</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Email</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Phone</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">House Name</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Owner Name</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Check-in Date</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Duration (Months)</th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Booking Date</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Guest
+                                    Name</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Email
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Phone
+                                </th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">House
+                                    Name</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Owner
+                                    Name</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Check-in Date</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Duration (Months)</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Booking
+                                    Date</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             @foreach($bookings as $booking)
                                 <tr class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                             {{ $booking->guest_name }}
                                         </span>
                                     </td>
@@ -40,11 +49,16 @@
                                         {{ $booking->guest_phone }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm font-bold text-gray-900">{{ $booking->house->house_name }}</div>
-                                        <div class="text-sm text-gray-500"><i class="fas fa-map-marker-alt text-red-400 mr-1"></i>{{ $booking->house->address }}</div>
+                                        <div class="text-sm font-bold text-gray-900">
+                                            {{ $booking->house?->house_name ?? 'House Deleted' }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            <i
+                                                class="fas fa-map-marker-alt text-red-400 mr-1"></i>{{ $booking->house?->address ?? 'N/A' }}
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 text-sm font-semibold text-gray-700">
-                                        {{ $booking->house->owner_name }}
+                                        {{ $booking->house?->owner_name ?? 'Unknown Owner' }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-600">
                                         {{ \Carbon\Carbon::parse($booking->check_in_date)->format('d M, Y') }}

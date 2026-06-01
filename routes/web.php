@@ -16,13 +16,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('panel.pages.add_house');
     })->name('add-house');
     Route::post('/add-house', [HomeController::class, 'store']);
-
+    Route::get('/add-house', [HomeController::class, 'add_house_view'])->name('add-house');
     Route::get('/booking', [HomeController::class, 'showBookingPage'])->name('booking');
     Route::get('/booking-list', [HomeController::class, 'bookingList'])->name('booking.list');
     Route::get('/book-house/{id}', [HomeController::class, 'showBookForm'])->name('book.house');
     Route::post('/book-house', [HomeController::class, 'processBooking'])->name('book.store');
     Route::get('/house/{id}', [HomeController::class, 'show'])->name('panel.pages.show');
-
+    Route::post('/book-appointment/{id}', [HomeController::class, 'book_appointment'])->name('book.appointment');
+    Route::get('/appointments', [HomeController::class, 'appointmentList'])->name('appointment.list');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -40,6 +41,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/pending-houses', [HomeController::class, 'pending_houses'])->name('admin.pending_houses');
         Route::post('/approve-house/{id}', [HomeController::class, 'approve_house'])->name('admin.approve_house');
         Route::post('/reject-house/{id}', [HomeController::class, 'reject_house'])->name('admin.reject_house');
+        Route::post('/appointment/approve/{id}', [HomeController::class, 'approveAppointment'])->name('appointment.approve');
+        Route::post('/appointment/reject/{id}', [HomeController::class, 'rejectAppointment'])->name('appointment.reject');
     });
 
 });

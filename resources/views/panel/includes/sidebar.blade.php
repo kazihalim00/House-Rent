@@ -27,6 +27,8 @@
                 <div class="dropdown-menu bg-transparent border-0">
                     <a href="{{ url('/add-house') }}" class="dropdown-item">Add House</a>
                     <a href="{{ url('/house-detail') }}" class="dropdown-item">House Detail</a>
+                    <a href="{{ url('/appointments') }}" class="dropdown-item">Appointments</a>
+
                 </div>
             </div>
             <div class="nav-item dropdown">

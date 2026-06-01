@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\Home;
 use App\Models\User;
@@ -234,5 +234,48 @@ class HomeController extends Controller
         $house->save();
 
         return back()->with('success', 'House listing has been rejected.');
+    }
+    public function book_appointment(Request $request, $id)
+    {
+        $request->validate([
+            'visit_date' => 'required|date|after_or_equal:today',
+            'visit_time' => 'required|string',
+            'message' => 'nullable|string|max:1000',
+        ]);
+
+        Appointment::create([
+            'house_id' => $id,
+            'user_id' => Auth::id(),
+            'visit_date' => $request->visit_date,
+            'visit_time' => $request->visit_time,
+            'message' => $request->message,
+            'status' => 'pending',
+        ]);
+
+
+        return back()->with('success', 'Appointment request submitted successfully! The owner will be notified.');
+    }
+    public function appointmentList()
+    {
+        $appointments = Appointment::with(['house', 'user'])->latest()->get();
+
+        return view('panel.pages.appointment_list', compact('appointments'));
+    }
+    public function approveAppointment($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->status = 'approved';
+        $appointment->save();
+
+        return back()->with('success', 'Appointment has been approved successfully!');
+    }
+
+    public function rejectAppointment($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->status = 'rejected';
+        $appointment->save();
+
+        return back()->with('error', 'Appointment has been rejected.'); // error সেশন ব্যবহার করেছি যাতে লাল রঙের মেসেজ দেখানো যায়
     }
 }

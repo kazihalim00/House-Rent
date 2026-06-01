@@ -39,6 +39,9 @@
                 <a href="{{ url('/user-list') }}" class="nav-item nav-link">
                     <i class="fa fa-th me-2"></i>User List
                 </a>
+                <a href=" {{ route('admin.pending_houses') }}" class="nav-item nav-link">
+                    <i class="fa fa-th me-2"></i>Pending List
+                </a>
             @endif
             <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Review</a>
             <a href="{{url('/chat')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Chat</a>

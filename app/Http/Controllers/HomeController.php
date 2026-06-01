@@ -63,8 +63,8 @@ class HomeController extends Controller
     }
     public function house_detail(Request $request)
     {
-        $query = Home::query();
 
+        $query = Home::where('status', 'approved');
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where('house_name', 'like', "%$search%")
@@ -199,5 +199,27 @@ class HomeController extends Controller
     {
         $home = Home::findOrFail($id);
         return view('panel.pages.show', compact('home'));
+    }
+    public function pending_houses()
+    {
+        $houses = Home::where('status', 'pending')->latest()->get();
+        return view('panel.pages.pending_houses', compact('houses'));
+    }
+
+    public function approve_house($id)
+    {
+        $house = Home::findOrFail($id);
+        $house->status = 'approved';
+        $house->save();
+
+        return back()->with('success', 'House Approved Successfully! Now it is visible to everyone.');
+    }
+    public function reject_house($id)
+    {
+        $house = Home::findOrFail($id);
+        $house->status = 'rejected';
+        $house->save();
+
+        return back()->with('success', 'House listing has been rejected.');
     }
 }

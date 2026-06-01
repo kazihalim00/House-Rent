@@ -81,10 +81,8 @@
                         </div>
 
                         <div class="w-1/2">
-                            <span class="block font-bold text-lg text-gray-800">{{ $house->booking_date }}</span>
-                            <span class="text-xs text-gray-500 uppercase font-semibold">Available from Date</span>
                             <span class="block font-bold text-lg text-red-800">{{ $house->booking_date }}</span>
-                            <span class="text-xs text-gray-500 uppercase font-semibold">Booking Date</span>
+                            <span class="text-xs text-gray-500 uppercase font-semibold">Available from date</span>
                         </div>
 
                     </div>

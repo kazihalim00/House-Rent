@@ -83,8 +83,10 @@
                         </div>
                         <div class="w-1/2 px-2">
                             <span
-                                class="block font-bold text-lg text-red-600">{{ \Carbon\Carbon::parse($house->booking_date)->format('d M') }}</span>
-                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Available</span>
+                                class="block font-bold text-lg {{ $house->bookings_count > 0 ? 'text-gray-500' : 'text-red-600' }}">{{ \Carbon\Carbon::parse($house->booking_date)->format('d M') }}</span>
+                            <span class="text-[10px] uppercase font-bold tracking-wide {{ $house->bookings_count > 0 ? 'text-red-600' : 'text-gray-500' }}">
+                                {{ $house->bookings_count > 0 ? 'Booked' : 'Available' }}
+                            </span>
                         </div>
                     </div>
 

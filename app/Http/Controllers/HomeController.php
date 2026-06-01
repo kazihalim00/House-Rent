@@ -64,7 +64,7 @@ class HomeController extends Controller
     public function house_detail(Request $request)
     {
 
-        $query = Home::where('status', 'approved');
+        $query = Home::withCount('bookings')->where('status', 'approved');
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where('house_name', 'like', "%$search%")
@@ -186,6 +186,7 @@ class HomeController extends Controller
             'guest_email' => 'required|email',
             'guest_phone' => 'required',
             'check_in_date' => 'required|date|after_or_equal:today',
+            'booking_duration' => 'required|integer|min:1',
         ]);
 
         $data = $request->all();

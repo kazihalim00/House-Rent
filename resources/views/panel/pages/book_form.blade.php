@@ -39,6 +39,9 @@
                 <label for="check_in_date" class="form-label">Check-in Date</label>
                 <input type="date" name="check_in_date" id="check_in_date" class="form-input" value="{{ $house->booking_date }}" min="{{ date('Y-m-d') }}" required>
 
+                <label for="booking_duration" class="form-label">Booking Duration (months)</label>
+                <input type="number" name="booking_duration" id="booking_duration" class="form-input" value="1" min="1" step="1" required />
+
                 <input type="hidden" name="house_id" value="{{ $house->id }}">
 
                 <button class=" form-btn">Submit Booking</button>

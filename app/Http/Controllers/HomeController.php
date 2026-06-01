@@ -11,13 +11,12 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-
-
     public function store(Request $request)
     {
-
+        $users = User::get();
         $request->validate([
             'house_name' => 'required',
+            'owner_name' => 'required',
             'email' => 'required',
             'phone' => 'required',
             'address' => 'required',
@@ -41,6 +40,7 @@ class HomeController extends Controller
 
         Home::create([
             'house_name' => $request->house_name,
+            'owner_name' => $request->owner_name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
@@ -56,9 +56,21 @@ class HomeController extends Controller
 
         return back()->with('success', 'Home added successfully!');
     }
-
+    public function add_house_view()
+    {
+        $users = User::get();
+        return view('panel.pages.add_house', compact('users'));
+    }
     public function house_detail(Request $request)
     {
+
+        $query = Home::where('status', 'approved');
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('house_name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%");
+        }
+
         $selectedDate = $request->query('date');
         $selectedOption = $request->query('option', 'exact');
         $allowedOptions = ['exact', '1week', '2weeks', '3weeks'];
@@ -66,7 +78,6 @@ class HomeController extends Controller
             $selectedOption = 'exact';
         }
 
-        $housesQuery = Home::latest();
         $filterLabel = null;
 
         if ($selectedDate) {
@@ -75,14 +86,14 @@ class HomeController extends Controller
                 $selectedDate = $selectedCarbon->format('Y-m-d');
 
                 if ($selectedOption === 'exact') {
-                    $housesQuery->whereDate('booking_date', $selectedDate);
+                    $query->whereDate('booking_date', $selectedDate);
                     $filterLabel = "Exactly {$selectedDate}";
                 } else {
                     $daysMap = ['1week' => 7, '2weeks' => 14, '3weeks' => 21];
                     $days = $daysMap[$selectedOption] ?? 7;
                     $from = $selectedCarbon->copy()->subDays($days)->format('Y-m-d');
                     $to = $selectedCarbon->copy()->addDays($days)->format('Y-m-d');
-                    $housesQuery->whereBetween('booking_date', [$from, $to]);
+                    $query->whereBetween('booking_date', [$from, $to]);
                     $filterLabel = "Within ±{$days} days of {$selectedDate}";
                 }
             } catch (\Exception $e) {
@@ -91,22 +102,13 @@ class HomeController extends Controller
             }
         }
 
-        $houses = $housesQuery->get();
+        $houses = $query->latest()->get();
 
         return view('panel.pages.house_detail', compact('houses', 'selectedDate', 'selectedOption', 'filterLabel'));
-        $query = Home::query();
-        if ($request->has('search') && $request->search != '') {
-            $search = $request->search;
-            $query->where('house_name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%");
-        }
-        $houses = $query->latest()->get();
-        return view('panel.pages.house_detail', compact('houses'));
     }
 
     public function add_user(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -122,16 +124,14 @@ class HomeController extends Controller
             $file->move(public_path('upload/img/'), $fileName);
         }
 
-
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-
             'role' => $request->role,
             'password' => bcrypt($request->password),
             'user_image' => $fileName,
-
         ]);
+
         return back()->with('success', 'User Created Successfully!');
     }
 
@@ -142,17 +142,17 @@ class HomeController extends Controller
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where('name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search");
+                ->orWhere('email', 'like', "%$search%");
         }
+
         $users = $query->latest()->get();
         return view('panel.pages.user_list', compact('users'));
     }
+
     public function summery()
     {
         $users = User::get();
-
         return view('panel.pages.dashboard', compact('users'));
-
     }
 
     public function showBookingPage()
@@ -195,10 +195,31 @@ class HomeController extends Controller
         return redirect()->route('house-detail')->with('success', 'Booking submitted successfully!');
     }
 
-
     public function show($id)
     {
         $home = Home::findOrFail($id);
         return view('panel.pages.show', compact('home'));
+    }
+    public function pending_houses()
+    {
+        $houses = Home::where('status', 'pending')->latest()->get();
+        return view('panel.pages.pending_houses', compact('houses'));
+    }
+
+    public function approve_house($id)
+    {
+        $house = Home::findOrFail($id);
+        $house->status = 'approved';
+        $house->save();
+
+        return back()->with('success', 'House Approved Successfully! Now it is visible to everyone.');
+    }
+    public function reject_house($id)
+    {
+        $house = Home::findOrFail($id);
+        $house->status = 'rejected';
+        $house->save();
+
+        return back()->with('success', 'House listing has been rejected.');
     }
 }

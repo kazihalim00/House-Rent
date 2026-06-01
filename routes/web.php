@@ -8,7 +8,6 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
     Route::get('/', [HomeController::class, 'summery'])->name('dashboard');
     Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
 
@@ -32,6 +31,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('panel.pages.chat');
     })->name('chat');
 
+    Route::get('/review', function () {
+        return view('panel.pages.review');
+    })->name('review');
+
     Route::middleware('admin')->group(function () {
         Route::get('/add-user', function () {
             return view('panel.pages.add_user');
@@ -44,7 +47,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/appointment/approve/{id}', [HomeController::class, 'approveAppointment'])->name('appointment.approve');
         Route::post('/appointment/reject/{id}', [HomeController::class, 'rejectAppointment'])->name('appointment.reject');
     });
-
 });
 
 require __DIR__ . '/auth.php';

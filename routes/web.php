@@ -7,17 +7,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::get('/', [HomeController::class, 'summery'])->name('dashboard');
     Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
 
     Route::get('/add-house', function () {
         return view('panel.pages.add_house');
     })->name('add-house');
-
     Route::post('/add-house', [HomeController::class, 'store']);
-    Route::get('/add-house', [HomeController::class, 'add_house_view'])->name('add-house');
+
     Route::get('/booking', [HomeController::class, 'showBookingPage'])->name('booking');
     Route::get('/book-house/{id}', [HomeController::class, 'showBookForm'])->name('book.house');
     Route::post('/book-house', [HomeController::class, 'processBooking'])->name('book.store');
@@ -34,14 +33,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('admin')->group(function () {
         Route::get('/add-user', function () {
             return view('panel.pages.add_user');
-
         });
         Route::post('/add-user', [HomeController::class, 'add_user'])->name('add-user');
         Route::get('/user-list', [HomeController::class, 'user_list']);
-        Route::get('/admin/pending-houses', [HomeController::class, 'pending_houses'])->name('admin.pending_houses');
-        Route::post('/admin/approve-house/{id}', [HomeController::class, 'approve_house'])->name('admin.approve_house');
-        Route::post('/admin/reject-house/{id}', [HomeController::class, 'reject_house'])->name('admin.reject_house');
+        Route::get('/pending-houses', [HomeController::class, 'pending_houses'])->name('admin.pending_houses');
+        Route::post('/approve-house/{id}', [HomeController::class, 'approve_house'])->name('admin.approve_house');
+        Route::post('/reject-house/{id}', [HomeController::class, 'reject_house'])->name('admin.reject_house');
     });
+
 });
 
 require __DIR__ . '/auth.php';

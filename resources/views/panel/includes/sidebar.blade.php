@@ -39,7 +39,7 @@
                 <a href="{{ url('/user-list') }}" class="nav-item nav-link">
                     <i class="fa fa-th me-2"></i>User List
                 </a>
-                <a href=" {{ route('admin.pending_houses') }}" class="nav-item nav-link">
+                <a href="{{ route('admin.pending_houses') }}" class="nav-item nav-link">
                     <i class="fa fa-th me-2"></i>Pending List
                 </a>
             @endif

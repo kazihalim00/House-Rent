@@ -157,7 +157,8 @@ class HomeController extends Controller
 
     public function showBookingPage()
     {
-        $dbAvailableDates = Home::whereNotNull('booking_date')
+        $dbAvailableDates = Home::where('status', 'approved')
+            ->whereNotNull('booking_date')
             ->pluck('booking_date')
             ->unique()
             ->values()

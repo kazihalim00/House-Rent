@@ -159,6 +159,7 @@ class HomeController extends Controller
     {
         $dbAvailableDates = Home::where('status', 'approved')
             ->whereNotNull('booking_date')
+            ->whereDoesntHave('bookings')
             ->pluck('booking_date')
             ->unique()
             ->values()
@@ -216,6 +217,16 @@ class HomeController extends Controller
 
         return back()->with('success', 'House Approved Successfully! Now it is visible to everyone.');
     }
+
+    public function bookingList()
+    {
+        $bookings = Booking::with(['user', 'house'])
+            ->latest()
+            ->get();
+
+        return view('panel.pages.booking_list', compact('bookings'));
+    }
+
     public function reject_house($id)
     {
         $house = Home::findOrFail($id);

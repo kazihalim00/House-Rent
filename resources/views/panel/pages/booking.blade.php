@@ -10,10 +10,10 @@
         .main-center {
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
-            min-height: calc(100vh - 100px);
-            padding: 30px;
+            min-height: calc(100vh - 160px);
+            padding: 30px 30px 80px;
             background: #0b0b14;
             color: white;
             width: 100%;
@@ -62,7 +62,7 @@
             background: #1d1d33;
             padding: 12px 25px;
             border-radius: 30px;
-            cursor: pointer;
+            cursor: default;
             transition: 0.3s;
         }
 
@@ -259,18 +259,27 @@
         .dates .calendar-day.available-date:hover {
             background-color: #16a34a !important;   
         }
+
+        .disabled-date {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .selection-summary {
+            color: #cbd5e1;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 1100px;
+            text-align: center;
+            font-size: 16px;
+        }
     </style>
 
 <div class="main-center">
 
-    <div class="top-text">
-        <h3>Know your dates?</h3>
-        <p>Using this filter, you will ensure properties are available for your desired moving dates.</p>
-    </div>
-
     <div class="title-wrapper">
         <div class="title">Select your dates</div>
-        <div class="sub-title">Minimum stay: 32 days</div>
+        <div class="sub-title">Minimum stay: 1 month</div>
     </div>
 
     <div class="tabs">
@@ -317,16 +326,18 @@
 
     </div>
 
+    <div class="selection-summary" id="selectionSummary">Selected date: <strong id="selectedDateText">None</strong> · Filter: <strong id="selectedOptionText">Exact dates</strong></div>
+
     <div class="bottom-buttons">
         <div class="week-buttons">
-            <button>Exact dates</button>
-            <button>± 1 week</button>
-            <button>± 2 weeks</button>
-            <button class="selected">± 3 weeks</button>
+            <button type="button" data-option="exact" class="selected">Exact dates</button>
+            <button type="button" data-option="1week">± 1 week</button>
+            <button type="button" data-option="2weeks">± 2 weeks</button>
+            <button type="button" data-option="3weeks">± 3 weeks</button>
         </div>
 
         <div style="display:flex;align-items:center;gap:20px;">
-            <button class="result-btn">View results</button>
+            <button type="button" class="result-btn">View results</button>
         </div>
     </div>
 
@@ -359,7 +370,11 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const dateParam = urlParams.get('date');
+    const optionParam = urlParams.get('option');
     const initDate = dateParam ? new Date(dateParam) : new Date();
+
+    let selectedDate = dateParam || null;
+    let selectedOption = ['exact', '1week', '2weeks', '3weeks'].includes(optionParam) ? optionParam : 'exact';
 
     let state = {
         cal1: { month: initDate.getMonth(), year: initDate.getFullYear(), selectedDay: dateParam ? initDate.getDate() : null },
@@ -431,7 +446,6 @@
             dateElement.innerText = i;
             dateElement.classList.add('calendar-day');
 
-            
             const matchYear = currentYear;
             const matchMonth = String(currentMonth + 1).padStart(2, '0');
             const matchDay = String(i).padStart(2, '0');
@@ -447,7 +461,6 @@
                 }
             }
 
-            
             const isAvailable = realAvailableDates.includes(dateStringKey);
 
             if(state[calId].selectedDay !== null && i === chosenDay) {
@@ -456,22 +469,54 @@
                 dateElement.classList.add('active-date');
             } else if (isAvailable) {
                 dateElement.classList.add('available-date');
+            } else {
+                dateElement.classList.add('disabled-date');
+                dateElement.style.cursor = 'not-allowed';
             }
 
-            dateElement.addEventListener('click', function(){
-                document.querySelectorAll(`.dates div`).forEach(el => {
-                    el.classList.remove('active-date');
-                });
-                
-                state.cal1.selectedDay = null;
-                state.cal2.selectedDay = null;
+            if (isAvailable || (comparisonInit && iterDate.getTime() === comparisonInit.getTime())) {
+                dateElement.addEventListener('click', function(){
+                    document.querySelectorAll(`.dates div`).forEach(el => {
+                        el.classList.remove('active-date');
+                    });
+                    
+                    state.cal1.selectedDay = null;
+                    state.cal2.selectedDay = null;
 
-                state[calId].selectedDay = i;
-                dateElement.className = 'calendar-day active-date';
-            });
+                    state[calId].selectedDay = i;
+                    selectedDate = dateStringKey;
+                    dateElement.className = 'calendar-day active-date';
+                    updateSelectionSummary();
+                });
+            }
 
             container.appendChild(dateElement);
         }
+    }
+
+    function updateSelectionSummary() {
+        const selectedDateText = document.getElementById('selectedDateText');
+        const selectedOptionText = document.getElementById('selectedOptionText');
+        selectedDateText.textContent = selectedDate || 'None';
+
+        let label = 'Exact dates';
+        if (selectedOption === '1week') label = '± 1 week';
+        if (selectedOption === '2weeks') label = '± 2 weeks';
+        if (selectedOption === '3weeks') label = '± 3 weeks';
+        selectedOptionText.textContent = label;
+    }
+
+    function applyOptionButtons() {
+        const buttons = document.querySelectorAll('.week-buttons button[data-option]');
+        buttons.forEach(button => {
+            button.classList.toggle('selected', button.dataset.option === selectedOption);
+            button.addEventListener('click', () => {
+                selectedOption = button.dataset.option;
+                buttons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                updateSelectionSummary();
+            });
+        });
     }
 
     function initCalendars() {
@@ -493,8 +538,25 @@
             renderCalendarGrid('cal2', 'cal2Dates');
         });
 
+        applyOptionButtons();
+        updateSelectionSummary();
+
         renderCalendarGrid('cal1', 'cal1Dates');
         renderCalendarGrid('cal2', 'cal2Dates');
+
+        document.querySelector('.result-btn').addEventListener('click', () => {
+            if (!selectedDate) {
+                alert('Please select an available date from the calendar first.');
+                return;
+            }
+
+            const queryString = new URLSearchParams({
+                date: selectedDate,
+                option: selectedOption
+            }).toString();
+
+            window.location.href = `{{ route('house-detail') }}?${queryString}`;
+        });
     }
 
     initCalendars();

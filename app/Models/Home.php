@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Home extends Model
 {
     protected $table = 'homes';
-    
+
     protected $fillable = [
         'house_name',
+        'owner_name',
         'email',
         'phone',
         'address',

@@ -38,39 +38,53 @@
                         <img class="w-full h-56 object-cover" src="{{ asset('/upload/img/' . $house->home_image) }}"
                             alt="House Image" />
                         <div
-                            class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
+                            class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow">
                             For Rent
                         </div>
                     </div>
 
                     <div class="p-6">
                         <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ $house->house_name }}</h3>
+
                         <p class="text-gray-500 text-sm mb-4">
-                            <i class="fas fa-map-marker-alt text-red-500 mr-1"></i> {{ $house->address }}
+                            <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>{{ $house->address }}
                         </p>
+
                         <p class="text-gray-700 text-base mb-6 line-clamp-2">{{ $house->about }}</p>
+
+                        <div class="flex items-center bg-blue-50 rounded-lg p-3 mb-6 border border-blue-100">
+                            <div
+                                class="h-10 w-10 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 mr-3 shadow-sm">
+                                <i class="fas fa-user-tie text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-blue-500 uppercase font-bold tracking-wider mb-0.5">Property Owner</p>
+                                <p class="text-sm font-bold text-gray-800">{{ $house->owner_name }}</p>
+                            </div>
+                        </div>
                         <a href="{{ route('panel.pages.show', $house->id) }}"
-                            class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-300">
+                            class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg">
                             View Details
                         </a>
                     </div>
 
-                    <div class="bg-gray-50 px-6 py-4 flex justify-between text-center border-t border-gray-100">
-                        <div class="w-1/4 border-r border-gray-200">
-                            <span class="block font-bold text-lg text-green-800">{{ $house->home_price }} TK</span>
-                            <span class="text-xs text-gray-500 uppercase font-semibold">Monthly</span>
+                    <div class="bg-gray-50 px-4 py-4 flex justify-between text-center border-t border-gray-100">
+                        <div class="w-1/2 border-r border-gray-200 px-2">
+                            <span class="block font-bold text-lg text-green-700">{{ $house->home_price }} ৳</span>
+                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Monthly</span>
                         </div>
-                        <div class="w-1/4 border-r border-gray-200">
-                            <span class="block font-bold text-lg text-blue-800">{{ $house->bed }}</span>
-                            <span class="text-xs text-gray-500 uppercase font-semibold">Beds</span>
+                        <div class="w-1/4 border-r border-gray-200 px-2">
+                            <span class="block font-bold text-lg text-blue-700">{{ $house->bed }}</span>
+                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Beds</span>
                         </div>
-                        <div class="w-1/4 border-r border-gray-200">
-                            <span class="block font-bold text-lg text-yellow-800">{{ $house->bath }}</span>
-                            <span class="text-xs text-gray-500 uppercase font-semibold">Baths</span>
+                        <div class="w-1/4 border-r border-gray-200 px-2">
+                            <span class="block font-bold text-lg text-orange-600">{{ $house->bath }}</span>
+                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Baths</span>
                         </div>
-                        <div class="w-1/4">
-                            <span class="block font-bold text-lg text-red-800">{{ $house->booking_date }}</span>
-                            <span class="text-xs text-gray-500 uppercase font-semibold">Available From</span>
+                        <div class="w-1/2 px-2">
+                            <span
+                                class="block font-bold text-lg text-red-600">{{ \Carbon\Carbon::parse($house->booking_date)->format('d M') }}</span>
+                            <span class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Available</span>
                         </div>
                     </div>
 

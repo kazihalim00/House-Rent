@@ -13,8 +13,10 @@ class HomeController extends Controller
 {
     public function store(Request $request)
     {
+        $users = User::get();
         $request->validate([
             'house_name' => 'required',
+            'owner_name' => 'required',
             'email' => 'required',
             'phone' => 'required',
             'address' => 'required',
@@ -38,6 +40,7 @@ class HomeController extends Controller
 
         Home::create([
             'house_name' => $request->house_name,
+            'owner_name' => $request->owner_name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
@@ -53,7 +56,11 @@ class HomeController extends Controller
 
         return back()->with('success', 'Home added successfully!');
     }
-
+    public function add_house_view()
+    {
+        $users = User::get();
+        return view('panel.pages.add_house', compact('users'));
+    }
     public function house_detail(Request $request)
     {
         $query = Home::query();

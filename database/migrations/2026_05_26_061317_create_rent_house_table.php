@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('homes', function (Blueprint $table) {
             $table->id();
             $table->string('house_name');
+            $table->string('owner_name');
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('address');
@@ -35,6 +36,12 @@ return new class extends Migration {
      */
     public function down(): void
     {
+
+        Schema::disableForeignKeyConstraints();
+
         Schema::dropIfExists('homes');
+
+
+        Schema::enableForeignKeyConstraints();
     }
 };

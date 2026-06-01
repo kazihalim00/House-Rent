@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Booking;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Home extends Model
 {
@@ -24,4 +26,9 @@ class Home extends Model
         'home_image',
 
     ];
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'house_id');
+    }
 }

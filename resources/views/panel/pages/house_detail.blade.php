@@ -28,7 +28,42 @@
                 Find your dream house from our premium collection. We offer the best facilities at an affordable price.
             </p>
         </div>
+        @if(request()->hasAny(['location', 'min_price', 'max_price', 'rooms', 'date', 'search']))
+            <div class="mb-8 flex flex-wrap items-center gap-3 bg-blue-50/50 p-4 rounded-xl border border-blue-100 shadow-sm">
+                <span class="text-sm font-bold text-gray-700"><i class="fas fa-filter text-blue-500 mr-2"></i>Active
+                    Filters:</span>
 
+                @if(request('location'))
+                    <span
+                        class="px-3 py-1.5 bg-white text-blue-700 text-xs font-bold rounded-full shadow-sm border border-blue-200">{{ request('location') }}</span>
+                @endif
+                @if(request('min_price'))
+                    <span
+                        class="px-3 py-1.5 bg-white text-blue-700 text-xs font-bold rounded-full shadow-sm border border-blue-200">Min
+                        ৳{{ request('min_price') }}</span>
+                @endif
+                @if(request('max_price'))
+                    <span
+                        class="px-3 py-1.5 bg-white text-blue-700 text-xs font-bold rounded-full shadow-sm border border-blue-200">Max
+                        ৳{{ request('max_price') }}</span>
+                @endif
+                @if(request('rooms'))
+                    <span
+                        class="px-3 py-1.5 bg-white text-blue-700 text-xs font-bold rounded-full shadow-sm border border-blue-200">{{ request('rooms') }}+
+                        Beds</span>
+                @endif
+                @if(request('date'))
+                    <span
+                        class="px-3 py-1.5 bg-white text-blue-700 text-xs font-bold rounded-full shadow-sm border border-blue-200">From:
+                        {{ request('date') }}</span>
+                @endif
+
+                <a href="{{ route('house-detail') }}"
+                    class="ml-auto px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-bold rounded-lg shadow-sm transition transform hover:-translate-y-0.5">
+                    <i class="fas fa-times mr-1"></i> Clear All
+                </a>
+            </div>
+        @endif
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             @foreach ($houses as $house)
                 <div
@@ -84,7 +119,8 @@
                         <div class="w-1/2 px-2">
                             <span
                                 class="block font-bold text-lg {{ $house->bookings_count > 0 ? 'text-gray-500' : 'text-red-600' }}">{{ \Carbon\Carbon::parse($house->booking_date)->format('d M') }}</span>
-                            <span class="text-[10px] uppercase font-bold tracking-wide {{ $house->bookings_count > 0 ? 'text-red-600' : 'text-gray-500' }}">
+                            <span
+                                class="text-[10px] uppercase font-bold tracking-wide {{ $house->bookings_count > 0 ? 'text-red-600' : 'text-gray-500' }}">
                                 {{ $house->bookings_count > 0 ? 'Booked' : 'Available' }}
                             </span>
                         </div>

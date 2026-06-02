@@ -63,48 +63,50 @@ class HomeController extends Controller
     }
     public function house_detail(Request $request)
     {
+        $query = Home::withCount('bookings')->where(function ($q) {
+            $q->where('status', 'approved')
+                ->orWhere('status', 'pending')
+                ->orWhereNull('status');
+        });
 
-        $query = Home::withCount('bookings')->where('status', 'approved');
-        if ($request->has('search') && $request->search != '') {
-            $search = $request->search;
-            $query->where('house_name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%");
+        // Search Filter
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('house_name', 'like', "%{$request->search}%")
+                    ->orWhere('address', 'like', "%{$request->search}%")
+                    ->orWhere('city', 'like', "%{$request->search}%");
+            });
         }
 
-        $selectedDate = $request->query('date');
-        $selectedOption = $request->query('option', 'exact');
-        $allowedOptions = ['exact', '1week', '2weeks', '3weeks'];
-        if (!in_array($selectedOption, $allowedOptions)) {
-            $selectedOption = 'exact';
+        // Location Filter
+        if ($request->filled('location')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('city', 'like', "%{$request->location}%")
+                    ->orWhere('address', 'like', "%{$request->location}%");
+            });
         }
 
-        $filterLabel = null;
+        // Price Filter
+        if ($request->filled('min_price')) {
+            $query->where('home_price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('home_price', '<=', $request->max_price);
+        }
 
-        if ($selectedDate) {
-            try {
-                $selectedCarbon = Carbon::parse($selectedDate)->startOfDay();
-                $selectedDate = $selectedCarbon->format('Y-m-d');
+        // Rooms Filter
+        if ($request->filled('rooms')) {
+            $query->where('bed', '>=', $request->rooms);
+        }
 
-                if ($selectedOption === 'exact') {
-                    $query->whereDate('booking_date', $selectedDate);
-                    $filterLabel = "Exactly {$selectedDate}";
-                } else {
-                    $daysMap = ['1week' => 7, '2weeks' => 14, '3weeks' => 21];
-                    $days = $daysMap[$selectedOption] ?? 7;
-                    $from = $selectedCarbon->copy()->subDays($days)->format('Y-m-d');
-                    $to = $selectedCarbon->copy()->addDays($days)->format('Y-m-d');
-                    $query->whereBetween('booking_date', [$from, $to]);
-                    $filterLabel = "Within ±{$days} days of {$selectedDate}";
-                }
-            } catch (\Exception $e) {
-                $selectedDate = null;
-                $filterLabel = null;
-            }
+        // Availability Date Filter
+        if ($request->filled('date')) {
+            $query->whereDate('booking_date', '>=', $request->date);
         }
 
         $houses = $query->latest()->get();
 
-        return view('panel.pages.house_detail', compact('houses', 'selectedDate', 'selectedOption', 'filterLabel'));
+        return view('panel.pages.house_detail', compact('houses'));
     }
 
     public function add_user(Request $request)

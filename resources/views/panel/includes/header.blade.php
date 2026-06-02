@@ -9,6 +9,10 @@
         <input id="searchInput" class="form-control bg-dark border-0" type="search" name="search" placeholder="Search"
             value="{{ request('search') }}">
     </form>
+    <button type="button" onclick="openFilterModal()"
+        class="ml-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition flex items-center">
+        <i class="fas fa-sliders-h mr-2"></i> Filters
+    </button>
     <div class="navbar-nav align-items-center ms-auto">
         <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">

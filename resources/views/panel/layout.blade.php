@@ -80,6 +80,111 @@
     <!-- Template Javascript -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
     @yield('scripts')
+    <!-- Advanced Filter Modal (সম্পূর্ণ কোড) -->
+    <div id="globalFilterModal"
+        class="fixed inset-0 z-[9999] hidden bg-black/60 backdrop-blur-sm flex justify-center items-center px-4 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden transform scale-95 transition-transform duration-300"
+            id="filterModalContent">
+
+            <div class="bg-gray-900 px-6 py-4 flex justify-between items-center">
+                <h3 class="text-white text-xl font-bold"><i class="fas fa-filter text-blue-500 mr-2"></i> Advanced
+                    Search
+                </h3>
+                <button onclick="closeFilterModal()"
+                    class="text-gray-400 hover:text-white text-2xl font-bold leading-none">&times;</button>
+            </div>
+
+            <form action="{{ route('house-detail') }}" method="GET" class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="md:col-span-2">
+                        <label
+                            class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i
+                                    class="fas fa-map-marker-alt"></i></span>
+                            <input type="text" name="location" value="{{ request('location') }}"
+                                placeholder="City or area..."
+                                class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-700">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Min Price
+                            (৳)</label>
+                        <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="e.g. 5000"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-700">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Max Price
+                            (৳)</label>
+                        <input type="number" name="max_price" value="{{ request('max_price') }}"
+                            placeholder="e.g. 20000"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-700">
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Bedrooms</label>
+                        <select name="rooms"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-700">
+                            <option value="">Any Rooms</option>
+                            <option value="1" {{ request('rooms') == '1' ? 'selected' : '' }}>1+ Bed</option>
+                            <option value="2" {{ request('rooms') == '2' ? 'selected' : '' }}>2+ Beds</option>
+                            <option value="3" {{ request('rooms') == '3' ? 'selected' : '' }}>3+ Beds</option>
+                            <option value="4" {{ request('rooms') == '4' ? 'selected' : '' }}>4+ Beds</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Availability</label>
+                        <input type="date" name="date" value="{{ request('date') }}"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-700">
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mt-8 pt-4 border-t border-gray-100">
+                    <button type="button" onclick="window.location.href='{{ route('house-detail') }}'"
+                        class="text-sm text-red-500 hover:text-red-700 font-bold flex items-center">
+                        <i class="fas fa-times mr-1"></i> Clear Filters
+                    </button>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="closeFilterModal()"
+                            class="px-6 py-2.5 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition">Cancel</button>
+                        <button type="submit"
+                            class="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition">Apply
+                            Filters</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Script -->
+    <script>
+        function openFilterModal() {
+            const modal = document.getElementById('globalFilterModal');
+            const modalContent = document.getElementById('filterModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeFilterModal() {
+            const modal = document.getElementById('globalFilterModal');
+            const modalContent = document.getElementById('filterModalContent');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    </script>
 </body>
+</body>
+
 
 </html>

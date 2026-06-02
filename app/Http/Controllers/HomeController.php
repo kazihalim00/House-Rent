@@ -149,6 +149,53 @@ class HomeController extends Controller
         return view('panel.pages.user_list', compact('users'));
     }
 
+    public function edit_user($id)
+    {
+        $user = User::findOrFail($id);
+        return view('panel.pages.edit_user', compact('user'));
+    }
+
+    public function update_user(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|in:Admin,User',
+            'password' => 'nullable|string|min:6',
+            'user_image' => 'nullable|image|max:2048',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
+        if ($request->hasFile('user_image')) {
+            $file = $request->file('user_image');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = time() . '_img.' . $extension;
+            $file->move(public_path('upload/img/'), $fileName);
+            $user->user_image = $fileName;
+        }
+
+        $user->save();
+
+        return redirect('/user-list')->with('success', 'User updated successfully.');
+    }
+
+    public function delete_user($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return back()->with('success', 'User deleted successfully.');
+    }
+
     public function summery()
     {
         $users = User::get();

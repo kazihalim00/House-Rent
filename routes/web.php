@@ -2,6 +2,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,9 +28,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/chat', function () {
-        return view('panel.pages.chat');
-    })->name('chat');
+    // ✅ Chat Routes
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
+    Route::get('/chat/fetch', [ChatController::class, 'fetch'])->name('chat.fetch');
 
     Route::get('/review', function () {
         return view('panel.pages.review');

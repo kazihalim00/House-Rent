@@ -23,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/book-house', [HomeController::class, 'processBooking'])->name('book.store');
     Route::get('/house/{id}', [HomeController::class, 'show'])->name('panel.pages.show');
     Route::post('/book-appointment/{id}', [HomeController::class, 'book_appointment'])->name('book.appointment');
+    Route::delete('/appointment/delete/{id}', [HomeController::class, 'deleteAppointment'])->name('appointment.delete');
+    Route::delete('/booking/delete/{id}', [HomeController::class, 'deleteBooking'])->name('booking.delete');
     Route::get('/appointments', [HomeController::class, 'appointmentList'])->name('appointment.list');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

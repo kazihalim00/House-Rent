@@ -325,4 +325,19 @@ class HomeController extends Controller
 
         return back()->with('error', 'Appointment has been rejected.'); // error সেশন ব্যবহার করেছি যাতে লাল রঙের মেসেজ দেখানো যায়
     }
+    public function deleteAppointment($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->delete();
+
+        return back()->with('success', 'Appointment deleted successfully!');
+    }
+
+    public function deleteBooking($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->delete();
+
+        return back()->with('success', 'Booking deleted successfully!');
+    }
 }

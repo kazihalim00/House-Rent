@@ -64,8 +64,10 @@
                 </a>
             </div>
         @endif
+        @php $total_house = 0; @endphp
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             @foreach ($houses as $house)
+                @php $total_house = $total_house + 1; @endphp
                 <div
                     class="max-w-sm w-full bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden border border-gray-100">
 
@@ -128,7 +130,8 @@
 
                 </div>
             @endforeach
+       
         </div>
-
+        
     </div>
 @endsection

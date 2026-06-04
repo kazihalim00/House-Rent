@@ -200,10 +200,35 @@ class HomeController extends Controller
 
     public function summery()
     {
-        $users = User::get();
-        return view('panel.pages.dashboard', compact('users'));
-    }
+        // সাধারণ কাউন্টগুলো
+        $total_users = User::count();
+        $total_houses = Home::count();
+        $total_bookings = Booking::count();
+        $total_appointments = Appointment::count();
 
+        $recent_users = User::latest()->take(5)->get();
+
+        $currentMonthBookings = Booking::with('house')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->get();
+
+        $monthly_revenue = 0;
+        foreach ($currentMonthBookings as $booking) {
+            if ($booking->house) {
+                $monthly_revenue += ($booking->house->home_price * $booking->booking_duration);
+            }
+        }
+
+        return view('panel.pages.dashboard', compact(
+            'total_users',
+            'total_houses',
+            'total_bookings',
+            'total_appointments',
+            'recent_users',
+            'monthly_revenue'
+        ));
+    }
     public function showBookingPage()
     {
         $dbAvailableDates = Home::where('status', 'approved')

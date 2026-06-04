@@ -17,42 +17,63 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a href="{{ url('/') }}" class="nav-item nav-link active">
+            <a href="{{ url('/') }}"
+                class="nav-item nav-link {{ request()->is('/') || request()->is('dashboard') ? 'active' : '' }}">
                 <i class="fa fa-tachometer-alt me-2"></i>Dashboard
             </a>
+
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                <a href="#"
+                    class="nav-link dropdown-toggle {{ request()->is('add-house', 'house-detail', 'appointments') ? 'active' : '' }}"
+                    data-bs-toggle="dropdown">
                     <i class="fa fa-laptop me-2"></i>House Module
                 </a>
-                <div class="dropdown-menu bg-transparent border-0">
-                    <a href="{{ url('/add-house') }}" class="dropdown-item">Add House</a>
-                    <a href="{{ url('/house-detail') }}" class="dropdown-item">House Detail</a>
-                    <a href="{{ url('/appointments') }}" class="dropdown-item">Appointments</a>
-
+                <div
+                    class="dropdown-menu bg-transparent border-0 {{ request()->is('add-house', 'house-detail', 'appointments') ? 'show' : '' }}">
+                    <a href="{{ url('/add-house') }}"
+                        class="dropdown-item {{ request()->is('add-house') ? 'active' : '' }}">Add House</a>
+                    <a href="{{ url('/house-detail') }}"
+                        class="dropdown-item {{ request()->is('house-detail') ? 'active' : '' }}">House Detail</a>
+                    <a href="{{ url('/appointments') }}"
+                        class="dropdown-item {{ request()->is('appointments') ? 'active' : '' }}">Appointments</a>
                 </div>
             </div>
+
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                <a href="#"
+                    class="nav-link dropdown-toggle {{ request()->is('booking', 'booking-list') ? 'active' : '' }}"
+                    data-bs-toggle="dropdown">
                     <i class="fa fa-calendar me-2"></i>Booking
                 </a>
-                <div class="dropdown-menu bg-transparent border-0">
-                    <a href="{{ url('/booking') }}" class="dropdown-item">Booking Calendar</a>
-                    <a href="{{ url('/booking-list') }}" class="dropdown-item">Booking List</a>
+                <div
+                    class="dropdown-menu bg-transparent border-0 {{ request()->is('booking', 'booking-list') ? 'show' : '' }}">
+                    <a href="{{ url('/booking') }}"
+                        class="dropdown-item {{ request()->is('booking') ? 'active' : '' }}">Booking Calendar</a>
+                    <a href="{{ url('/booking-list') }}"
+                        class="dropdown-item {{ request()->is('booking-list') ? 'active' : '' }}">Booking List</a>
                 </div>
             </div>
+
             @if(Auth::user()->role == "Admin")
-                <a href="{{ url('/add-user') }}" class="nav-item nav-link">
+                <a href="{{ url('/add-user') }}" class="nav-item nav-link {{ request()->is('add-user') ? 'active' : '' }}">
                     <i class="fa fa-th me-2"></i>Add User
                 </a>
-                <a href="{{ url('/user-list') }}" class="nav-item nav-link">
+                <a href="{{ url('/user-list') }}"
+                    class="nav-item nav-link {{ request()->is('user-list') ? 'active' : '' }}">
                     <i class="fa fa-th me-2"></i>User List
                 </a>
-                <a href="{{ route('admin.pending_houses') }}" class="nav-item nav-link">
+                <a href="{{ route('admin.pending_houses') }}"
+                    class="nav-item nav-link {{ request()->routeIs('admin.pending_houses') ? 'active' : '' }}">
                     <i class="fa fa-th me-2"></i>Pending List
                 </a>
             @endif
-            <a href="{{url('/review')}}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Review</a>
-            <a href="{{url('/chat')}}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Chat</a>
+
+            <a href="{{url('/review')}}" class="nav-item nav-link {{ request()->is('review') ? 'active' : '' }}">
+                <i class="fa fa-keyboard me-2"></i>Review
+            </a>
+            <a href="{{url('/chat')}}" class="nav-item nav-link {{ request()->is('chat') ? 'active' : '' }}">
+                <i class="fa fa-table me-2"></i>Chat
+            </a>
         </div>
     </nav>
 </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Home;
 use App\Models\User;
 use App\Models\Booking;
+use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -350,7 +351,7 @@ class HomeController extends Controller
         $appointment->status = 'rejected';
         $appointment->save();
 
-        return back()->with('error', 'Appointment has been rejected.'); // error সেশন ব্যবহার করেছি যাতে লাল রঙের মেসেজ দেখানো যায়
+        return back()->with('error', 'Appointment has been rejected.'); 
     }
     public function deleteAppointment($id)
     {
@@ -366,5 +367,35 @@ class HomeController extends Controller
         $booking->delete();
 
         return back()->with('success', 'Booking deleted successfully!');
+    }
+    public function review()
+    {
+        $reviews = Review::with('user')->latest()->get();
+        return view('panel.pages.review', compact('reviews'));
+    }
+
+
+    public function store_review(Request $request)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000'
+        ]);
+
+        Review::create([
+            'user_id' => Auth::id(),
+            'rating' => $request->rating,
+            'comment' => $request->comment
+        ]);
+
+        return back()->with('success', 'Thank you! Your review has been submitted.');
+    }
+
+    public function delete_review($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->delete();
+
+        return back()->with('success', 'Review deleted successfully!');
     }
 }

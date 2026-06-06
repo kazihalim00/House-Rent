@@ -40,7 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/review', function () {
         return view('panel.pages.review');
     })->name('review');
-
+    Route::get('/review', [App\Http\Controllers\HomeController::class, 'review'])->name('review.index');
+    Route::post('/review/store', [App\Http\Controllers\HomeController::class, 'store_review'])->name('review.store');
+    Route::delete('/review/delete/{id}', [App\Http\Controllers\HomeController::class, 'delete_review'])->name('review.delete');
     Route::middleware('admin')->group(function () {
         Route::get('/add-user', function () {
             return view('panel.pages.add_user');

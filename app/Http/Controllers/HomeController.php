@@ -51,7 +51,8 @@ class HomeController extends Controller
             'bath' => $request->bath,
             'about' => $request->about,
             'booking_date' => $request->booking_date,
-            'home_image' => $fileName
+            'home_image' => $fileName,
+            'user_id' => Auth::id()
         ]);
 
         return back()->with('success', 'Home added successfully!');
@@ -223,6 +224,12 @@ class HomeController extends Controller
     public function showBookForm($id)
     {
         $house = Home::findOrFail($id);
+        $currentUser = Auth::user();
+
+        if ($house->user_id === $currentUser->id && $currentUser->role !== 'Admin') {
+            return redirect()->route('house-detail')->with('error', 'You cannot book your own house!');
+        }
+
         return view('panel.pages.book_form', compact('house'));
     }
 
@@ -236,6 +243,13 @@ class HomeController extends Controller
             'check_in_date' => 'required|date|after_or_equal:today',
             'booking_duration' => 'required|integer|min:1',
         ]);
+
+        $house = Home::findOrFail($request->house_id);
+        $currentUser = Auth::user();
+
+        if ($house->user_id === $currentUser->id && $currentUser->role !== 'Admin') {
+            return back()->with('error', 'You cannot book your own house!');
+        }
 
         $data = $request->all();
         $data['user_id'] = Auth::id();
@@ -323,6 +337,6 @@ class HomeController extends Controller
         $appointment->status = 'rejected';
         $appointment->save();
 
-        return back()->with('error', 'Appointment has been rejected.'); // error সেশন ব্যবহার করেছি যাতে লাল রঙের মেসেজ দেখানো যায়
+        return back()->with('error', 'Appointment has been rejected.');
     }
 }

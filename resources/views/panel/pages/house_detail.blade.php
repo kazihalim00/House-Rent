@@ -12,6 +12,15 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div
+                class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 shadow-md rounded-r-lg flex justify-between items-center">
+                <span>{{ session('error') }}</span>
+                <button type="button" onclick="this.parentElement.style.display='none'"
+                    class="text-red-700 font-bold">&times;</button>
+            </div>
+        @endif
+
         <div class="text-end mb-4">
             <a href="{{ url('/add-house') }}" class="btn btn-success">Add House</a>
         </div>

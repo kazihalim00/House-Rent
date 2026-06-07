@@ -13,6 +13,18 @@
                     class="text-green-700 hover:text-green-900 font-bold text-xl">&times;</button>
             </div>
         @endif
+        
+        @if (session('error'))
+            <div
+                class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 shadow-md rounded-r-lg flex justify-between items-center transition-all">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle mr-3 text-xl"></i>
+                    <span class="font-semibold">{{ session('error') }}</span>
+                </div>
+                <button type="button" onclick="this.parentElement.style.display='none'"
+                    class="text-red-700 hover:text-red-900 font-bold text-xl">&times;</button>
+            </div>
+        @endif
         <div class="mb-6">
             <a href="{{ route('house-detail') }}"
                 class="inline-flex items-center text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-300 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200 hover:shadow-md">
@@ -88,10 +100,16 @@
                     </div>
 
                     <div class="space-y-4">
-                        <a href="{{ route('book.house', $home->id) }}"
-                            class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl py-4 rounded-xl shadow-lg hover:shadow-blue-600/40 transition-all duration-300 transform hover:-translate-y-1">
-                            <i class="fas fa-bolt mr-2 text-yellow-300"></i> Book Property
-                        </a>
+                        @if (Auth::check() && Auth::id() === $home->user_id && Auth::user()->role !== 'Admin')
+                            <div class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
+                                <i class="fas fa-ban mr-2"></i> You cannot book your own house
+                            </div>
+                        @else
+                            <a href="{{ route('book.house', $home->id) }}"
+                                class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl py-4 rounded-xl shadow-lg hover:shadow-blue-600/40 transition-all duration-300 transform hover:-translate-y-1">
+                                <i class="fas fa-bolt mr-2 text-yellow-300"></i> Book Property
+                            </a>
+                        @endif
 
                         <button onclick="openAppointmentModal()"
                             class="block w-full text-center bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold text-lg py-3 rounded-xl shadow-sm transition-all duration-300 transform hover:-translate-y-1">

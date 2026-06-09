@@ -364,20 +364,21 @@
         if (cleanStr.includes(' ')) cleanStr = cleanStr.split(' ')[0];
         if (cleanStr.includes('T')) cleanStr = cleanStr.split('T')[0];
         return cleanStr;
-    }).filter(Boolean);
+    }).filter(Boolean).sort();
 
     console.log("PROCESSED LOOKUP ARRAY ENGINE ACTIVE WITH DATES:", realAvailableDates);
 
     const urlParams = new URLSearchParams(window.location.search);
     const dateParam = urlParams.get('date');
     const optionParam = urlParams.get('option');
-    const initDate = dateParam ? new Date(dateParam) : new Date();
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    const initDate = datePattern.test(dateParam) ? new Date(dateParam) : new Date();
 
-    let selectedDate = dateParam || null;
+    let selectedDate = datePattern.test(dateParam) ? dateParam : null;
     let selectedOption = ['exact', '1week', '2weeks', '3weeks'].includes(optionParam) ? optionParam : 'exact';
 
     let state = {
-        cal1: { month: initDate.getMonth(), year: initDate.getFullYear(), selectedDay: dateParam ? initDate.getDate() : null },
+        cal1: { month: initDate.getMonth(), year: initDate.getFullYear(), selectedDay: datePattern.test(dateParam) ? initDate.getDate() : null },
         cal2: { month: (initDate.getMonth() + 1) % 12, 
                 year: initDate.getMonth() === 11 ? initDate.getFullYear() + 1 : initDate.getFullYear(), 
                 selectedDay: null }
@@ -455,21 +456,10 @@
             const dateStringKey = `${matchYear}-${matchMonth}-${matchDay}`;
 
             const iterDate = new Date(currentYear, currentMonth, i);
-            
-            let comparisonInit = null;
-            if (dateParam) {
-                const parts = dateParam.split('-');
-                if (parts.length === 3) {
-                    comparisonInit = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-                }
-            }
-
             const isAvailable = realAvailableDates.includes(dateStringKey);
             const isPast = iterDate.getTime() < todayDate.getTime();
 
-            if(state[calId].selectedDay !== null && i === chosenDay) {
-                dateElement.classList.add('active-date');
-            } else if (comparisonInit && iterDate.getTime() === comparisonInit.getTime()) {
+            if (state[calId].selectedDay !== null && i === chosenDay) {
                 dateElement.classList.add('active-date');
             } else if (isAvailable) {
                 dateElement.classList.add('available-date');

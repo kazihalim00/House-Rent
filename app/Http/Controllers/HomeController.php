@@ -65,7 +65,12 @@ class HomeController extends Controller
     }
     public function house_detail(Request $request)
     {
-        $query = Home::withCount('bookings')->where(function ($q) {
+        $query = Home::withCount([
+            'bookings',
+            'bookings as active_bookings_count' => function ($q) {
+                $q->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')]);
+            }
+        ])->where(function ($q) {
             $q->where('status', 'approved')
                 ->orWhere('status', 'pending')
                 ->orWhereNull('status');
@@ -264,6 +269,11 @@ class HomeController extends Controller
             return redirect()->route('house-detail')->with('error', 'You cannot book your own house!');
         }
 
+        $activeBookingExists = $house->bookings()->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')])->exists();
+        if ($activeBookingExists) {
+            return redirect()->route('house-detail')->with('error', 'This house has an active booking and cannot be booked again yet.');
+        }
+
         return view('panel.pages.book_form', compact('house'));
     }
 
@@ -285,6 +295,17 @@ class HomeController extends Controller
             return back()->with('error', 'You cannot book your own house!');
         }
 
+        $checkInDate = Carbon::parse($request->check_in_date)->format('Y-m-d');
+        $bookingDuration = intval($request->booking_duration);
+        $overlapExists = $house->bookings()->where(function ($q) use ($checkInDate, $bookingDuration) {
+            $q->whereDate('check_in_date', '<', Carbon::parse($checkInDate)->addMonths($bookingDuration)->format('Y-m-d'))
+                ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::parse($checkInDate)->format('Y-m-d')]);
+        })->exists();
+
+        if ($overlapExists) {
+            return back()->with('error', 'This property is already booked for the selected date range.');
+        }
+
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
@@ -296,7 +317,11 @@ class HomeController extends Controller
     public function show($id)
     {
         $home = Home::findOrFail($id);
-        return view('panel.pages.show', compact('home'));
+        $activeBookingExists = $home->bookings()
+            ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')])
+            ->exists();
+
+        return view('panel.pages.show', compact('home', 'activeBookingExists'));
     }
     public function pending_houses()
     {

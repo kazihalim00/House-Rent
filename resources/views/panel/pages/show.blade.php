@@ -104,6 +104,10 @@
                             <div class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
                                 <i class="fas fa-ban mr-2"></i> You cannot book your own house
                             </div>
+                        @elseif(isset($activeBookingExists) && $activeBookingExists)
+                            <div class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
+                                <i class="fas fa-ban mr-2"></i> Already booked
+                            </div>
                         @else
                             <a href="{{ route('book.house', $home->id) }}"
                                 class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl py-4 rounded-xl shadow-lg hover:shadow-blue-600/40 transition-all duration-300 transform hover:-translate-y-1">

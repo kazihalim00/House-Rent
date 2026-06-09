@@ -103,7 +103,13 @@ class HomeController extends Controller
 
         // Availability Date Filter
         if ($request->filled('date')) {
-            $query->whereDate('booking_date', '>=', $request->date);
+            $filterDate = Carbon::parse($request->date)->format('Y-m-d');
+
+            $query->whereDate('booking_date', '<=', $filterDate)
+                ->whereDoesntHave('bookings', function ($q) use ($filterDate) {
+                    $q->whereDate('check_in_date', '<=', $filterDate)
+                        ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [$filterDate]);
+                });
         }
 
         $houses = $query->latest()->get();

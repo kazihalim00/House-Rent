@@ -19,33 +19,37 @@
                     <li><a href="{{ url('/') }}#about">About</a></li>
 
                     @auth
-                        <li class="has-children" style="margin-left: 15px;">
-                            <a href="#"
-                                class="btn btn-primary text-white py-2 px-4 rounded-pill d-inline-flex align-items-center shadow-sm"
-                                style="line-height: normal;">
-                                <i class="icon-person me-2"></i> {{ explode(' ', Auth::user()->name)[0] }}
+                        <li class="has-children">
+                            <a href="#" class="text-white font-weight-bold d-flex align-items-center">
+                                <span class="icon-person me-2"></span> {{ explode(' ', Auth::user()->name)[0] }}
                             </a>
-                            <ul class="dropdown" style="min-width: 180px;">
-                                <li>
-                                    <a href="{{ url('/dashboard') }}" class="d-flex align-items-center">
-                                        <i class="fas fa-tachometer-alt me-2 text-primary" style="width: 20px;"></i>
+
+                            <ul class="dropdown shadow-lg"
+                                style="min-width: 180px; padding: 10px; border-radius: 10px; background: #ffffff; border: none;">
+                                <li style="margin: 0; padding: 0;">
+                                    <a href="{{ url('/dashboard') }}"
+                                        style="display: block; padding: 10px 15px; color: #333; font-weight: 600; font-size: 15px; border-radius: 6px; transition: all 0.3s ease;"
+                                        onmouseover="this.style.background='#f0f8ff'; this.style.color='#087990'"
+                                        onmouseout="this.style.background='transparent'; this.style.color='#333'">
                                         Dashboard
                                     </a>
                                 </li>
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}">
+                                <li style="margin: 0; padding: 0; margin-top: 5px;">
+                                    <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                                         @csrf
                                         <a href="#" onclick="event.preventDefault(); this.closest('form').submit();"
-                                            class="d-flex align-items-center text-danger">
-                                            <i class="fas fa-sign-out-alt me-2" style="width: 20px;"></i> Logout
+                                            style="display: block; padding: 10px 15px; color: #dc3545; font-weight: 600; font-size: 15px; border-radius: 6px; transition: all 0.3s ease;"
+                                            onmouseover="this.style.background='#ffe6e6'; this.style.color='#c82333'"
+                                            onmouseout="this.style.background='transparent'; this.style.color='#dc3545'">
+                                            Logout
                                         </a>
                                     </form>
                                 </li>
                             </ul>
                         </li>
                     @else
-                        <li style="margin-left: 15px;"><a href="{{ route('login') }}" class="font-weight-bold">Login</a>
-                        </li>
+                        <li style="margin-left: 15px;"><a href="{{ route('login') }}"
+                                class="font-weight-bold text-white">Login</a></li>
                         <li>
                             <a href="{{ route('register') }}"
                                 class="btn btn-primary text-white py-2 px-4 rounded-pill shadow-sm"

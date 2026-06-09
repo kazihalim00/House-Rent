@@ -383,6 +383,9 @@
                 selectedDay: null }
     };
 
+    const todayDate = new Date();
+    todayDate.setHours(0,0,0,0);
+
     function closeAllDropdowns() {
         document.querySelectorAll('.custom-dropdown').forEach(d => d.classList.remove('open'));
     }
@@ -462,6 +465,7 @@
             }
 
             const isAvailable = realAvailableDates.includes(dateStringKey);
+            const isPast = iterDate.getTime() < todayDate.getTime();
 
             if(state[calId].selectedDay !== null && i === chosenDay) {
                 dateElement.classList.add('active-date');
@@ -469,12 +473,12 @@
                 dateElement.classList.add('active-date');
             } else if (isAvailable) {
                 dateElement.classList.add('available-date');
-            } else {
-                dateElement.classList.add('disabled-date');
-                dateElement.style.cursor = 'not-allowed';
             }
 
-            if (isAvailable || (comparisonInit && iterDate.getTime() === comparisonInit.getTime())) {
+            if (isPast) {
+                dateElement.classList.add('disabled-date');
+                dateElement.style.cursor = 'not-allowed';
+            } else {
                 dateElement.addEventListener('click', function(){
                     document.querySelectorAll(`.dates div`).forEach(el => {
                         el.classList.remove('active-date');

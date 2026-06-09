@@ -413,4 +413,11 @@ class HomeController extends Controller
         return back()->with('success', 'Review deleted successfully!');
 
     }
+    public function overview()
+    {
+        $houses = Home::where('status', 'approved')->latest()->take(6)->get();
+        $reviews = Review::with('user')->latest()->take(6)->get();
+
+        return view('frontend.pages.home', compact('houses', 'reviews'));
+    }
 }

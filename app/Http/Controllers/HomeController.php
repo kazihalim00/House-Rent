@@ -219,7 +219,7 @@ class HomeController extends Controller
         $total_bookings = Booking::count();
         $total_appointments = Appointment::count();
 
-        $recent_users = User::latest()->take(5)->get();
+        $recent_users = User::take(5)->get();
 
         $currentMonthBookings = Booking::with('house')
             ->whereMonth('created_at', Carbon::now()->month)

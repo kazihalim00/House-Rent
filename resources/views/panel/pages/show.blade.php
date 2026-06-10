@@ -13,7 +13,7 @@
                     class="text-green-700 hover:text-green-900 font-bold text-xl">&times;</button>
             </div>
         @endif
-        
+
         @if (session('error'))
             <div
                 class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 shadow-md rounded-r-lg flex justify-between items-center transition-all">
@@ -87,6 +87,49 @@
                     </p>
                 </div>
 
+                <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                        <h3 class="text-2xl font-bold text-gray-800">Reviews ({{ count($reviews) }})</h3>
+                        @auth
+                            <button onclick="openReviewModal()"
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-md">
+                                <i class="fas fa-star mr-2"></i> Write a Review
+                            </button>
+                        @endauth
+                    </div>
+
+                    @if($reviews->isEmpty())
+                        <p class="text-gray-500 italic text-center py-4">No reviews yet for this property.</p>
+                    @else
+                        <div class="space-y-6">
+                            @foreach($reviews as $review)
+                                <div class="flex items-start space-x-4 p-4 rounded-xl bg-gray-50/50 border border-gray-100">
+                                    <div
+                                        class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold flex-shrink-0">
+                                        {{ substr($review->user->name, 0, 1) }}
+                                    </div>
+                                    <div class="flex-grow">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <h4 class="font-bold text-gray-800">{{ $review->user->name }}</h4>
+                                            <span class="text-xs text-gray-400">{{ $review->created_at->diffForHumans() }}</span>
+                                        </div>
+                                        <div class="flex text-yellow-400 text-sm mb-2">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $review->rating)
+                                                    <i class="fas fa-star"></i>
+                                                @else
+                                                    <i class="far fa-star text-gray-300"></i>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                        <p class="text-gray-600 text-sm leading-relaxed">{{ $review->comment }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+
             </div>
 
             <div class="lg:col-span-1 sticky top-8 space-y-6">
@@ -101,11 +144,13 @@
 
                     <div class="space-y-4">
                         @if (Auth::check() && Auth::id() === $home->user_id && Auth::user()->role !== 'Admin')
-                            <div class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
+                            <div
+                                class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
                                 <i class="fas fa-ban mr-2"></i> You cannot book your own house
                             </div>
                         @elseif(isset($activeBookingExists) && $activeBookingExists)
-                            <div class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
+                            <div
+                                class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
                                 <i class="fas fa-ban mr-2"></i> Already booked
                             </div>
                         @else
@@ -190,12 +235,57 @@
         </div>
     </div>
 
+    <!-- Review Modal -->
+    <div id="reviewModal"
+        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex justify-center items-center px-4 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300"
+            id="reviewModalContent">
+
+            <div class="bg-blue-600 px-6 py-4 flex justify-between items-center">
+                <h3 class="text-white text-xl font-bold"><i class="fas fa-star mr-2"></i> Rate this House</h3>
+                <button onclick="closeReviewModal()"
+                    class="text-white hover:text-gray-200 text-2xl font-bold leading-none">&times;</button>
+            </div>
+
+            <form action="{{ route('review.store') }}" method="POST" class="p-6">
+                @csrf
+                <input type="hidden" name="house_id" value="{{ $home->id }}">
+
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-bold mb-2 text-sm">Your Rating *</label>
+                    <select name="rating" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-gray-700">
+                        <option value="5">5 Stars - Excellent</option>
+                        <option value="4">4 Stars - Very Good</option>
+                        <option value="3">3 Stars - Average</option>
+                        <option value="2">2 Stars - Poor</option>
+                        <option value="1">1 Star - Terrible</option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-bold mb-2 text-sm">Your Review *</label>
+                    <textarea name="comment" rows="4" required placeholder="Share your experience staying here..."
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-gray-700 resize-none"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    <button type="button" onclick="closeReviewModal()"
+                        class="px-6 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition">Cancel</button>
+                    <button type="submit"
+                        class="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition">
+                        Post Review
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         function openAppointmentModal() {
             const modal = document.getElementById('appointmentModal');
             const modalContent = document.getElementById('modalContent');
             modal.classList.remove('hidden');
-            // হাল্কা এনিমেশনের জন্য
             setTimeout(() => {
                 modalContent.classList.remove('scale-95');
                 modalContent.classList.add('scale-100');
@@ -205,6 +295,26 @@
         function closeAppointmentModal() {
             const modal = document.getElementById('appointmentModal');
             const modalContent = document.getElementById('modalContent');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function openReviewModal() {
+            const modal = document.getElementById('reviewModal');
+            const modalContent = document.getElementById('reviewModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeReviewModal() {
+            const modal = document.getElementById('reviewModal');
+            const modalContent = document.getElementById('reviewModalContent');
             modalContent.classList.remove('scale-100');
             modalContent.classList.add('scale-95');
             setTimeout(() => {

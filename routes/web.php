@@ -12,7 +12,7 @@ Route::get('/', [HomeController::class, 'overview']);
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard & Property Details
-    Route::get('/dashboard', [HomeController::class, 'summery'])->name('dashboard');
+
     Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
 
     // House Module
@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Only Routes
     Route::middleware('admin')->group(function () {
         // User Management
+        Route::get('/dashboard', [HomeController::class, 'summery'])->name('dashboard');
         Route::get('/add-user', function () {
             return view('panel.pages.add_user');
         });

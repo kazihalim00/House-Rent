@@ -17,8 +17,8 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a href="{{ url('/') }}"
-                class="nav-item nav-link {{ request()->is('/') || request()->is('dashboard') ? 'active' : '' }}">
+            <a href="{{ url('/dashboard') }}"
+                class="nav-item nav-link {{  request()->is('dashboard') ? 'active' : '' }}">
                 <i class="fa fa-tachometer-alt me-2"></i>Dashboard
             </a>
 

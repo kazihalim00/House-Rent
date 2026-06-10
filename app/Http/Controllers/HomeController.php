@@ -70,11 +70,7 @@ class HomeController extends Controller
             'bookings as active_bookings_count' => function ($q) {
                 $q->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')]);
             }
-        ])->where(function ($q) {
-            $q->where('status', 'approved')
-                ->orWhere('status', 'pending')
-                ->orWhereNull('status');
-        });
+        ])->where('status', 'approved');
 
         // Search Filter
         if ($request->filled('search')) {
@@ -108,12 +104,28 @@ class HomeController extends Controller
 
         // Availability Date Filter
         if ($request->filled('date')) {
-            $filterDate = Carbon::parse($request->date)->format('Y-m-d');
+            $filterDate = Carbon::parse($request->date);
+            $option = $request->input('option', 'exact');
+            
+            
+            $startDate = $filterDate->clone();
+            $endDate = $filterDate->clone();
+            
+            if ($option === '1week') {
+                $startDate->subDays(7);
+                $endDate->addDays(7);
+            } elseif ($option === '2weeks') {
+                $startDate->subDays(14);
+                $endDate->addDays(14);
+            } elseif ($option === '3weeks') {
+                $startDate->subDays(21);
+                $endDate->addDays(21);
+            }
 
-            $query->whereDate('booking_date', '<=', $filterDate)
-                ->whereDoesntHave('bookings', function ($q) use ($filterDate) {
-                    $q->whereDate('check_in_date', '<=', $filterDate)
-                        ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [$filterDate]);
+            $query->whereDate('booking_date', '<=', $endDate->format('Y-m-d'))
+                ->whereDoesntHave('bookings', function ($q) use ($startDate, $endDate) {
+                    $q->whereDate('check_in_date', '<=', $endDate->format('Y-m-d'))
+                        ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [$startDate->format('Y-m-d')]);
                 });
         }
 

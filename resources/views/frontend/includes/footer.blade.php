@@ -52,7 +52,6 @@
         margin-right: 30px;
     }
 
-    /* Social icons */
     .site-footer .social {
         display: flex;
         gap: 10px;
@@ -83,7 +82,6 @@
         color: #fff !important;
     }
 
-    /* Divider row */
     .footer-bottom {
         background: #111827;
         border-top: 1px solid #2a3a5c;
@@ -98,6 +96,8 @@
         font-size: 13px;
         margin: 0;
         line-height: 1.8;
+        text-align: center !important;
+        width: 100%;
     }
 
     .footer-bottom a {
@@ -113,47 +113,53 @@
 <div class="site-footer">
     <div class="container">
         <div class="row">
+
+            {{-- Contact --}}
             <div class="col-lg-4 mb-4 mb-lg-0">
                 <div class="widget">
-                    <h3>Contact</h3>
-                    <address>43 Raymouth Rd. Baltemoer, London 3910</address>
+                    <h3>Contact Us</h3>
+                    <address>Sylhet, Bangladesh</address>
                     <ul class="list-unstyled links">
-                        <li><a href="tel://11234567890">+1(123)-456-7890</a></li>
-                        <li><a href="tel://11234567890">+1(123)-456-7890</a></li>
-                        <li><a href="mailto:info@mydomain.com">info@mydomain.com</a></li>
+                        <li><a href="tel:+8801700000000">+880 1700-000000</a></li>
+                        <li><a href="tel:+8801800000000">+880 1800-000000</a></li>
+                        <li><a href="mailto:info@houserent.com">info@houserent.com</a></li>
                     </ul>
                 </div>
             </div>
 
+            {{-- Quick Links --}}
             <div class="col-lg-4 mb-4 mb-lg-0">
                 <div class="widget">
-                    <h3>Sources</h3>
+                    <h3>Quick Links</h3>
                     <ul class="list-unstyled float-start links">
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Vision</a></li>
-                        <li><a href="#">Mission</a></li>
-                        <li><a href="#">Terms</a></li>
-                        <li><a href="#">Privacy</a></li>
+                        <li><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="{{ route('house-detail') }}">Properties</a></li>
+                        <li><a href="{{ url('/') }}#services">Services</a></li>
+                        <li><a href="{{ url('/') }}#about">About Us</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
                     </ul>
                     <ul class="list-unstyled float-start links">
-                        <li><a href="#">Partners</a></li>
-                        <li><a href="#">Business</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Blog</a></li>
+                        @auth
+                            <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
+                        @endauth
+                        <li><a href="{{ route('house-detail') }}">All Houses</a></li>
+                        <li><a href="{{ route('house-detail') }}">Rent a House</a></li>
+                        <li><a href="{{ url('/') }}#services">Easy Booking</a></li>
                         <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Creative</a></li>
+                        <li><a href="{{ route('login') }}">Login</a></li>
                     </ul>
                 </div>
             </div>
 
+            {{-- Follow Us --}}
             <div class="col-lg-4">
                 <div class="widget">
                     <h3>Follow Us</h3>
                     <ul class="list-unstyled links">
-                        <li><a href="#">Our Vision</a></li>
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Contact us</a></li>
+                        <li><a href="{{ url('/') }}#about">Our Vision</a></li>
+                        <li><a href="{{ url('/') }}#about">About Us</a></li>
+                        <li><a href="#">Contact Us</a></li>
                     </ul>
                     <ul class="social">
                         <li><a href="#" aria-label="Instagram"><span class="icon-instagram"></span></a></li>
@@ -165,18 +171,16 @@
                     </ul>
                 </div>
             </div>
+
         </div>
     </div>
 
     <div class="footer-bottom">
         <div class="container">
-            <p>
-                Copyright &copy;
-                <script>document.write(new Date().getFullYear());</script>
-                <strong style="color:#f0f4ff;"> House Rent</strong>. All Rights Reserved. &mdash;
-                Designed by <a href="https://untree.co" target="_blank">Untree.co</a>
+            <p style="text-align:center; width:100%;">
+                Copyright &copy; {{ date('Y') }}
+                <strong style="color:#f0f4ff;"> House Rent</strong>. All Rights Reserved.
             </p>
-            <div>Distributed by <a href="https://themewagon.com/" target="_blank">ThemeWagon</a></div>
         </div>
     </div>
 </div>

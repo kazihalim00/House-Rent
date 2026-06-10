@@ -286,7 +286,7 @@
                 </div>
             </div>
         </div>
-                <div class="section"></div>
-                <div class="section section-5 bg-light"></div>
+              
+                
 
 @endsection

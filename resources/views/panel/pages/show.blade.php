@@ -13,7 +13,7 @@
                     class="text-green-700 hover:text-green-900 font-bold text-xl">&times;</button>
             </div>
         @endif
-        
+
         @if (session('error'))
             <div
                 class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 shadow-md rounded-r-lg flex justify-between items-center transition-all">
@@ -104,7 +104,8 @@
                         <div class="space-y-6">
                             @foreach($reviews as $review)
                                 <div class="flex items-start space-x-4 p-4 rounded-xl bg-gray-50/50 border border-gray-100">
-                                    <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold flex-shrink-0">
+                                    <div
+                                        class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold flex-shrink-0">
                                         {{ substr($review->user->name, 0, 1) }}
                                     </div>
                                     <div class="flex-grow">
@@ -143,11 +144,13 @@
 
                     <div class="space-y-4">
                         @if (Auth::check() && Auth::id() === $home->user_id && Auth::user()->role !== 'Admin')
-                            <div class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
+                            <div
+                                class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
                                 <i class="fas fa-ban mr-2"></i> You cannot book your own house
                             </div>
                         @elseif(isset($activeBookingExists) && $activeBookingExists)
-                            <div class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
+                            <div
+                                class="block w-full text-center bg-gray-400 text-white font-bold text-xl py-4 rounded-xl shadow-lg cursor-not-allowed opacity-60">
                                 <i class="fas fa-ban mr-2"></i> Already booked
                             </div>
                         @else

@@ -88,10 +88,111 @@
         }
 
         .btn-secondary {
-            background-color: var(--dark-border) !important;
-            border-color: var(--dark-border) !important;
-            color: var(--text-primary) !important;
+            background-color: var(--accent-red) !important;
+            border-color: var(--accent-red) !important;
+            color: #fff !important;
             border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent-red-hover) !important;
+            border-color: var(--accent-red-hover) !important;
+        }
+
+        /* ── Property card image fix ── */
+        .property-item {
+            overflow: hidden !important;
+        }
+
+        .property-item .img,
+        .property-item a.img {
+            display: block !important;
+            width: 100% !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 0;
+        }
+
+        .property-item .img img,
+        .property-item a.img img {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 220px !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            display: block !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .property-item a.img img[style],
+        .property-item .img img[style] {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 220px !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            display: block !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* ── Property slider — fix gaps ── */
+        .property-slider .property-item {
+            margin: 0 8px;
+        }
+
+        .tns-inner {
+            margin: 0 !important;
+        }
+
+        /* Force remove any padding around image inside card */
+        .property-item {
+            padding: 0 !important;
+        }
+
+        .property-item>a.img,
+        .property-item>.img {
+            display: block !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 0 !important;
+            font-size: 0 !important;
+        }
+
+        /* ── Property card content & button ── */
+        .property-content {
+            padding: 20px !important;
+            background: var(--dark-card) !important;
+        }
+
+        .property-content a.btn,
+        .property-content a.btn-primary,
+        .property-content a.btn-secondary {
+            background-color: var(--accent-red) !important;
+            border-color: var(--accent-red) !important;
+            color: #fff !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            padding: 11px 0 !important;
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+            transition: background 0.2s !important;
+            margin-top: 4px !important;
+        }
+
+        .property-content a.btn:hover,
+        .property-content a.btn-primary:hover,
+        .property-content a.btn-secondary:hover {
+            background-color: var(--accent-red-hover) !important;
+            border-color: var(--accent-red-hover) !important;
         }
 
         /* ── Hero ── */
@@ -339,7 +440,12 @@
             background: var(--accent-red) !important;
         }
 
-        /* ── Scrollbar ── */
+        /* ── Hide tiny-slider cloned items ── */
+        .tns-item.tns-slide-cloned {
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
         }

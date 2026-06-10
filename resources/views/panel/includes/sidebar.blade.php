@@ -17,10 +17,12 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a href="{{ url('/dashboard') }}"
-                class="nav-item nav-link {{  request()->is('dashboard') ? 'active' : '' }}">
-                <i class="fa fa-tachometer-alt me-2"></i>Dashboard
-            </a>
+            @if(Auth::user()->role == "Admin")
+                <a href="{{ url('/dashboard') }}"
+                    class="nav-item nav-link {{  request()->is('dashboard') ? 'active' : '' }}">
+                    <i class="fa fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+            @endif
 
             <div class="nav-item dropdown">
                 <a href="#"
@@ -55,6 +57,7 @@
             </div>
 
             @if(Auth::user()->role == "Admin")
+
                 <a href="{{ url('/add-user') }}" class="nav-item nav-link {{ request()->is('add-user') ? 'active' : '' }}">
                     <i class="fa fa-th me-2"></i>Add User
                 </a>

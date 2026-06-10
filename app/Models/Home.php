@@ -35,6 +35,11 @@ class Home extends Model
         return $this->hasMany(Booking::class, 'house_id');
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'house_id');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

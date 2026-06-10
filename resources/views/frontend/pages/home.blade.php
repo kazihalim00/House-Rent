@@ -60,6 +60,19 @@
                                                         </span>
                                                     </div>
 
+                                                    @if($house->reviews->count() > 0)
+                                                        <div class="mb-3">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="text-warning me-2">
+                                                                    @for($i = 1; $i <= $house->reviews->max('rating'); $i++)
+                                                                        <span class="icon-star"></span>
+                                                                    @endfor
+                                                                </span>
+                                                                <span class="text-secondary">{{ $house->reviews->count() }} reviews</span>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
                                                     @auth
                                                         <a href="{{ route('book.house', $house->id) }}" class="btn btn-primary py-2 px-3">Book Now</a>
                                                     @else

@@ -317,11 +317,12 @@ class HomeController extends Controller
     public function show($id)
     {
         $home = Home::findOrFail($id);
+        $reviews = Review::where('house_id', $id)->with('user')->latest()->get();
         $activeBookingExists = $home->bookings()
             ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')])
             ->exists();
 
-        return view('panel.pages.show', compact('home', 'activeBookingExists'));
+        return view('panel.pages.show', compact('home', 'activeBookingExists', 'reviews'));
     }
     public function pending_houses()
     {
@@ -415,7 +416,7 @@ class HomeController extends Controller
     }
     public function review()
     {
-        $reviews = Review::with('user')->latest()->get();
+        $reviews = Review::whereNull('house_id')->with('user')->latest()->get();
         return view('panel.pages.review', compact('reviews'));
     }
 
@@ -424,13 +425,15 @@ class HomeController extends Controller
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|max:1000'
+            'comment' => 'required|string|max:1000',
+            'house_id' => 'nullable|exists:homes,id'
         ]);
 
         Review::create([
             'user_id' => Auth::id(),
             'rating' => $request->rating,
-            'comment' => $request->comment
+            'comment' => $request->comment,
+            'house_id' => $request->house_id
         ]);
 
         return back()->with('success', 'Thank you! Your review has been submitted.');
@@ -447,7 +450,7 @@ class HomeController extends Controller
     public function overview()
     {
         $houses = Home::where('status', 'approved')->latest()->take(6)->get();
-        $reviews = Review::with('user')->latest()->take(6)->get();
+        $reviews = Review::whereNull('house_id')->with('user')->latest()->take(6)->get();
 
         return view('frontend.pages.home', compact('houses', 'reviews'));
     }

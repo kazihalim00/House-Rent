@@ -33,15 +33,17 @@
                         class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
                         placeholder="Enter house name" required />
                 </div>
-                <div class="mb-3">
-                    <label for="owner_name" class="form-label text-white">Owner Name</label>
-                    <select name="owner_name" id="owner_name" class="form-select bg-dark text-white border-0" required>
-                        <option value="" disabled selected>Select an Owner</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->name }}">{{ $user->name }} ({{ $user->role }})</option>
-                        @endforeach
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        House Owner
+                    </label>
 
-                    </select>
+                    <div
+                        class="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 flex items-center justify-between">
+                        <span class="text-gray-200 font-medium">
+                            {{ Auth::user()->name }}
+                        </span>
+                    </div>
                 </div>
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>

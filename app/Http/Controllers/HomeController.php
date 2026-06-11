@@ -106,11 +106,11 @@ class HomeController extends Controller
         if ($request->filled('date')) {
             $filterDate = Carbon::parse($request->date);
             $option = $request->input('option', 'exact');
-
-
+            
+            
             $startDate = $filterDate->clone();
             $endDate = $filterDate->clone();
-
+            
             if ($option === '1week') {
                 $startDate->subDays(7);
                 $endDate->addDays(7);

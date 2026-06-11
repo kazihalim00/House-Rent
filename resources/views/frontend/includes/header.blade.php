@@ -192,6 +192,7 @@
                         <ul class="dropdown">
                             <li><a href="{{ route('house-detail') }}">All Houses</a></li>
                             <li><a href="{{ route('house-detail') }}">Rent a House</a></li>
+                            <li><a href="{{ url('/') }}#popularhouses">Popular Houses</a></li>
                         </ul>
                     </li>
 

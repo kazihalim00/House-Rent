@@ -108,11 +108,11 @@ class HomeController extends Controller
         if ($request->filled('date')) {
             $filterDate = Carbon::parse($request->date);
             $option = $request->input('option', 'exact');
-            
-            
+
+
             $startDate = $filterDate->clone();
             $endDate = $filterDate->clone();
-            
+
             if ($option === '1week') {
                 $startDate->subDays(7);
                 $endDate->addDays(7);
@@ -467,15 +467,27 @@ class HomeController extends Controller
     // if house booked then it will not show in home page
     public function overview()
     {
+        // Hero: all approved house 
+        $heroHouses = Home::where('status', 'approved')
+            ->latest()->take(3)->get();
+
+        // Cards: only available house
         $houses = Home::where('status', 'approved')
             ->whereDoesntHave('bookings', function ($q) {
-                $q->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->toDateString()]);
+                $q->whereRaw(
+                    'DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?',
+                    [Carbon::now()->toDateString()]
+                );
             })
-            ->latest()
-            ->take(6)
-            ->get();
-        $reviews = Review::whereNull('house_id')->with('user')->latest()->take(6)->get();
+            ->latest()->take(6)->get();
 
-        return view('frontend.pages.home', compact('houses', 'reviews'));
+        // Reviews: general or admin 
+        $reviews = Review::where(function ($q) {
+            $q->whereNull('house_id')
+                ->orWhereHas('user', fn($q2) => $q2->where('role', 'admin'));
+        })
+            ->with('user')->latest()->take(6)->get();
+
+        return view('frontend.pages.home', compact('heroHouses', 'houses', 'reviews'));
     }
 }

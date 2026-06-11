@@ -141,7 +141,36 @@
             padding: 0 !important;
         }
 
-        /* ── Property slider — fix gaps ── */
+        /* ── Equal height property cards ── */
+        .property-slider {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .tns-inner .tns-slider {
+            display: flex !important;
+            align-items: stretch !important;
+        }
+
+        .property-item {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+            overflow: hidden !important;
+        }
+
+        .property-content {
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1 !important;
+            padding: 20px !important;
+            background: var(--dark-card) !important;
+        }
+
+        .property-content>div:last-child {
+            margin-top: auto !important;
+        }
+
         .property-slider .property-item {
             margin: 0 8px;
         }

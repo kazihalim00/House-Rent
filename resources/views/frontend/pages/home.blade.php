@@ -356,7 +356,7 @@
                 }
             </style>
 
-            <section class="py-5 team-section">
+            <section class="py-5 team-section" id="team">
                 <div class="container">
 
                     <div class="row text-center mb-5">

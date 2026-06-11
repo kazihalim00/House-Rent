@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div class="section">
+    <div class="section" id="popularhouses">
         <div class="container">
             <div class="row mb-5 align-items-center">
                 <div class="col-lg-6">
@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" >
                 <div class="col-12">
                     <div class="property-slider">
                         @foreach($houses as $house)

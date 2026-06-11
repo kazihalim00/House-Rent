@@ -258,7 +258,9 @@ class HomeController extends Controller
     {
         $dbAvailableDates = Home::where('status', 'approved')
             ->whereNotNull('booking_date')
-            ->whereDoesntHave('bookings')
+            ->whereDoesntHave('bookings', function ($q) {
+                $q->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->toDateString()]);
+            })
             ->pluck('booking_date')
             ->unique()
             ->values()

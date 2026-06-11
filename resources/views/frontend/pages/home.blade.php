@@ -1,12 +1,11 @@
 @extends('frontend.layout')
 
 @section('content')
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <div class="hero">
         <div class="hero-slide">
             @foreach($heroHouses as $heroHouse)
-                <div class="img overlay"
-                    style="background-image: url('{{ asset('upload/img/' . $heroHouse->home_image) }}')">
+                <div class="img overlay" style="background-image: url('{{ asset('upload/img/' . $heroHouse->home_image) }}')">
                 </div>
             @endforeach
         </div>
@@ -28,12 +27,13 @@
                 </div>
                 <div class="col-lg-6 text-lg-end">
                     <p>
-                        <a href="{{ route('house-detail') }}" class="btn btn-primary text-white py-3 px-4">View all properties</a>
+                        <a href="{{ route('house-detail') }}" class="btn btn-primary text-white py-3 px-4">View all
+                            properties</a>
                     </p>
                 </div>
             </div>
 
-            <div class="row" >
+            <div class="row">
                 <div class="col-12">
                     <div class="property-slider">
                         @foreach($houses as $house)
@@ -65,14 +65,16 @@
                                                         <span class="icon-star"></span>
                                                     @endfor
                                                 </span>
-                                                <span class="text-secondary" style="font-size:13px;">{{ $house->reviews->count() }} reviews</span>
+                                                <span class="text-secondary" style="font-size:13px;">{{ $house->reviews->count() }}
+                                                    reviews</span>
                                             </div>
                                         @endif
                                     </div>
 
                                     {{-- Button always at bottom --}}
                                     @auth
-                                        <a href="{{ route('book.house', $house->id) }}" class="btn btn-primary py-2 px-3">Book Now</a>
+                                        <a href="{{ route('book.house', $house->id) }}" class="btn btn-primary py-2 px-3">Book
+                                            Now</a>
                                     @else
                                         <a href="{{ route('login') }}" class="btn btn-secondary py-2 px-3">Login to Book</a>
                                     @endauth
@@ -140,7 +142,8 @@
                 </div>
             </div>
 
-            <div id="testimonialCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+            <div id="testimonialCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel"
+                data-bs-interval="4000">
                 <div class="carousel-inner">
                     @if($reviews->count() > 0)
                         @foreach($reviews as $key => $review)
@@ -170,7 +173,8 @@
                     @else
                         <div class="carousel-item active">
                             <div class="text-center w-100">
-                                <p class="text-muted italic">No reviews yet. Be the first to leave a review from your dashboard!</p>
+                                <p class="text-muted italic">No reviews yet. Be the first to leave a review from your dashboard!
+                                </p>
                             </div>
                         </div>
                     @endif
@@ -200,60 +204,252 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="d-flex feature-h mb-4">
-                        <span class="wrap-icon me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                        <span
+                            class="wrap-icon me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
                             style="width:50px; height:50px; flex-shrink:0;">
                             <span class="icon-home2"></span>
                         </span>
                         <div class="feature-text">
                             <h3 class="heading h5 font-weight-bold">Verified Properties</h3>
-                            <p class="text-black-50 text-sm">Every house listed on our platform goes through a strict verification process by our admins.</p>
+                            <p class="text-black-50 text-sm">Every house listed on our platform goes through a strict
+                                verification process by our admins.</p>
                         </div>
                     </div>
                     <div class="d-flex feature-h mb-4">
-                        <span class="wrap-icon me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                        <span
+                            class="wrap-icon me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
                             style="width:50px; height:50px; flex-shrink:0;">
                             <span class="icon-person"></span>
                         </span>
                         <div class="feature-text">
                             <h3 class="heading h5 font-weight-bold">Direct Communication</h3>
-                            <p class="text-black-50 text-sm">No middleman! We ensure that you communicate directly with genuine property owners.</p>
+                            <p class="text-black-50 text-sm">No middleman! We ensure that you communicate directly with
+                                genuine property owners.</p>
                         </div>
                     </div>
                     <div class="d-flex feature-h">
-                        <span class="wrap-icon me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                        <span
+                            class="wrap-icon me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
                             style="width:50px; height:50px; flex-shrink:0;">
                             <span class="icon-security"></span>
                         </span>
                         <div class="feature-text">
                             <h3 class="heading h5 font-weight-bold">Secure Booking</h3>
-                            <p class="text-black-50 text-sm">Book your desired home with our 100% secure and transparent digital system.</p>
+                            <p class="text-black-50 text-sm">Book your desired home with our 100% secure and transparent
+                                digital system.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+            <style>
+                /* Custom Animations & Glassmorphism Design */
+                .team-section {
+                    background-color: #0f172a;
+                    /* Deep dark blue background */
+                    min-height: 100vh;
+                }
+
+                .team-card {
+                    background: rgba(30, 41, 59, 0.7);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    border-radius: 20px;
+                    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    position: relative;
+                    overflow: hidden;
+                    z-index: 1;
+                }
+
+                /* 3D Hover & Glow Effect */
+                .team-card:hover {
+                    transform: translateY(-15px) scale(1.03);
+                    background: rgba(30, 41, 59, 0.9);
+                    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3),
+                        inset 0 0 20px rgba(59, 130, 246, 0.1);
+                    border-color: rgba(59, 130, 246, 0.4);
+                    z-index: 10;
+                }
+
+                /* Animated Image Ring */
+                .img-wrapper {
+                    position: relative;
+                    display: inline-block;
+                    border-radius: 50%;
+                    padding: 4px;
+                    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
+                    transition: all 0.4s ease;
+                }
+
+                .team-card:hover .img-wrapper {
+                    background: linear-gradient(45deg, #3b82f6, #8b5cf6, #06b6d4);
+                    box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+                    transform: scale(1.05);
+                }
+
+                .img-wrapper img {
+                    border-radius: 50%;
+                    border: 4px solid #0f172a;
+                    object-fit: cover;
+                    transition: all 0.4s ease;
+                }
+
+                /* Name Styling */
+                .member-name {
+                    font-size: 1.6rem;
+                    font-weight: 800;
+                    color: #f8fafc;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+                    transition: all 0.3s ease;
+                    margin-top: 1rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .team-card:hover .member-name {
+                    color: #60a5fa;
+                    /* Glowy Blue on hover */
+                }
+
+                /* Bio Styling */
+                .member-bio {
+                    color: #cbd5e1;
+                    font-size: 0.9rem;
+                    line-height: 1.6;
+                    margin-bottom: 1.5rem;
+                }
+
+                /* Social Buttons */
+                .social-btn {
+                    color: #94a3b8;
+                    font-size: 1.5rem;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.05);
+                }
+
+                .social-btn:hover {
+                    transform: translateY(-5px);
+                    background: rgba(255, 255, 255, 0.1);
+                }
+
+                .social-btn.linkedin:hover {
+                    color: #0a66c2;
+                    box-shadow: 0 5px 15px rgba(10, 102, 194, 0.4);
+                }
+
+                .social-btn.github:hover {
+                    color: #ffffff;
+                    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+                }
+
+                .social-btn.portfolio:hover {
+                    color: #10b981;
+                    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+                }
+            </style>
+
+            <section class="py-5 team-section">
+                <div class="container">
+
+                    <div class="row text-center mb-5">
+                        <div class="col-12">
+                            <h2 class="fw-bold mb-2" style="color: #ffffff; font-size: 2.5rem;">Meet Our Team</h2>
+                            <p style="color: #94a3b8; font-size: 1.1rem;">
+                                Dedicated professionals working together to achieve excellence
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 justify-content-center">
+
+                        @foreach($members as $member)
+                            <div class="col-lg-3 col-md-6 col-sm-12">
+
+                                <div class="team-card text-center p-4">
+
+                                    <div class="img-wrapper mb-3">
+                                        <img src="{{ asset('upload/team/' . $member->image) }}" width="150" height="150"
+                                            alt="{{ $member->name }}">
+                                    </div>
+
+                                    <p
+                                        style="color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0;">
+                                        {{$member->role}}
+                                    </p>
+
+                                    <h5 class="member-name">
+                                        {{ $member->name }}
+                                    </h5>
+
+                                    <p class="member-bio">
+                                        {{ $member->short_bio }}
+                                    </p>
+
+                                    <div class="d-flex justify-content-center gap-3">
+
+                                        @if($member->linkedin)
+                                            <a href="{{ $member->linkedin }}" target="_blank" class="social-btn linkedin">
+                                                <i class="fa-brands fa-linkedin-in"></i>
+                                            </a>
+                                        @endif
+
+                                        @if($member->github)
+                                            <a href="{{ $member->github }}" target="_blank" class="social-btn github">
+                                                <i class="fa-brands fa-github"></i>
+                                            </a>
+                                        @endif
+
+                                        @if($member->portfolio)
+                                            <a href="{{ $member->portfolio }}" target="_blank" class="social-btn portfolio">
+                                                <i class="fa-solid fa-globe"></i>
+                                            </a>
+                                        @endif
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        @endforeach
+
+                    </div>
+
+                </div>
+            </section>
             <div class="row section-counter mt-5 pt-4 border-top">
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
                     <div class="counter-wrap mb-5 mb-lg-0 text-center">
-                        <span class="number"><span class="countup text-primary">{{ \App\Models\Home::count() }}</span>+</span>
+                        <span class="number"><span
+                                class="countup text-primary">{{ \App\Models\Home::count() }}</span>+</span>
                         <span class="caption text-black-50 d-block">Total Properties</span>
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
                     <div class="counter-wrap mb-5 mb-lg-0 text-center">
-                        <span class="number"><span class="countup text-primary">{{ \App\Models\User::count() }}</span>+</span>
+                        <span class="number"><span
+                                class="countup text-primary">{{ \App\Models\User::count() }}</span>+</span>
                         <span class="caption text-black-50 d-block">Happy Users</span>
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="500">
                     <div class="counter-wrap mb-5 mb-lg-0 text-center">
-                        <span class="number"><span class="countup text-primary">{{ \App\Models\Booking::count() }}</span>+</span>
+                        <span class="number"><span
+                                class="countup text-primary">{{ \App\Models\Booking::count() }}</span>+</span>
                         <span class="caption text-black-50 d-block">Successful Bookings</span>
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="600">
                     <div class="counter-wrap mb-5 mb-lg-0 text-center">
-                        <span class="number"><span class="countup text-primary">{{ \App\Models\Review::count() }}</span>+</span>
+                        <span class="number"><span
+                                class="countup text-primary">{{ \App\Models\Review::count() }}</span>+</span>
                         <span class="caption text-black-50 d-block">User Reviews</span>
                     </div>
                 </div>

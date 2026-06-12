@@ -543,4 +543,57 @@ class HomeController extends Controller
         return view('panel.pages.see_team_members', compact('members'));
 
     }
+    public function edit_team_member($id)
+    {
+
+        $member = TeamMember::findOrFail($id);
+
+        return view('panel.pages.edit_team_member', compact('member'));
+    }
+    public function update_team_member(Request $request, $id)
+    {
+        $member = TeamMember::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required',
+            'role' => 'required',
+            'short_bio' => 'required',
+            'order' => 'nullable',
+            'status' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
+            'github' => 'nullable',
+            'linkedin' => 'nullable',
+            'portfolio' => 'nullable',
+        ]);
+
+
+        if ($request->hasFile('image')) {
+
+           
+            if ($member->image && file_exists(public_path('upload/team/' . $member->image))) {
+                unlink(public_path('upload/team/' . $member->image));
+            }
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/team/'), $fileName);
+
+            $member->image = $fileName;
+        }
+
+        $member->name = $request->name;
+        $member->role = $request->role;
+        $member->short_bio = $request->short_bio;
+        $member->github = $request->github;
+        $member->linkedin = $request->linkedin;
+        $member->portfolio = $request->portfolio;
+        $member->order = $request->order ?? 0;
+        $member->status = $request->status;
+
+        // ⭐ IMPORTANT FIX
+        $member->save();
+
+        return redirect('/see-team-members')
+            ->with('success', 'Team member updated successfully!');
+    }
 }

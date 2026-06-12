@@ -79,12 +79,13 @@
 
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="fw-bold text-white">Team Members</h2>
-                <p class="text-secondary mb-0">
-                    Manage your development team
-                </p>
-            </div>
+            <h2 class="fw-bold text-white mb-1">
+                Team Members
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Manage your development team efficiently
+            </p>
 
             <a href="{{ route('add_team_member') }}" class="btn btn-primary">
                 <i class="fa-solid fa-plus"></i> Add Member
@@ -169,7 +170,8 @@
                                     <td>
                                         <div class="d-flex gap-2">
 
-                                            <a href="#" class="btn btn-sm btn-warning">
+                                            <a href="{{ url('/edit-team-member/' . $member->id) }}"
+                                                class="btn btn-sm btn-warning">
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
 

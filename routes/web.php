@@ -76,7 +76,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
         Route::post('/add-team-member', [HomeController::class, 'add_team_member'])->name('add_team_member');
         Route::get('/see-team-members', [HomeController::class, 'see_team_members']);
-
+        Route::get('/edit-team-member/{id}', [HomeController::class, 'edit_team_member'])->name('edit-team-member');
+        Route::post('/edit-team-member/{id}', [HomeController::class, 'update_team_member'])->name('update-team-member');
 
     });
 });

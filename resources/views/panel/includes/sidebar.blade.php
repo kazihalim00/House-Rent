@@ -76,7 +76,7 @@
                         <i class="fa fa-laptop me-2"></i>Team Members
                     </a>
                     <div
-                        class="dropdown-menu bg-transparent border-0 {{ request()->is('add-team-member', 'edit-team-member', 'delete-team-member') ? 'show' : '' }}">
+                        class="dropdown-menu bg-transparent border-0 {{ request()->is('add-team-member', 'see-team-members') ? 'show' : '' }}">
                         <a href="{{ url('/add-team-member') }}"
                             class="dropdown-item {{ request()->is('add-team-member') ? 'active' : '' }}">Add
                             Team Member</a>

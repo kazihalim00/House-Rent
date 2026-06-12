@@ -72,8 +72,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/appointment/reject/{id}', [HomeController::class, 'rejectAppointment'])->name('appointment.reject');
         Route::get('/add-team-member', function () {
             return view('panel.pages.add_team_member');
+
         });
         Route::post('/add-team-member', [HomeController::class, 'add_team_member'])->name('add_team_member');
+        Route::get('/see-team-members', [HomeController::class, 'see_team_members']);
+
 
     });
 });

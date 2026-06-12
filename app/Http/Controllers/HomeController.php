@@ -35,7 +35,7 @@ class HomeController extends Controller
         $images = [];
         if ($request->hasFile('home_image')) {
             $files = $request->file('home_image');
-            
+
             foreach ($files as $file) {
                 $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('upload/img'), $fileName);
@@ -533,6 +533,14 @@ class HomeController extends Controller
         ]);
 
         return back()->with('success', 'Team member added successfully!');
+
+    }
+
+    public function see_team_members()
+    {
+        $members = TeamMember::get();
+
+        return view('panel.pages.see_team_members', compact('members'));
 
     }
 }

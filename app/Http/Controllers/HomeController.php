@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Appointment;
+use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use App\Models\Home;
 use App\Models\User;
@@ -470,7 +471,7 @@ class HomeController extends Controller
         // Hero: all approved house 
         $heroHouses = Home::where('status', 'approved')
             ->latest()->take(3)->get();
-
+        $members = TeamMember::get();
         // Cards: only available house
         $houses = Home::where('status', 'approved')
             ->whereDoesntHave('bookings', function ($q) {
@@ -488,6 +489,46 @@ class HomeController extends Controller
         })
             ->with('user')->latest()->take(6)->get();
 
-        return view('frontend.pages.home', compact('heroHouses', 'houses', 'reviews'));
+        return view('frontend.pages.home', compact('heroHouses', 'houses', 'reviews', 'members'));
+    }
+
+    public function add_team_member(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required',
+            'role' => 'required',
+            'image' => 'required',
+            'short_bio' => 'required',
+            'github' => 'required',
+            'linkedin' => 'required',
+            'portfolio' => 'required',
+            'order' => 'required',
+            'status' => 'required',
+        ]);
+        $filename = null;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move(public_path('upload/team/'), $filename);
+
+        }
+        TeamMember::create([
+            'name' => $request->name,
+            'role' => $request->role,
+            'short_bio' => $request->short_bio,
+            'github' => $request->github,
+            'linkedin' => $request->linkedin,
+            'portfolio' => $request->portfolio,
+            'order' => $request->order,
+            'status' => $request->status,
+            'image' => $filename,
+
+        ]);
+
+        return back()->with('success', 'Team member added successfully!');
+
     }
 }

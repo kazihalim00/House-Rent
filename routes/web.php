@@ -70,6 +70,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Appointment Actions
         Route::post('/appointment/approve/{id}', [HomeController::class, 'approveAppointment'])->name('appointment.approve');
         Route::post('/appointment/reject/{id}', [HomeController::class, 'rejectAppointment'])->name('appointment.reject');
+        Route::get('/add-team-member', function () {
+            return view('panel.pages.add_team_member');
+        });
+        Route::post('/add-team-member', [HomeController::class, 'add_team_member'])->name('add_team_member');
+
     });
 });
 

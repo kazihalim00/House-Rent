@@ -65,10 +65,10 @@
                     class="nav-item nav-link {{ request()->is('user-list') ? 'active' : '' }}">
                     <i class="fa fa-th me-2"></i>User List
                 </a>
-                <a href="{{ route('admin.pending_houses') }}"
+                {{-- <a href="{{ route('admin.pending_houses') }}"
                     class="nav-item nav-link {{ request()->routeIs('admin.pending_houses') ? 'active' : '' }}">
                     <i class="fa fa-th me-2"></i>Pending List
-                </a>
+                </a> --}}
                 <div class="nav-item dropdown">
                     <a href="#"
                         class="nav-link dropdown-toggle {{ request()->is('add-team-member', 'see-team-members') ? 'active' : '' }}"

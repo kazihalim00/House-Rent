@@ -1,4 +1,4 @@
-@extends('panel.layout')
+{{-- @extends('panel.layout')
 
 @section('content')
     <div class="container mx-auto px-4 py-8 max-w-7xl">
@@ -84,4 +84,4 @@
             </div>
         @endif
     </div>
-@endsection
+@endsection --}}

@@ -58,7 +58,7 @@ class HomeController extends Controller
             'booking_date' => $request->booking_date,
             'home_image' => json_encode($images),
             'user_id' => Auth::id(),
-            'status' => 'pending'
+            'status' => 'approved'
         ]);
 
         return back()->with('success', 'Home added successfully!');

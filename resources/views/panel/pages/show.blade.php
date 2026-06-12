@@ -32,8 +32,13 @@
             </a>
         </div>
 
+        @php
+            $homeImages = json_decode($home->home_image, true) ?: [$home->home_image];
+            $primaryImage = $homeImages[0] ?? 'default.jpg';
+        @endphp
+
         <div class="relative w-full h-[40vh] md:h-[55vh] rounded-3xl overflow-hidden shadow-2xl mb-10 group">
-            <img src="{{ asset('upload/img/' . $home->home_image) }}"
+            <img src="{{ asset('upload/img/' . $primaryImage) }}"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 alt="House Image">
 
@@ -86,6 +91,21 @@
                         {{ $home->about }}
                     </p>
                 </div>
+
+                @if(count($homeImages) > 1)
+                <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">Property Gallery</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        @foreach($homeImages as $image)
+                            <div class="aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition group">
+                                <img src="{{ asset('upload/img/' . $image) }}" 
+                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-110 cursor-pointer"
+                                     onclick="window.open(this.src, '_blank')">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
 
                 <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">

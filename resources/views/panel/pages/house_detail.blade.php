@@ -69,12 +69,16 @@
         @php $total_house = 0; @endphp
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             @foreach ($houses as $house)
-                @php $total_house = $total_house + 1; @endphp
+                @php 
+                    $total_house = $total_house + 1;
+                    $houseImages = json_decode($house->home_image, true) ?: [$house->home_image];
+                    $displayImage = $houseImages[0] ?? 'default.jpg';
+                @endphp
                 <div
                     class="max-w-sm w-full bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden border border-gray-100">
 
                     <div class="relative">
-                        <img class="w-full h-56 object-cover" src="{{ asset('/upload/img/' . $house->home_image) }}"
+                        <img class="w-full h-56 object-cover" src="{{ asset('/upload/img/' . $displayImage) }}"
                             alt="House Image" />
                         <div
                             class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow">

@@ -33,7 +33,11 @@
                             <tr class="hover:bg-gray-50 transition duration-150">
 
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <img src="{{ asset('upload/img/' . $house->home_image) }}" alt="House"
+                                    @php
+                                        $pendingImages = json_decode($house->home_image, true) ?: [$house->home_image];
+                                        $pendingThumb = $pendingImages[0] ?? 'default.jpg';
+                                    @endphp
+                                    <img src="{{ asset('upload/img/' . $pendingThumb) }}" alt="House"
                                         class="h-16 w-16 object-cover rounded shadow-sm">
                                 </td>
 

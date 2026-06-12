@@ -15,7 +15,6 @@ class HomeController extends Controller
 {
     public function store(Request $request)
     {
-        $users = User::get();
         $request->validate([
             'house_name' => 'required',
             'owner_name' => 'required',
@@ -29,15 +28,19 @@ class HomeController extends Controller
             'bath' => 'required',
             'about' => 'required',
             'booking_date' => 'required',
-            'home_image' => 'required'
+            'home_image' => 'required',
+            'home_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        $fileName = null;
+        $images = [];
         if ($request->hasFile('home_image')) {
-            $file = $request->file('home_image');
-            $extension = $file->getClientOriginalExtension();
-            $fileName = time() . '.' . $extension;
-            $file->move(public_path('/upload/img/'), $fileName);
+            $files = $request->file('home_image');
+            
+            foreach ($files as $file) {
+                $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/img'), $fileName);
+                $images[] = $fileName;
+            }
         }
 
         Home::create([
@@ -53,8 +56,9 @@ class HomeController extends Controller
             'bath' => $request->bath,
             'about' => $request->about,
             'booking_date' => $request->booking_date,
-            'home_image' => $fileName,
-            'user_id' => Auth::id()
+            'home_image' => json_encode($images),
+            'user_id' => Auth::id(),
+            'status' => 'pending'
         ]);
 
         return back()->with('success', 'Home added successfully!');

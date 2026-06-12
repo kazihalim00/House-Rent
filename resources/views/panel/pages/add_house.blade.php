@@ -23,6 +23,16 @@
             </div>
         @endif
 
+        @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 shadow-md rounded-r-lg">
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ url('/add-house') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
@@ -43,6 +53,7 @@
                         <span class="text-gray-200 font-medium">
                             {{ Auth::user()->name }}
                         </span>
+                        <input type="hidden" name="owner_name" value="{{ Auth::user()->name }}">
                     </div>
                 </div>
                 <div>
@@ -124,9 +135,10 @@
             </div>
 
             <div>
-                <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload House Image *</label>
-                <input type="file" name="home_image" id="home_image"
+                <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload House Images (Multiple allowed) *</label>
+                <input type="file" name="home_image[]" id="home_image"
                     class="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-xl file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 cursor-pointer"
+                    multiple
                     required />
             </div>
 

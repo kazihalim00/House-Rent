@@ -5,7 +5,11 @@
     <div class="hero">
         <div class="hero-slide">
             @foreach($heroHouses as $heroHouse)
-                <div class="img overlay" style="background-image: url('{{ asset('upload/img/' . $heroHouse->home_image) }}')">
+                @php
+                    $heroImages = json_decode($heroHouse->home_image, true) ?: [$heroHouse->home_image];
+                    $heroDisplayImage = $heroImages[0] ?? 'default.jpg';
+                @endphp
+                <div class="img overlay" style="background-image: url('{{ asset('upload/img/' . $heroDisplayImage) }}')">
                 </div>
             @endforeach
         </div>
@@ -37,9 +41,13 @@
                 <div class="col-12">
                     <div class="property-slider">
                         @foreach($houses as $house)
+                            @php
+                                $houseImages = json_decode($house->home_image, true) ?: [$house->home_image];
+                                $displayImage = $houseImages[0] ?? 'default.jpg';
+                            @endphp
                             <div class="property-item">
                                 <a href="{{ route('panel.pages.show', $house->id) }}" class="img">
-                                    <img src="{{ asset('upload/img/' . $house->home_image) }}" alt="Image" />
+                                    <img src="{{ asset('upload/img/' . $displayImage) }}" alt="Image" />
                                 </a>
                                 <div class="property-content">
                                     <div class="price mb-2"><span>৳ {{ number_format($house->home_price) }}</span></div>

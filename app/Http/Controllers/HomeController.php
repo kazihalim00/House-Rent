@@ -75,7 +75,7 @@ class HomeController extends Controller
         $query = Home::withCount([
             'bookings',
             'bookings as active_bookings_count' => function ($q) {
-                $q->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')]);
+                $q->where('status', 'approved')->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')]);
             }
         ])->where('status', 'approved');
 
@@ -131,7 +131,8 @@ class HomeController extends Controller
 
             $query->whereDate('booking_date', '<=', $endDate->format('Y-m-d'))
                 ->whereDoesntHave('bookings', function ($q) use ($startDate, $endDate) {
-                    $q->whereDate('check_in_date', '<=', $endDate->format('Y-m-d'))
+                    $q->where('status', 'approved')
+                        ->whereDate('check_in_date', '<=', $endDate->format('Y-m-d'))
                         ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [$startDate->format('Y-m-d')]);
                 });
         }
@@ -290,11 +291,6 @@ class HomeController extends Controller
             return redirect()->route('house-detail')->with('error', 'You cannot book your own house!');
         }
 
-        $activeBookingExists = $house->bookings()->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')])->exists();
-        if ($activeBookingExists) {
-            return redirect()->route('house-detail')->with('error', 'This house has an active booking and cannot be booked again yet.');
-        }
-
         return view('panel.pages.book_form', compact('house'));
     }
 
@@ -310,25 +306,14 @@ class HomeController extends Controller
         ]);
 
         $house = Home::findOrFail($request->house_id);
-        $currentUser = Auth::user();
 
-        if ($house->user_id === $currentUser->id) {
+        if ($house->user_id === Auth::id()) {
             return back()->with('error', 'You cannot book your own house!');
-        }
-
-        $checkInDate = Carbon::parse($request->check_in_date)->format('Y-m-d');
-        $bookingDuration = intval($request->booking_duration);
-        $overlapExists = $house->bookings()->where(function ($q) use ($checkInDate, $bookingDuration) {
-            $q->whereDate('check_in_date', '<', Carbon::parse($checkInDate)->addMonths($bookingDuration)->format('Y-m-d'))
-                ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::parse($checkInDate)->format('Y-m-d')]);
-        })->exists();
-
-        if ($overlapExists) {
-            return back()->with('error', 'This property is already booked for the selected date range.');
         }
 
         $data = $request->all();
         $data['user_id'] = Auth::id();
+        $data['status'] = 'pending';
 
         Booking::create($data);
 
@@ -340,7 +325,7 @@ class HomeController extends Controller
         $home = Home::findOrFail($id);
         $reviews = Review::where('house_id', $id)->with('user')->latest()->get();
         $activeBookingExists = $home->bookings()
-            ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')])
+            ->where('status', 'approved')->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')])
             ->exists();
 
         return view('panel.pages.show', compact('home', 'activeBookingExists', 'reviews'));
@@ -362,11 +347,72 @@ class HomeController extends Controller
 
     public function bookingList()
     {
-        $bookings = Booking::with(['user', 'house'])
-            ->latest()
-            ->get();
+        $user = Auth::user();
+
+        if ($user->role == 'Admin') {
+            $bookings = Booking::with(['user', 'house'])->latest()->get();
+        } else {
+            // Show requests
+            $bookings = Booking::where('user_id', $user->id)
+                ->orWhereHas('house', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->with(['user', 'house'])
+                ->latest()
+                ->get();
+        }
 
         return view('panel.pages.booking_list', compact('bookings'));
+    }
+
+    public function approveBooking($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $house = Home::findOrFail($booking->house_id);
+
+        if ($house->user_id !== Auth::id() && Auth::user()->role !== 'Admin') {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
+        $booking->status = 'approved';
+        $booking->save();
+
+        $approvedCheckIn = Carbon::parse($booking->check_in_date);
+        $approvedCheckOut = $approvedCheckIn->copy()->addMonths($booking->booking_duration);
+
+        // Find other pending bookings for the same house
+        $otherPendingBookings = Booking::where('house_id', $booking->house_id)
+            ->where('id', '!=', $booking->id)
+            ->where('status', 'pending')
+            ->get();
+
+        foreach ($otherPendingBookings as $otherBooking) {
+            $otherCheckIn = Carbon::parse($otherBooking->check_in_date);
+            $otherCheckOut = $otherCheckIn->copy()->addMonths($otherBooking->booking_duration);
+
+            // reject status show if other got approve in booking
+            if ($approvedCheckIn->lessThan($otherCheckOut) && $approvedCheckOut->greaterThan($otherCheckIn)) {
+                $otherBooking->status = 'rejected';
+                $otherBooking->save();
+            }
+        }
+
+        return back()->with('success', 'Booking request approved!');
+    }
+
+    public function rejectBooking($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $house = Home::findOrFail($booking->house_id);
+
+        if ($house->user_id !== Auth::id() && Auth::user()->role !== 'Admin') {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
+        $booking->status = 'rejected';
+        $booking->save();
+
+        return back()->with('success', 'Booking request rejected.');
     }
 
     public function reject_house($id)
@@ -479,6 +525,7 @@ class HomeController extends Controller
         // Cards: only available house
         $houses = Home::where('status', 'approved')
             ->whereDoesntHave('bookings', function ($q) {
+                $q->where('status', 'approved');
                 $q->whereRaw(
                     'DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?',
                     [Carbon::now()->toDateString()]

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class ChatController extends Controller
 {
     // Show conversation list
-    public function index()
+    public function index() // list conversations
     {
         $user = Auth::user();
 
@@ -32,7 +32,7 @@ class ChatController extends Controller
     }
 
     // Open a specific conversation
-    public function show($id)
+    public function show($id) //Open chat room
     {
         $user = Auth::user();
 
@@ -54,7 +54,7 @@ class ChatController extends Controller
     }
 
     // User starts a new conversation with Admin
-    public function startConversation()
+    public function startConversation() // start button works
     {
         $user = Auth::user();
 

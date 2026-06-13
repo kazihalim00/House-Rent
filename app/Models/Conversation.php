@@ -6,23 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Conversation extends Model
 {
-    protected $fillable = ['tenant_id', 'owner_id'];
+    protected $fillable = ['user_one_id', 'user_two_id'];
 
-    // The tenant (normal user)
-    public function tenant()
+    public function userOne()
     {
-        return $this->belongsTo(User::class, 'tenant_id');
+        return $this->belongsTo(User::class, 'user_one_id');
     }
 
-    // The owner/admin
-    public function owner()
+    public function userTwo()
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsTo(User::class, 'user_two_id');
     }
 
-    // All messages in this conversation
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    // Returns the "other" participant relative to the given user
+    public function otherUser($currentUserId)
+    {
+        return $this->user_one_id === $currentUserId ? $this->userTwo : $this->userOne;
     }
 }

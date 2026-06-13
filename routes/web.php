@@ -10,7 +10,6 @@ Route::get('/', [HomeController::class, 'overview']);
 
 // Authenticated Users Group
 Route::middleware(['auth', 'verified'])->group(function () {
-
     // Dashboard & Property Details
 
     Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
@@ -43,12 +42,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Chat Routes
-    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
-    Route::get('/chat/start', [ChatController::class, 'startConversation'])->name('chat.start');
-    Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');
-    Route::post('/chat/{id}/send', [ChatController::class, 'send'])->name('chat.send');
-    Route::get('/chat/{id}/fetch', [ChatController::class, 'fetch'])->name('chat.fetch');
-
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+        Route::get('/chat/users', [ChatController::class, 'userList'])->name('chat.users');
+        Route::post('/chat/start/{userId}', [ChatController::class, 'startConversation'])->name('chat.start');
+        Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');
+        Route::post('/chat/{id}/send', [ChatController::class, 'send'])->name('chat.send');
+        Route::get('/chat/{id}/fetch', [ChatController::class, 'fetch'])->name('chat.fetch');
+    });
     // Admin Only Routes
     Route::middleware('admin')->group(function () {
         // User Management
@@ -72,13 +73,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/appointment/reject/{id}', [HomeController::class, 'rejectAppointment'])->name('appointment.reject');
         Route::get('/add-team-member', function () {
             return view('panel.pages.add_team_member');
-
         });
         Route::post('/add-team-member', [HomeController::class, 'add_team_member'])->name('add_team_member');
         Route::get('/see-team-members', [HomeController::class, 'see_team_members']);
         Route::get('/edit-team-member/{id}', [HomeController::class, 'edit_team_member'])->name('edit-team-member');
         Route::post('/edit-team-member/{id}', [HomeController::class, 'update_team_member'])->name('update-team-member');
-
     });
 });
 

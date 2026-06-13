@@ -9,35 +9,27 @@
             <h5 class="text-white fw-bold mb-1">
                 <i class="fas fa-comments me-2 text-danger"></i> Messages
             </h5>
-            <small class="text-muted">
-                @if($user->role === 'Admin')
-                    All user conversations
-                @else
-                    Your private conversation with Admin
-                @endif
-            </small>
+            <small class="text-muted">Your conversations</small>
         </div>
 
-        {{-- Only normal Users see "New Chat" button --}}
-        @if($user->role !== 'Admin')
-            <a href="{{ route('chat.start') }}"
-               style="background:#c0392b;
-                      color:white;
-                      border:none;
-                      padding:10px 22px;
-                      border-radius:25px;
-                      text-decoration:none;
-                      font-size:14px;
-                      font-weight:600;">
-                <i class="fas fa-plus me-1"></i> New Chat
-            </a>
-        @endif
+        <a href="{{ route('chat.users') }}"
+           style="background:#c0392b;
+                  color:white;
+                  border:none;
+                  padding:10px 22px;
+                  border-radius:25px;
+                  text-decoration:none;
+                  font-size:14px;
+                  font-weight:600;">
+            <i class="fas fa-plus me-1"></i> New Chat
+        </a>
     </div>
 
     {{-- Conversation List --}}
     @forelse($conversations as $conv)
-        <a href="{{ route('chat.show', $conv->id) }}"
-           style="text-decoration:none;">
+        @php $other = $conv->otherUser($user->id); @endphp
+
+        <a href="{{ route('chat.show', $conv->id) }}" style="text-decoration:none;">
             <div style="background:#2d2d44;
                         border-radius:12px;
                         padding:15px 20px;
@@ -62,26 +54,16 @@
                             color:white;
                             font-size:18px;
                             flex-shrink:0;">
-                    @if($user->role === 'Admin')
-                        {{ strtoupper(substr($conv->tenant->name, 0, 1)) }}
-                    @else
-                        A
-                    @endif
+                    {{ strtoupper(substr($other->name, 0, 1)) }}
                 </div>
 
                 {{-- Conversation Info --}}
                 <div style="flex:1; min-width:0;">
 
-                    {{-- Name --}}
                     <div style="color:white; font-weight:600; font-size:15px; margin-bottom:4px;">
-                        @if($user->role === 'Admin')
-                            {{ $conv->tenant->name }}
-                        @else
-                            Admin
-                        @endif
+                        {{ $other->name }}
                     </div>
 
-                    {{-- Last message preview --}}
                     <div style="color:#888;
                                 font-size:13px;
                                 white-space:nowrap;
@@ -110,31 +92,23 @@
 
         {{-- Empty State --}}
         <div style="text-align:center; color:#555; margin-top:80px;">
-            <i class="fas fa-comment-slash"
-               style="font-size:50px; margin-bottom:15px; color:#333;"></i>
+            <i class="fas fa-comment-slash" style="font-size:50px; margin-bottom:15px; color:#333;"></i>
             <p style="font-size:16px; margin-bottom:5px; color:#666;">
                 No conversations yet
             </p>
-
-            @if($user->role !== 'Admin')
-                <p style="font-size:13px; color:#555; margin-bottom:20px;">
-                    Start a chat with Admin
-                </p>
-                <a href="{{ route('chat.start') }}"
-                   style="background:#c0392b;
-                          color:white;
-                          padding:10px 28px;
-                          border-radius:25px;
-                          text-decoration:none;
-                          font-size:14px;
-                          font-weight:600;">
-                    <i class="fas fa-plus me-1"></i> Start a Chat
-                </a>
-            @else
-                <p style="font-size:13px; color:#555;">
-                    Waiting for users to start a conversation
-                </p>
-            @endif
+            <p style="font-size:13px; color:#555; margin-bottom:20px;">
+                Start a chat with someone
+            </p>
+            <a href="{{ route('chat.users') }}"
+               style="background:#c0392b;
+                      color:white;
+                      padding:10px 28px;
+                      border-radius:25px;
+                      text-decoration:none;
+                      font-size:14px;
+                      font-weight:600;">
+                <i class="fas fa-plus me-1"></i> Start a Chat
+            </a>
         </div>
 
     @endforelse

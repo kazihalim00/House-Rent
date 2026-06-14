@@ -3,36 +3,27 @@
 @section('content')
 <div class="d-flex flex-column" style="height: calc(100vh - 130px); padding: 20px;">
 
+    @php $other = $conversation->otherUser($user->id); @endphp
+
     {{-- Header --}}
     <div class="d-flex align-items-center gap-3 mb-3"
          style="background:#2d2d44; padding:15px 20px; border-radius:12px;">
 
-        {{-- Back Button --}}
         <a href="{{ route('chat.index') }}" style="color:#888; text-decoration:none;">
             <i class="fas fa-arrow-left"></i>
         </a>
 
-        {{-- Avatar --}}
         <div style="background:#c0392b; border-radius:50%;
                     width:42px; height:42px; flex-shrink:0;
                     display:flex; align-items:center;
                     justify-content:center;
                     color:white; font-weight:bold; font-size:18px;">
-            @if($user->role === 'Admin')
-                {{ strtoupper(substr($conversation->tenant->name, 0, 1)) }}
-            @else
-                A
-            @endif
+            {{ strtoupper(substr($other->name, 0, 1)) }}
         </div>
 
-        {{-- Name & Status --}}
         <div>
             <div style="color:white; font-weight:600; font-size:15px;">
-                @if($user->role === 'Admin')
-                    {{ $conversation->tenant->name }}
-                @else
-                    Admin
-                @endif
+                {{ $other->name }}
             </div>
             <small style="color:#2ecc71;">● Online</small>
         </div>
@@ -49,7 +40,6 @@
                 margin-bottom:15px;
                 border:1px solid #2d2d44;">
 
-        {{-- Empty state --}}
         @if($messages->isEmpty())
             <div class="empty-state" style="text-align:center; color:#555; margin-top:40px;">
                 <i class="fas fa-comment-dots" style="font-size:35px; margin-bottom:10px;"></i>
@@ -57,7 +47,6 @@
             </div>
         @endif
 
-        {{-- Load existing messages --}}
         @foreach($messages as $msg)
             <div class="d-flex mb-3 {{ $msg->user_id === auth()->id() ? 'justify-content-end' : 'justify-content-start' }}">
                 <div style="max-width:65%;">
@@ -90,8 +79,7 @@
     </div>
 
     {{-- Send Message Form --}}
-    <form action="{{ route('chat.send', $conversation->id) }}"
-          method="POST" id="chat-form">
+    <form action="{{ route('chat.send', $conversation->id) }}" method="POST" id="chat-form">
         @csrf
         <div class="d-flex gap-2 align-items-center">
 
@@ -144,7 +132,6 @@
     function appendMessage(msg) {
         const box = document.getElementById('chat-box');
 
-        // Remove empty state
         const emptyState = box.querySelector('.empty-state');
         if (emptyState) emptyState.remove();
 
@@ -191,14 +178,13 @@
             .catch(err => console.error('Poll error:', err));
     }
 
-    // ✅ FIXED — AJAX send, no page reload
     document.getElementById('chat-form').addEventListener('submit', function(e) {
-        e.preventDefault(); // ← stop page reload
+        e.preventDefault();
 
         const input = document.getElementById('message-input');
         const body = input.value.trim();
 
-        if (!body) return; // don't send empty
+        if (!body) return;
 
         const formData = new FormData(this);
 
@@ -211,7 +197,7 @@
         })
         .then(response => {
             if (response.ok) {
-                input.value = ''; // ✅ clear AFTER sending
+                input.value = '';
                 input.focus();
             } else {
                 console.error('Send failed:', response.status);

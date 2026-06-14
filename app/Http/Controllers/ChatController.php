@@ -10,25 +10,30 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    // Show conversation list
+    // List conversations for the logged-in user
     public function index()
     {
         $user = Auth::user();
 
-        if ($user->role === 'Admin') {
-            // Admin sees ALL conversations
-            $conversations = Conversation::with(['tenant', 'messages'])
-                ->orderBy('updated_at', 'desc')
-                ->get();
-        } else {
-            // Normal user sees only THEIR conversation
-            $conversations = Conversation::with(['owner', 'messages'])
-                ->where('tenant_id', $user->id)
-                ->orderBy('updated_at', 'desc')
-                ->get();
-        }
+        $conversations = Conversation::with(['userOne', 'userTwo', 'messages'])
+            ->where('user_one_id', $user->id)
+            ->orWhere('user_two_id', $user->id)
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
         return view('panel.pages.chat', compact('conversations', 'user'));
+    }
+
+    // Show list of all registered users to start a chat with
+    public function userList()
+    {
+        $user = Auth::user();
+
+        $users = User::where('id', '!=', $user->id)
+            ->orderBy('name')
+            ->get();
+
+        return view('panel.pages.chat_users', compact('users', 'user'));
     }
 
     // Open a specific conversation
@@ -36,16 +41,14 @@ class ChatController extends Controller
     {
         $user = Auth::user();
 
-        $conversation = Conversation::with(['messages.user', 'tenant', 'owner'])
+        $conversation = Conversation::with(['messages.user', 'userOne', 'userTwo'])
             ->findOrFail($id);
 
-        // Security: only participants can open this chat
-        if ($conversation->tenant_id !== $user->id && $conversation->owner_id !== $user->id) {
+        if ($conversation->user_one_id !== $user->id && $conversation->user_two_id !== $user->id) {
             abort(403, 'Unauthorized');
         }
 
-        $messages = $conversation
-            ->messages()
+        $messages = $conversation->messages()
             ->with('user')
             ->orderBy('created_at', 'asc')
             ->get();
@@ -53,31 +56,32 @@ class ChatController extends Controller
         return view('panel.pages.chat_room', compact('conversation', 'messages', 'user'));
     }
 
-    // User starts a new conversation with Admin
-    public function startConversation()
+    // Start (or open existing) conversation with a chosen user
+    public function startConversation($targetUserId)
     {
         $user = Auth::user();
 
-        // Find the admin user
-        $admin = User::where('role', 'Admin')->first();
-
-        if (!$admin) {
-            return redirect()->route('chat.index')->with('error', 'No admin found.');
+        if ((int) $targetUserId === $user->id) {
+            return redirect()->route('chat.users')->with('error', 'You cannot chat with yourself.');
         }
 
-        // Check if conversation already exists — don't create duplicates
-        $existing = Conversation::where('tenant_id', $user->id)
-            ->where('owner_id', $admin->id)
+        $target = User::findOrFail($targetUserId);
+
+        $existing = Conversation::where(function ($q) use ($user, $target) {
+                $q->where('user_one_id', $user->id)->where('user_two_id', $target->id);
+            })
+            ->orWhere(function ($q) use ($user, $target) {
+                $q->where('user_one_id', $target->id)->where('user_two_id', $user->id);
+            })
             ->first();
 
         if ($existing) {
             return redirect()->route('chat.show', $existing->id);
         }
 
-        // Create new conversation
         $conversation = Conversation::create([
-            'tenant_id' => $user->id,
-            'owner_id' => $admin->id,
+            'user_one_id' => $user->id,
+            'user_two_id' => $target->id,
         ]);
 
         return redirect()->route('chat.show', $conversation->id);
@@ -91,8 +95,7 @@ class ChatController extends Controller
         $user = Auth::user();
         $conversation = Conversation::findOrFail($conversationId);
 
-        // Security: only participants can send
-        if ($conversation->tenant_id !== $user->id && $conversation->owner_id !== $user->id) {
+        if ($conversation->user_one_id !== $user->id && $conversation->user_two_id !== $user->id) {
             abort(403);
         }
 
@@ -102,13 +105,12 @@ class ChatController extends Controller
             'body' => $request->body,
         ]);
 
-        // Update conversation timestamp for sorting
         $conversation->touch();
 
         return redirect()->back();
     }
 
-    // Polling — fetch new messages every 3 seconds
+    // Polling — fetch new messages
     public function fetch(Request $request, $conversationId)
     {
         $user = Auth::user();
@@ -116,8 +118,7 @@ class ChatController extends Controller
 
         $conversation = Conversation::findOrFail($conversationId);
 
-        // Security check
-        if ($conversation->tenant_id !== $user->id && $conversation->owner_id !== $user->id) {
+        if ($conversation->user_one_id !== $user->id && $conversation->user_two_id !== $user->id) {
             abort(403);
         }
 

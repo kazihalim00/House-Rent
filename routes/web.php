@@ -25,6 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/booking-list', [HomeController::class, 'bookingList'])->name('booking.list');
     Route::get('/book-house/{id}', [HomeController::class, 'showBookForm'])->name('book.house');
     Route::post('/book-house', [HomeController::class, 'processBooking'])->name('book.store');
+    Route::post('/booking/approve/{id}', [HomeController::class, 'approveBooking'])->name('booking.approve');
+    Route::post('/booking/reject/{id}', [HomeController::class, 'rejectBooking'])->name('booking.reject');
     Route::delete('/booking/delete/{id}', [HomeController::class, 'deleteBooking'])->name('booking.delete');
 
     // Appointment Module

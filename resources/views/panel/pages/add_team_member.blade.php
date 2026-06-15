@@ -79,6 +79,9 @@
                 <input type="url"
                     class="w-full mt-2 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                     placeholder="https://yourportfolio.com" name="portfolio">
+                @error('portfolio')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Image Upload -->

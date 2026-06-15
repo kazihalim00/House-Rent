@@ -77,9 +77,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('panel.pages.add_team_member');
         });
         Route::post('/add-team-member', [HomeController::class, 'add_team_member'])->name('add_team_member');
-        Route::get('/see-team-members', [HomeController::class, 'see_team_members']);
+        Route::get('/see-team-member', [HomeController::class, 'see_team_members'])->name('see-team-member');
         Route::get('/edit-team-member/{id}', [HomeController::class, 'edit_team_member'])->name('edit-team-member');
         Route::post('/edit-team-member/{id}', [HomeController::class, 'update_team_member'])->name('update-team-member');
+        Route::get('/delete-team-member/{id}', [HomeController::class, 'delete_team_member'])
+            ->name('delete-team-member-page');
+
+        Route::delete('/delete-team-member/{id}', [HomeController::class, 'destroy_team_member'])
+            ->name('delete-team-member');
     });
 });
 

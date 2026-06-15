@@ -76,7 +76,13 @@
         }
     </style>
     <div class="container py-5">
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show shadow-sm mt-3" role="alert">
+                {{ session('success') }}
 
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-white mb-1">
@@ -175,7 +181,8 @@
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
 
-                                            <a href="#" class="btn btn-sm btn-danger">
+                                            <a href="{{ url('/delete-team-member/' . $member->id) }}"
+                                                class="btn btn-sm btn-danger">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
 

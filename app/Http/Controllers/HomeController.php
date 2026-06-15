@@ -616,7 +616,7 @@ class HomeController extends Controller
 
         if ($request->hasFile('image')) {
 
-           
+
             if ($member->image && file_exists(public_path('upload/team/' . $member->image))) {
                 unlink(public_path('upload/team/' . $member->image));
             }
@@ -637,10 +637,30 @@ class HomeController extends Controller
         $member->order = $request->order ?? 0;
         $member->status = $request->status;
 
-        // ⭐ IMPORTANT FIX
+
         $member->save();
 
         return redirect('/see-team-members')
             ->with('success', 'Team member updated successfully!');
+    }
+    public function delete_team_member($id)
+    {
+        $member = TeamMember::findOrFail($id);
+
+        return view('panel.pages.delete_team_member', compact('member'));
+    }
+
+    public function destroy_team_member($id)
+    {
+        $member = TeamMember::findOrFail($id);
+
+        if ($member->image && file_exists(public_path('upload/team/' . $member->image))) {
+            unlink(public_path('upload/team/' . $member->image));
+        }
+
+        $member->delete();
+
+        return redirect()->route('see-team-member')
+            ->with('success', 'Team member deleted successfully.');
     }
 }

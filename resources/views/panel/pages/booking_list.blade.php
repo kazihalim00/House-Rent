@@ -96,7 +96,7 @@
                                     <td>
                                         <div class="flex items-center space-x-2">
                                             {{-- Show Approve/Reject buttons if the current user is the house owner or an Admin, and the booking is pending --}}
-                                            @if (Auth::user()->role == 'Admin' || (Auth::id() == $booking->house->user_id && $booking->status == 'pending'))
+                                            @if ($booking->status == 'pending' && (Auth::user()->role == 'Admin' || Auth::id() == $booking->house?->user_id))
                                                 <form action="{{ route('booking.approve', $booking->id) }}" method="POST"
                                                     class="inline-block">
                                                     @csrf

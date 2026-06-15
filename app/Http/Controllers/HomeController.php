@@ -605,12 +605,12 @@ class HomeController extends Controller
             'name' => 'required',
             'role' => 'required',
             'short_bio' => 'required',
-            'order' => 'nullable',
+            'order' => 'required',
             'status' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
-            'github' => 'nullable',
-            'linkedin' => 'nullable',
-            'portfolio' => 'nullable',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp',
+            'github' => 'required',
+            'linkedin' => 'required',
+            'portfolio' => 'required',
         ]);
 
 

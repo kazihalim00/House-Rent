@@ -91,14 +91,14 @@
             <!-- Row 3 -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="text-gray-300 text-sm font-medium">Display Order</label>
+                    <label class="text-gray-300 text-sm font-medium">Display Order *</label>
                     <input type="number"
                         class="w-full mt-2 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                         placeholder="1" name="order">
                 </div>
 
                 <div>
-                    <label class="text-gray-300 text-sm font-medium">Status</label>
+                    <label class="text-gray-300 text-sm font-medium">Status *</label>
                     <select
                         class="w-full mt-2 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                         name="status">

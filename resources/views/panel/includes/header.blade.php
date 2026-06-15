@@ -95,7 +95,7 @@
                 </div>
 
                 <a href="#" class="dropdown-item">My Profile</a>
-                <a href="#" class="dropdown-item">Settings</a>
+                <a href=" {{ route('profile.edit') }}" class="dropdown-item">Settings</a>
 
                 <hr class="dropdown-divider">
 

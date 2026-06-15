@@ -307,7 +307,7 @@
 
                         /* Name Styling */
                         .member-name {
-                            font-size: 1.6rem;
+                            font-size: 1.3rem;
                             font-weight: 800;
                             color: #f8fafc;
                             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);

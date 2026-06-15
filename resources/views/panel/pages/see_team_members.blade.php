@@ -132,7 +132,26 @@
                                         <strong>{{ $member->name }}</strong>
                                     </td>
 
+                                    <!-- Role -->
+                                    <td>
+                                        @php
+                                            $roleColors = [
+                                                'Full Stack Developer' => '#3b82f6',  // blue
+                                                'Frontend Developer' => '#06b6d4',  // cyan
+                                                'Backend Developer' => '#22c55e',  // green
+                                                'UI/UX Designer' => '#f59e0b',  // orange
+                                                'Project Manager' => '#ef4444',  // red
+                                                'QA Engineer' => '#a855f7',  // purple
+                                            ];
 
+                                            $color = $roleColors[$member->role] ?? '#3b82f6';
+                                        @endphp
+
+                                        <span class="px-3 py-2 rounded-pill fw-semibold text-white"
+                                            style="font-size: 0.8rem; letter-spacing: 0.5px; background-color: {{ $color }};">
+                                            {{ $member->role }}
+                                        </span>
+                                    </td>
 
                                     <!-- Social -->
                                     <td>

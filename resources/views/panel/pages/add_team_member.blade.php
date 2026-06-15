@@ -27,6 +27,9 @@
                     <input type="text"
                         class="w-full mt-2 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                         placeholder="Enter full name" name="name">
+                    @error('name')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
@@ -41,6 +44,9 @@
                         <option>UI/UX Designer</option>
                         <option>Project Manager</option>
                     </select>
+                    @error('role')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -51,6 +57,9 @@
                     <input type="url"
                         class="w-full mt-2 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                         placeholder="https://github.com/username" name="github">
+                    @error('github')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
@@ -58,6 +67,9 @@
                     <input type="url"
                         class="w-full mt-2 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                         placeholder="https://linkedin.com/in/username" name="linkedin">
+                    @error('linkedin')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -77,6 +89,9 @@
                     class="mt-2 flex flex-col items-center justify-center border-2 border-dashed border-gray-700 rounded-xl p-6 bg-gray-800 hover:border-blue-500 transition">
                     <input type="file" class="text-gray-300" name="image">
                     <p class="text-gray-400 text-sm mt-2">Click or drag image here</p>
+                    @error('image')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -86,6 +101,9 @@
                 <textarea rows="4"
                     class="w-full mt-2 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                     placeholder="Write a short introduction..." name="short_bio"></textarea>
+                @error('short_bio')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Row 3 -->
@@ -95,6 +113,9 @@
                     <input type="number"
                         class="w-full mt-2 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
                         placeholder="1" name="order">
+                    @error('order')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
@@ -105,6 +126,9 @@
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
                     </select>
+                    @error('status')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 

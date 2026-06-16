@@ -71,17 +71,17 @@
                 </a> --}}
                 <div class="nav-item dropdown">
                     <a href="#"
-                        class="nav-link dropdown-toggle {{ request()->is('add-team-member', 'see-team-members') ? 'active' : '' }}"
+                        class="nav-link dropdown-toggle {{ request()->is('add-team-member', 'see-team-member') ? 'active' : '' }}"
                         data-bs-toggle="dropdown">
                         <i class="fa fa-laptop me-2"></i>Team Members
                     </a>
                     <div
-                        class="dropdown-menu bg-transparent border-0 {{ request()->is('add-team-member', 'see-team-members') ? 'show' : '' }}">
+                        class="dropdown-menu bg-transparent border-0 {{ request()->is('add-team-member', 'see-team-member') ? 'show' : '' }}">
                         <a href="{{ url('/add-team-member') }}"
                             class="dropdown-item {{ request()->is('add-team-member') ? 'active' : '' }}">Add
                             Team Member</a>
-                        <a href="{{ url('/see-team-members') }}"
-                            class="dropdown-item {{ request()->is('see-team-members') ? 'active' : '' }}">See team
+                        <a href="{{ url('/see-team-member') }}"
+                            class="dropdown-item {{ request()->is('see-team-member') ? 'active' : '' }}">See team
                             members</a>
 
                     </div>

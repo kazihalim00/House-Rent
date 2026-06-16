@@ -3,6 +3,7 @@
         <a href="{{ url('/') }}" class="navbar-brand mx-4 mb-3">
             <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>House Rent</h3>
         </a>
+        @auth
         <div class="d-flex align-items-center ms-4 mb-4">
             <div class="position-relative">
                 <img class="rounded-circle" src="{{ asset('upload/img/' . Auth::user()->user_image) }}" alt=""
@@ -95,5 +96,15 @@
                 <i class="fa fa-table me-2"></i>Chat
             </a>
         </div>
+        @else
+        <div class="navbar-nav w-100">
+            <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">
+                <i class="fa fa-home me-2"></i>Home
+            </a>
+            <a href="{{ route('house-detail') }}" class="nav-item nav-link {{ request()->is('house-detail') ? 'active' : '' }}">
+                <i class="fa fa-search me-2"></i>Browse Houses
+            </a>
+        </div>
+        @endauth
     </nav>
 </div>

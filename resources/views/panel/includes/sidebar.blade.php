@@ -3,6 +3,7 @@
         <a href="{{ url('/') }}" class="navbar-brand mx-4 mb-3">
             <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>House Rent</h3>
         </a>
+        @auth
         <div class="d-flex align-items-center ms-4 mb-4">
             <div class="position-relative">
                 <img class="rounded-circle" src="{{ asset('upload/img/' . Auth::user()->user_image) }}" alt=""
@@ -71,17 +72,17 @@
                 </a> --}}
                 <div class="nav-item dropdown">
                     <a href="#"
-                        class="nav-link dropdown-toggle {{ request()->is('add-team-member', 'see-team-members') ? 'active' : '' }}"
+                        class="nav-link dropdown-toggle {{ request()->is('add-team-member', 'see-team-member') ? 'active' : '' }}"
                         data-bs-toggle="dropdown">
                         <i class="fa fa-laptop me-2"></i>Team Members
                     </a>
                     <div
-                        class="dropdown-menu bg-transparent border-0 {{ request()->is('add-team-member', 'see-team-members') ? 'show' : '' }}">
+                        class="dropdown-menu bg-transparent border-0 {{ request()->is('add-team-member', 'see-team-member') ? 'show' : '' }}">
                         <a href="{{ url('/add-team-member') }}"
                             class="dropdown-item {{ request()->is('add-team-member') ? 'active' : '' }}">Add
                             Team Member</a>
-                        <a href="{{ url('/see-team-members') }}"
-                            class="dropdown-item {{ request()->is('see-team-members') ? 'active' : '' }}">See team
+                        <a href="{{ url('/see-team-member') }}"
+                            class="dropdown-item {{ request()->is('see-team-member') ? 'active' : '' }}">See team
                             members</a>
 
                     </div>
@@ -95,5 +96,15 @@
                 <i class="fa fa-table me-2"></i>Chat
             </a>
         </div>
+        @else
+        <div class="navbar-nav w-100">
+            <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">
+                <i class="fa fa-home me-2"></i>Home
+            </a>
+            <a href="{{ route('house-detail') }}" class="nav-item nav-link {{ request()->is('house-detail') ? 'active' : '' }}">
+                <i class="fa fa-search me-2"></i>Browse Houses
+            </a>
+        </div>
+        @endauth
     </nav>
 </div>

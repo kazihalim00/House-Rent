@@ -4,13 +4,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <div class="hero">
         <div class="hero-slide">
+            <div class="img overlay" style="background-image: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1170&auto=format&fit=crop')"></div>
+            <div class="img overlay" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1175&auto=format&fit=crop')"></div>
+
+            {{-- Dynamic Images: Show if houses exist --}}
             @foreach($heroHouses as $heroHouse)
                 @php
-    $heroImages = json_decode($heroHouse->home_image, true) ?: [$heroHouse->home_image];
-    $heroDisplayImage = $heroImages[0] ?? 'default.jpg';
+                    $heroImages = json_decode($heroHouse->home_image, true);
+                    // Handle both array and plain string
+                    $heroDisplayImage = is_array($heroImages) ? ($heroImages[0] ?? 'default.jpg') : ($heroHouse->home_image ?? 'default.jpg');
                 @endphp
-                <div class="img overlay" style="background-image: url('{{ asset('upload/img/' . $heroDisplayImage) }}')">
-                </div>
+                @if($heroDisplayImage && file_exists(public_path('upload/img/' . $heroDisplayImage)))
+                    <div class="img overlay" style="background-image: url('{{ asset('upload/img/' . $heroDisplayImage) }}')"></div>
+                @else
+                    {{-- Fallback if the specific house image file is missing --}}
+                    <div class="img overlay" style="background-image: url('{{ asset('upload/img/default.jpg') }}')"></div>
+                @endif
             @endforeach
         </div>
 

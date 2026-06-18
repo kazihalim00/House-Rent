@@ -80,8 +80,8 @@
                         <a href="{{ url('/add-team-member') }}"
                             class="dropdown-item {{ request()->is('add-team-member') ? 'active' : '' }}">Add
                             Team Member</a>
-                        <a href="{{ url('/see-team-members') }}"
-                            class="dropdown-item {{ request()->is('see-team-members') ? 'active' : '' }}">See team
+                        <a href="{{ url('/see-team-member') }}"
+                            class="dropdown-item {{ request()->is('see-team-member') ? 'active' : '' }}">See team
                             members</a>
 
                     </div>

@@ -18,7 +18,7 @@ class HomeController extends Controller
         $request->validate([
             'house_name' => 'required',
             'owner_name' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'phone' => 'required',
             'address' => 'required',
             'city' => 'required',

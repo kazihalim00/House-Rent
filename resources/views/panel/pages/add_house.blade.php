@@ -44,12 +44,7 @@
                         placeholder="Enter house name" required />
                 </div>
                 <input type="hidden" name="owner_name" value="{{ Auth::user()->name }}">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
-                    <input type="email" name="email" id="email"
-                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                        placeholder="Enter user email" required />
-                </div>
+                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
 
                 <div>
                     <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number *</label>

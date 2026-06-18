@@ -477,7 +477,17 @@ class HomeController extends Controller
     public function deleteBooking($id)
     {
         $booking = Booking::findOrFail($id);
+        $houseId = $booking->house_id;
+        $wasApproved = $booking->status === 'approved';
+
         $booking->delete();
+
+        if ($wasApproved) {
+            // If owner delete approve then other user become pending
+            Booking::where('house_id', $houseId)
+                ->where('status', 'rejected')
+                ->update(['status' => 'pending']);
+        }
 
         return back()->with('success', 'Booking deleted successfully!');
     }

@@ -7,17 +7,16 @@ use Illuminate\Support\Facades\Route;
 
 // Public Route (Frontend)
 Route::get('/', [HomeController::class, 'overview']);
+Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
+Route::get('/house/{id}', [HomeController::class, 'show'])->name('panel.pages.show');
 
 // Authenticated Users Group
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard & Property Details
 
-    Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');
-
     // House Module
     Route::get('/add-house', [HomeController::class, 'add_house_view'])->name('add-house');
     Route::post('/add-house', [HomeController::class, 'store']);
-    Route::get('/house/{id}', [HomeController::class, 'show'])->name('panel.pages.show');
 
     // Booking Module
     Route::get('/booking', [HomeController::class, 'showBookingPage'])->name('booking');

@@ -5,7 +5,7 @@
     <a href="#" class="sidebar-toggler flex-shrink-0">
         <i class="fa fa-bars"></i>
     </a>
-    <form action="{{ url()->current() }}" method="GET" class="d-none d-md-flex ms-4">
+    <form action="{{ route('house-detail') }}" method="GET" class="d-none d-md-flex ms-4">
         <input id="searchInput" class="form-control bg-dark border-0" type="search" name="search" placeholder="Search"
             value="{{ request('search') }}">
     </form>
@@ -14,6 +14,7 @@
         <i class="fas fa-sliders-h mr-2"></i> Filters
     </button>
     <div class="navbar-nav align-items-center ms-auto">
+        @auth
         <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <i class="fa fa-envelope me-lg-2"></i>
@@ -110,6 +111,14 @@
 
             </div>
         </div>
+        @else
+            <div class="nav-item">
+                <a href="{{ route('login') }}" class="nav-link">Login</a>
+            </div>
+            <div class="nav-item">
+                <a href="{{ route('register') }}" class="nav-link text-primary">Register</a>
+            </div>
+        @endauth
     </div>
 </nav>
 <script>

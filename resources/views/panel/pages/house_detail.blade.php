@@ -139,5 +139,9 @@
 
         </div>
 
+        <div class="mt-10 flex justify-center">
+            {{ $houses->links() }}
+        </div>
+
     </div>
 @endsection

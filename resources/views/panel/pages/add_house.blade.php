@@ -43,19 +43,7 @@
                         class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
                         placeholder="Enter house name" required />
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">
-                        House Owner
-                    </label>
-
-                    <div
-                        class="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 flex items-center justify-between">
-                        <span class="text-gray-200 font-medium">
-                            {{ Auth::user()->name }}
-                        </span>
-                        <input type="hidden" name="owner_name" value="{{ Auth::user()->name }}">
-                    </div>
-                </div>
+                <input type="hidden" name="owner_name" value="{{ Auth::user()->name }}">
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
                     <input type="email" name="email" id="email"

@@ -30,10 +30,22 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    <style>
+        body.panel-bg,
+        html.panel-bg {
+            background-color: #16213e !important;
+        }
+
+        .content,
+        .container-fluid.pt-4.px-4.flex-grow-1,
+        .footer-bg {
+            background-color: #16213e !important;
+        }
+    </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<body>
+<body class="panel-bg">
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner"
@@ -88,7 +100,7 @@
             id="filterModalContent">
 
             <div class="bg-gray-900 px-6 py-4 flex justify-between items-center">
-                <h3 class="text-white text-xl font-bold"><i class="fas fa-filter text-blue-500 mr-2"></i> Advanced
+                <h3 class="text-white text-xl font-bold"><i class="fas fa-filter text-red-500 mr-2" style="color: #e53935;"></i> Advanced
                     Search
                 </h3>
                 <button onclick="closeFilterModal()"
@@ -154,7 +166,7 @@
                         <button type="button" onclick="closeFilterModal()"
                             class="px-6 py-2.5 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition">Cancel</button>
                         <button type="submit"
-                            class="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition">Apply
+                            class="px-6 py-2.5 text-white font-bold rounded-lg shadow-md transition" style="background-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">Apply
                             Filters</button>
                     </div>
                 </div>

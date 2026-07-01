@@ -144,7 +144,7 @@
         }
 
         .dropdown-menu div:hover {
-            background: #5b21ff;
+            background: #e53935;
             color: white;
         }
 
@@ -188,15 +188,15 @@
         }
 
         .dates div.calendar-day:hover {
-            background: #5b21ff;
+            background: #e53935;
             color: #fff;
         }
 
         .active-date {
-            border: 2px solid #5b21ff;
-            background: #5b21ff !important;
+            border: 2px solid #e53935;
+            background: #e53935 !important;
             color: #fff !important;
-            box-shadow: 0 0 15px rgba(91, 33, 255, 0.6);
+            box-shadow: 0 0 15px rgba(229, 57, 53, 0.6);
         }
 
         .bottom-buttons {
@@ -228,12 +228,12 @@
 
         .week-buttons button:hover,
         .week-buttons .selected {
-            background: #5b21ff;
+            background: #e53935;
             border: none;
         }
 
         .result-btn {
-            background: #5b21ff;
+            background: #e53935;
             color: white;
             border: none;
             padding: 18px 40px;
@@ -283,7 +283,7 @@
     </div>
 
     <div class="tabs">
-        <div class="tab active">Pick specific dates</div>
+        <div class="tab active" style="background-color: #e53935; color: white;">Pick specific dates</div>
     </div>
 
     <div class="calendar-wrapper">
@@ -337,7 +337,7 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:20px;">
-            <button type="button" class="result-btn">View results</button>
+            <button type="button" class="result-btn" style="background-color: #e53935; border-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">View results</button>
         </div>
     </div>
 

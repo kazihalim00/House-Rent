@@ -312,7 +312,7 @@
         <div class="modal-header-custom">
             <div class="modal-title-layout">
                 <svg class="header-filter-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 5C4 4.44772 4.44772 4 5 4H19C19.5523 4 20 4.44772 20 5V7.17157C20 7.70201 19.7893 8.21071 19.4142 8.58579L14.5858 13.4142C14.2107 13.7893 14 14.298 14 14.8284V19L10 21V14.8284C10 14.298 9.78929 13.7893 9.41421 13.4142L4.58579 8.58579C4.21071 8.21071 4 7.70201 4 7.17157V5Z" fill="#5F33FF"/>
+                    <path d="M4 5C4 4.44772 4.44772 4 5 4H19C19.5523 4 20 4.44772 20 5V7.17157C20 7.70201 19.7893 8.21071 19.4142 8.58579L14.5858 13.4142C14.2107 13.7893 14 14.298 14 14.8284V19L10 21V14.8284C10 14.298 9.78929 13.7893 9.41421 13.4142L4.58579 8.58579C4.21071 8.21071 4 7.70201 4 7.17157V5Z" fill="#e53935"/>
                 </svg>
                 <h3>Advanced Search</h3>
             </div>
@@ -608,12 +608,12 @@
 }
 
 .btn-apply {
-    background-color: var(--color-purple);
+    background-color: #e53935;
     color: #ffffff;
 }
 
 .btn-apply:hover {
-    background-color: #4C24DF;
+    background-color: #c62828;
 }
 </style>
 <script>

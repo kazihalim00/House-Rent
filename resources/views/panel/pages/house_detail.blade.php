@@ -15,7 +15,7 @@
     
 
         <div class="text-end mb-4">
-            <a href="{{ url('/add-house') }}" class="btn btn-success">Add House</a>
+            <a href="{{ url('/add-house') }}" class="btn" style="background-color: #e53935; color: white; border-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">Add House</a>
         </div>
 
         @if ($houses->isEmpty())
@@ -106,7 +106,7 @@
                             </div>
                         </div>
                         <a href="{{ route('panel.pages.show', $house->id) }}"
-                            class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg">
+                            class="w-full block text-center text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg" style="background-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
                             View Details
                         </a>
                     </div>
@@ -137,6 +137,10 @@
                 </div>
             @endforeach
 
+        </div>
+
+        <div class="mt-10 flex justify-center">
+            {{ $houses->links() }}
         </div>
 
     </div>

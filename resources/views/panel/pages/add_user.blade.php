@@ -66,7 +66,7 @@
 
                 <div class="pt-4">
                     <button type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 flex justify-center items-center gap-2">
+                        class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 flex justify-center items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                             viewBox="0 0 16 16">
                             <path

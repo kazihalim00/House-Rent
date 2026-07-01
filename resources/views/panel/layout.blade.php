@@ -41,6 +41,20 @@
         .footer-bg {
             background-color: #16213e !important;
         }
+
+        .content.no-sidebar {
+            margin-left: 0 !important;
+            width: 100% !important;
+        }
+
+        .content.no-sidebar .container-fluid.pt-4.px-4.flex-grow-1 {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .content.no-sidebar .navbar .sidebar-toggler {
+            display: none !important;
+        }
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -55,10 +69,12 @@
             </div>
         </div>
         <!-- Spinner End -->
-        <div class="content d-flex flex-column min-vh-100">
+        <div class="content d-flex flex-column min-vh-100{{ auth()->check() ? '' : ' no-sidebar' }}">
 
             <!-- Sidebar Start -->
-            @include('panel.includes.sidebar')
+            @auth
+                @include('panel.includes.sidebar')
+            @endauth
             <!-- Sidebar End -->
             <!-- Navbar Start -->
             @include('panel.includes.header')

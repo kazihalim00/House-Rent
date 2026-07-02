@@ -11,6 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
 
 class HomeController extends Controller
 {
@@ -142,7 +143,7 @@ class HomeController extends Controller
                 });
         }
 
-        $houses = $query->latest()->paginate(6)->withQueryString();
+        $houses = $query->latest()->paginate(3)->withQueryString();
 
         return view('panel.pages.house_detail', compact('houses'));
     }
@@ -187,7 +188,9 @@ class HomeController extends Controller
         }
 
         $users = $query->latest()->get();
+
         return view('panel.pages.user_list', compact('users'));
+
     }
 
     public function edit_user($id)
@@ -611,8 +614,8 @@ class HomeController extends Controller
     public function see_team_members()
     {
         $members = TeamMember::get();
-
         return view('panel.pages.see_team_members', compact('members'));
+
     }
 
     public function edit_team_member($id)

@@ -20,38 +20,35 @@
                 <i class="fa fa-envelope me-lg-2"></i>
                 <span class="d-none d-lg-inline-flex">Message</span>
             </a>
-            <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                <a href="#" class="dropdown-item">
-                    <div class="d-flex align-items-center">
-                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="ms-2">
-                            <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                            <small>15 minutes ago</small>
+            <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0" id="header-messages-menu">
+                @forelse($latestMessages ?? collect() as $msg)
+                    @php
+                        $other = $msg->conversation->otherUser($user->id);
+                        $avatar = $other->user_image
+                            ? asset('upload/img/' . $other->user_image)
+                            : asset('default.png');
+                    @endphp
+                    <a href="{{ route('chat.show', $msg->conversation_id) }}" class="dropdown-item header-message-item">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded-circle" src="{{ $avatar }}" alt="" style="width: 40px; height: 40px; object-fit:cover;">
+                            <div class="ms-2" style="overflow:hidden;">
+                                <h6 class="fw-normal mb-0" style="text-overflow:ellipsis; white-space:nowrap; overflow:hidden;">
+                                    {{ $msg->is_mine ? 'You' : $other->name }}: {{ \Illuminate\Support\Str::limit($msg->body, 30) }}
+                                </h6>
+                                <small>{{ $msg->created_at->diffForHumans() }}</small>
+                            </div>
                         </div>
+                    </a>
+                    @if(!$loop->last)
+                        <hr class="dropdown-divider">
+                    @endif
+                @empty
+                    <div class="dropdown-item text-center text-muted" id="header-no-messages">
+                        <small>No new messages</small>
                     </div>
-                </a>
+                @endforelse
                 <hr class="dropdown-divider">
-                <a href="#" class="dropdown-item">
-                    <div class="d-flex align-items-center">
-                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="ms-2">
-                            <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                    </div>
-                </a>
-                <hr class="dropdown-divider">
-                <a href="#" class="dropdown-item">
-                    <div class="d-flex align-items-center">
-                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="ms-2">
-                            <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                    </div>
-                </a>
-                <hr class="dropdown-divider">
-                <a href="/chat" class="dropdown-item text-center">See all message</a>
+                <a href="{{ route('chat.index') }}" class="dropdown-item text-center">See all message</a>
             </div>
         </div>
         <!-- <div class="nav-item dropdown">
@@ -89,7 +86,7 @@
             <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0 text-center">
 
                 <div class="py-2">
-                    <span class="badge 
+                    <span class="badge
                     {{ Auth::user()->role == 'Admin' ? 'bg-success' : 'bg-warning' }}">
                         {{ Auth::user()->role }}
                     </span>
@@ -137,6 +134,72 @@
                     window.location.href = window.location.pathname;
                 }
             });
+        }
+
+        // Real-time header messages polling
+        const menu = document.getElementById('header-messages-menu');
+        if (menu) {
+            const csrf = document.querySelector('meta[name="csrf-token"]')
+                ? document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                : '';
+            const endpoint = '/chat/header/latest';
+
+            function escapeHtml(str) {
+                return String(str ?? '').replace(/[&<>"']/g, function (m) {
+                    return ({
+                        '&': '&amp;', '<': '&lt;', '>': '&gt;',
+                        '"': '&quot;', "'": '&#39;'
+                    })[m];
+                });
+            }
+
+            function renderHeaderMessages(messages) {
+                let html = '';
+                if (!messages || messages.length === 0) {
+                    html = '<div class="dropdown-item text-center text-muted"><small>No new messages</small></div><hr class="dropdown-divider">';
+                } else {
+                    messages.forEach(function (msg, idx) {
+                        const img = msg.user_image
+                            ? '/upload/img/' + msg.user_image
+                            : '/default.png';
+                        const body = (msg.body || '').length > 30
+                            ? msg.body.substring(0, 30) + '…'
+                            : msg.body;
+                        html += '<a href="/chat/' + msg.conversation_id + '" class="dropdown-item header-message-item">' +
+                            '<div class="d-flex align-items-center">' +
+                                '<img class="rounded-circle" src="' + img + '" alt="" style="width: 40px; height: 40px; object-fit:cover;">' +
+                                '<div class="ms-2" style="overflow:hidden;">' +
+                                    '<h6 class="fw-normal mb-0" style="text-overflow:ellipsis; white-space:nowrap; overflow:hidden;">' +
+                                        (msg.is_mine ? 'You' : escapeHtml(msg.user_name)) + ': ' + escapeHtml(body) +
+                                    '</h6>' +
+                                    '<small>' + escapeHtml(msg.time) + '</small>' +
+                                '</div>' +
+                            '</div>' +
+                        '</a>';
+                        if (idx < messages.length - 1) {
+                            html += '<hr class="dropdown-divider">';
+                        }
+                    });
+                    html += '<hr class="dropdown-divider">';
+                }
+                html += '<a href="/chat" class="dropdown-item text-center">See all message</a>';
+                menu.innerHTML = html;
+            }
+
+            function pollHeaderMessages() {
+                fetch(endpoint, {
+                    method: 'GET',
+                    headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' },
+                    credentials: 'same-origin'
+                })
+                .then(res => res.ok ? res.json() : [])
+                .then(data => renderHeaderMessages(Array.isArray(data) ? data : []))
+                .catch(err => console.error('Header messages poll error:', err));
+            }
+
+            // Initial sync, then poll every 5 seconds
+            pollHeaderMessages();
+            setInterval(pollHeaderMessages, 5000);
         }
     });
 </script>

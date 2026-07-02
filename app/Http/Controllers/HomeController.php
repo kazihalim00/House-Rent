@@ -142,7 +142,7 @@ class HomeController extends Controller
                 });
         }
 
-        $houses = $query->latest()->paginate(6)->withQueryString();
+        $houses = $query->latest()->paginate(3)->withQueryString();  // added this section for [pagination ]
 
         return view('panel.pages.house_detail', compact('houses'));
     }

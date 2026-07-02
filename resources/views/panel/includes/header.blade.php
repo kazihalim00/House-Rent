@@ -16,7 +16,7 @@
     <div class="navbar-nav align-items-center ms-auto">
         @auth
         <div class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <a href="/chat" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <i class="fa fa-envelope me-lg-2"></i>
                 <span class="d-none d-lg-inline-flex">Message</span>
             </a>
@@ -51,10 +51,10 @@
                     </div>
                 </a>
                 <hr class="dropdown-divider">
-                <a href="#" class="dropdown-item text-center">See all message</a>
+                <a href="/chat" class="dropdown-item text-center">See all message</a>
             </div>
         </div>
-        <div class="nav-item dropdown">
+        <!-- <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <i class="fa fa-bell me-lg-2"></i>
                 <span class="d-none d-lg-inline-flex">Notificatin</span>
@@ -77,9 +77,9 @@
                 <hr class="dropdown-divider">
                 <a href="#" class="dropdown-item text-center">See all notifications</a>
             </div>
-        </div>
+        </div> -->
         <div class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <a href="/chat" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <img class="rounded-circle me-lg-2"
                     src="{{ Auth::user()->user_image ? asset('upload/img/' . Auth::user()->user_image) : asset('default.png') }}"
                     style="width: 40px; height: 40px;">

@@ -106,11 +106,12 @@
 
                                         <thead>
                                             <tr>
-                                                <th>Photo</th>
-                                                <th>Name</th>
-                                                <th>Role</th>
-                                                <th>Status</th>
-                                                <th width="150">Actions</th>
+                                                <th class="text-left">Photo</th>
+                                                <th class="text-left">Name</th>
+                                                <th class="text-left">Role</th>
+                                                <th class="text-center">Social</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center" width="150">Actions</th>
                                             </tr>
                                         </thead>
 
@@ -121,18 +122,18 @@
                                                 <tr>
 
                                                     <!-- Image -->
-                                                    <td>
+                                                    <td class="align-middle">
                                                         <img src="{{ asset('upload/team/' . $member->image) }}" class="team-avatar"
                                                             alt="{{ $member->name }}">
                                                     </td>
 
                                                     <!-- Name -->
-                                                    <td>
+                                                    <td class="align-middle">
                                                         <strong>{{ $member->name }}</strong>
                                                     </td>
 
                                                     <!-- Role -->
-                                                    <td>
+                                                    <td class="align-middle">
                                                         @php
         $roleColors = [
             'Full Stack Developer' => '#3b82f6',  // blue
@@ -152,9 +153,9 @@
                                                         </span>
                                                     </td>
 
-                                                    <!-- Social -->
-                                                    <td>
-                                                        <div class="d-flex gap-3">
+                                                    <!-- Status -->
+                                                    <td class="align-middle text-center">
+                                                        <div class="d-flex gap-3 justify-content-center align-items-center">
 
                                                             @if($member->github)
                                                                 <a href="{{ $member->github }}" target="_blank" class="text-light">
@@ -177,8 +178,8 @@
                                                         </div>
                                                     </td>
 
-                                                    <!-- Status -->
-                                                    <td>
+                                                    <!-- Status Badge -->
+                                                    <td class="align-middle text-center">
                                                         @if($member->status == 'active')
                                                             <span class="badge bg-success">
                                                                 Active
@@ -191,8 +192,8 @@
                                                     </td>
 
                                                     <!-- Actions -->
-                                                    <td>
-                                                        <div class="d-flex gap-2">
+                                                    <td class="align-middle text-center">
+                                                        <div class="d-flex gap-2 justify-content-center">
 
                                                             <a href="{{ url('/edit-team-member/' . $member->id) }}"
                                                                 class="btn btn-sm btn-warning">

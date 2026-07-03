@@ -9,7 +9,7 @@
                 <button onclick="this.parentElement.style.display='none'">&times;</button>
             </div>
         @endif
-        <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-3">Booking List</h2>
+        <h2 class="text-3xl font-bold mb-6 text-white-800 border-b pb-3">Booking List</h2>
 
         @if($bookings->isEmpty())
             <div class="bg-white p-8 text-center rounded-lg shadow-sm border border-gray-100">
@@ -75,7 +75,7 @@
                                     <td class="px-6 py-4 text-sm text-gray-500">
                                         {{ $booking->created_at->format('d M, Y') }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap align-middle">
                                         @if ($booking->status == 'pending')
                                             <span
                                                 class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
@@ -93,7 +93,7 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="px-6 py-4 whitespace-nowrap align-middle">
                                         <div class="flex items-center space-x-2">
                                             {{-- Show Approve/Reject buttons if the current user is the house owner or an Admin, and the booking is pending --}}
                                             @if ($booking->status == 'pending' && (Auth::user()->role == 'Admin' || Auth::id() == $booking->house?->user_id))

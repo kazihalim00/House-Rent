@@ -17,7 +17,7 @@
             </div>
         @endif
 
-        <h2 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-3"><i class="fas fa-calendar-check mr-2 text-blue-600"></i> Appointment Requests</h2>
+        <h2 class="text-3xl font-bold mb-6 text-white-800 border-b pb-3"><i class="fas fa-calendar-check mr-2 text-red-600"></i> Appointment Requests</h2>
 
         @if($appointments->isEmpty())
             <div class="bg-white p-8 text-center rounded-lg shadow-sm border border-gray-100">

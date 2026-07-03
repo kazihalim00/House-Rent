@@ -374,6 +374,8 @@ class HomeController extends Controller
                 ->get();
         }
 
+       
+
         return view('panel.pages.booking_list', compact('bookings'));
     }
 
@@ -510,6 +512,12 @@ class HomeController extends Controller
     public function review()
     {
         $reviews = Review::whereNull('house_id')->with('user')->latest()->get();
+
+        // return response()->json([
+        // 'success' => true,
+        // 'data' => $reviews
+        // ]);
+
         return view('panel.pages.review', compact('reviews'));
     }
 

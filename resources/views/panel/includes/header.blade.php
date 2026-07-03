@@ -10,7 +10,7 @@
             value="{{ request('search') }}">
     </form>
     <button type="button" onclick="openFilterModal()"
-        class="ml-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition flex items-center">
+        class="ml-3 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition flex items-center" style="background-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
         <i class="fas fa-sliders-h mr-2"></i> Filters
     </button>
     <div class="navbar-nav align-items-center ms-auto">

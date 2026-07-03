@@ -40,7 +40,15 @@
                         class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-500"
                         placeholder="Enter email address">
                 </div>
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">
+                        Phone Number
+                    </label>
 
+                    <input type="tel" name="phone" id="phone"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-500"
+                        placeholder="Enter phone number">
+                </div>
                 <div>
                     <label for="role" class="block text-sm font-medium text-gray-300 mb-2">Choose Role</label>
                     <select name="role" id="role"

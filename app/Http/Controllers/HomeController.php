@@ -12,16 +12,33 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
+use Illuminate\Validation\Rule;
 
 class HomeController extends Controller
 {
     public function store(Request $request)
     {
+        // Normalize phone number
+        $phone = trim($request->phone);
+
+        // Remove +88 or 88 from the beginning
+        if (str_starts_with($phone, '+88')) {
+            $phone = substr($phone, 3);
+        } elseif (str_starts_with($phone, '88')) {
+            $phone = substr($phone, 2);
+        }
+
+        // Update request with normalized phone
+        $request->merge([
+            'phone' => $phone,
+        ]);
+
+        // Validation
         $request->validate([
             'house_name' => 'required',
             'owner_name' => 'required',
             'email' => 'required|email',
-            'phone' => 'required',
+            'phone' => 'required|string|max:20|unique:homes,phone',
             'address' => 'required',
             'city' => 'required',
             'division' => 'required',
@@ -31,20 +48,21 @@ class HomeController extends Controller
             'about' => 'required',
             'booking_date' => 'required',
             'home_image' => 'required',
-            'home_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'home_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        // Upload Images
         $images = [];
-        if ($request->hasFile('home_image')) {
-            $files = $request->file('home_image');
 
-            foreach ($files as $file) {
+        if ($request->hasFile('home_image')) {
+            foreach ($request->file('home_image') as $file) {
                 $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('upload/img'), $fileName);
                 $images[] = $fileName;
             }
         }
 
+        // Save Home
         Home::create([
             'house_name' => $request->house_name,
             'owner_name' => $request->owner_name,
@@ -60,7 +78,7 @@ class HomeController extends Controller
             'booking_date' => $request->booking_date,
             'home_image' => json_encode($images),
             'user_id' => Auth::id(),
-            'status' => 'approved'
+            'status' => 'approved',
         ]);
 
         return back()->with('success', 'Home added successfully!');
@@ -150,9 +168,22 @@ class HomeController extends Controller
 
     public function add_user(Request $request)
     {
+        $phone = trim($request->phone);
+
+        if (str_starts_with($phone, '+88')) {
+            $phone = substr($phone, 3);
+        } elseif (str_starts_with($phone, '88')) {
+            $phone = substr($phone, 2);
+        }
+
+        $request->merge([
+            'phone' => $phone,
+        ]);
+
         $request->validate([
             'name' => 'required',
             'email' => 'required',
+            'phone' => 'required|string|max:20|unique:users,phone',
             'role' => 'required',
             'password' => 'required'
         ]);
@@ -168,6 +199,7 @@ class HomeController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'role' => $request->role,
             'password' => bcrypt($request->password),
             'user_image' => $fileName,
@@ -374,7 +406,7 @@ class HomeController extends Controller
                 ->get();
         }
 
-       
+
 
         return view('panel.pages.booking_list', compact('bookings'));
     }

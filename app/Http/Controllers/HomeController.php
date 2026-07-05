@@ -1,25 +1,44 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Appointment;
-use App\Models\TeamMember;
-use Illuminate\Http\Request;
-use App\Models\Home;
-use App\Models\User;
 use App\Models\Booking;
+use App\Models\Home;
 use App\Models\Review;
-use Illuminate\Support\Facades\Auth;
+use App\Models\TeamMember;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
+use Illuminate\Validation\Rule;
 
 class HomeController extends Controller
 {
     public function store(Request $request)
     {
+        // Normalize phone number
+        $phone = trim($request->phone);
+
+        // Remove +88 or 88 from the beginning
+        if (str_starts_with($phone, '+88')) {
+            $phone = substr($phone, 3);
+        } elseif (str_starts_with($phone, '88')) {
+            $phone = substr($phone, 2);
+        }
+
+        // Update request with normalized phone
+        $request->merge([
+            'phone' => $phone,
+        ]);
+
+        // Validation
         $request->validate([
             'house_name' => 'required',
             'owner_name' => 'required',
             'email' => 'required|email',
-            'phone' => 'required',
+            'phone' => 'required|string|max:20|unique:homes,phone',
             'address' => 'required',
             'city' => 'required',
             'division' => 'required',
@@ -29,20 +48,21 @@ class HomeController extends Controller
             'about' => 'required',
             'booking_date' => 'required',
             'home_image' => 'required',
-            'home_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'home_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        // Upload Images
         $images = [];
-        if ($request->hasFile('home_image')) {
-            $files = $request->file('home_image');
 
-            foreach ($files as $file) {
+        if ($request->hasFile('home_image')) {
+            foreach ($request->file('home_image') as $file) {
                 $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('upload/img'), $fileName);
                 $images[] = $fileName;
             }
         }
 
+        // Save Home
         Home::create([
             'house_name' => $request->house_name,
             'owner_name' => $request->owner_name,
@@ -58,18 +78,19 @@ class HomeController extends Controller
             'booking_date' => $request->booking_date,
             'home_image' => json_encode($images),
             'user_id' => Auth::id(),
-            'status' => 'approved'
+            'status' => 'approved',
         ]);
 
         return back()->with('success', 'Home added successfully!');
     }
+
     public function add_house_view()
     {
         $users = User::get();
         return view('panel.pages.add_house', compact('users'));
     }
 
-    //after booking period finish the status will show available again
+    // after booking period finish the status will show available again
     public function house_detail(Request $request)
     {
         $query = Home::withCount([
@@ -82,7 +103,8 @@ class HomeController extends Controller
         // Search Filter
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
-                $q->where('house_name', 'like', "%{$request->search}%")
+                $q
+                    ->where('house_name', 'like', "%{$request->search}%")
                     ->orWhere('address', 'like', "%{$request->search}%")
                     ->orWhere('city', 'like', "%{$request->search}%");
             });
@@ -91,7 +113,8 @@ class HomeController extends Controller
         // Location Filter
         if ($request->filled('location')) {
             $query->where(function ($q) use ($request) {
-                $q->where('city', 'like', "%{$request->location}%")
+                $q
+                    ->where('city', 'like', "%{$request->location}%")
                     ->orWhere('address', 'like', "%{$request->location}%");
             });
         }
@@ -114,7 +137,6 @@ class HomeController extends Controller
             $filterDate = Carbon::parse($request->date);
             $option = $request->input('option', 'exact');
 
-
             $startDate = $filterDate->clone();
             $endDate = $filterDate->clone();
 
@@ -129,9 +151,11 @@ class HomeController extends Controller
                 $endDate->addDays(21);
             }
 
-            $query->whereDate('booking_date', '<=', $endDate->format('Y-m-d'))
+            $query
+                ->whereDate('booking_date', '<=', $endDate->format('Y-m-d'))
                 ->whereDoesntHave('bookings', function ($q) use ($startDate, $endDate) {
-                    $q->where('status', 'approved')
+                    $q
+                        ->where('status', 'approved')
                         ->whereDate('check_in_date', '<=', $endDate->format('Y-m-d'))
                         ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [$startDate->format('Y-m-d')]);
                 });
@@ -144,9 +168,22 @@ class HomeController extends Controller
 
     public function add_user(Request $request)
     {
+        $phone = trim($request->phone);
+
+        if (str_starts_with($phone, '+88')) {
+            $phone = substr($phone, 3);
+        } elseif (str_starts_with($phone, '88')) {
+            $phone = substr($phone, 2);
+        }
+
+        $request->merge([
+            'phone' => $phone,
+        ]);
+
         $request->validate([
             'name' => 'required',
             'email' => 'required',
+            'phone' => 'required|string|max:20|unique:users,phone',
             'role' => 'required',
             'password' => 'required'
         ]);
@@ -162,6 +199,7 @@ class HomeController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'role' => $request->role,
             'password' => bcrypt($request->password),
             'user_image' => $fileName,
@@ -176,12 +214,15 @@ class HomeController extends Controller
 
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
-            $query->where('name', 'like', "%$search%")
+            $query
+                ->where('name', 'like', "%$search%")
                 ->orWhere('email', 'like', "%$search%");
         }
 
         $users = $query->latest()->get();
+
         return view('panel.pages.user_list', compact('users'));
+
     }
 
     public function edit_user($id)
@@ -233,7 +274,6 @@ class HomeController extends Controller
 
     public function summery()
     {
-
         $total_users = User::count();
         $total_houses = Home::count();
         $total_bookings = Booking::count();
@@ -262,6 +302,7 @@ class HomeController extends Controller
             'monthly_revenue'
         ));
     }
+
     public function showBookingPage()
     {
         $dbAvailableDates = Home::where('status', 'approved')
@@ -324,12 +365,15 @@ class HomeController extends Controller
     {
         $home = Home::findOrFail($id);
         $reviews = Review::where('house_id', $id)->with('user')->latest()->get();
-        $activeBookingExists = $home->bookings()
-            ->where('status', 'approved')->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')])
+        $activeBookingExists = $home
+            ->bookings()
+            ->where('status', 'approved')
+            ->whereRaw('DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?', [Carbon::now()->format('Y-m-d')])
             ->exists();
 
         return view('panel.pages.show', compact('home', 'activeBookingExists', 'reviews'));
     }
+
     public function pending_houses()
     {
         $houses = Home::where('status', 'pending')->latest()->get();
@@ -362,7 +406,6 @@ class HomeController extends Controller
                 ->get();
         }
 
-       
 
         return view('panel.pages.booking_list', compact('bookings'));
     }
@@ -425,6 +468,7 @@ class HomeController extends Controller
 
         return back()->with('success', 'House listing has been rejected.');
     }
+
     public function book_appointment(Request $request, $id)
     {
         $request->validate([
@@ -442,15 +486,16 @@ class HomeController extends Controller
             'status' => 'pending',
         ]);
 
-
         return back()->with('success', 'Appointment request submitted successfully! The owner will be notified.');
     }
+
     public function appointmentList()
     {
         $appointments = Appointment::with(['house', 'user'])->latest()->get();
 
         return view('panel.pages.appointment_list', compact('appointments'));
     }
+
     public function approveAppointment($id)
     {
         $appointment = Appointment::findOrFail($id);
@@ -468,6 +513,7 @@ class HomeController extends Controller
 
         return back()->with('error', 'Appointment has been rejected.');
     }
+
     public function deleteAppointment($id)
     {
         $appointment = Appointment::findOrFail($id);
@@ -493,6 +539,7 @@ class HomeController extends Controller
 
         return back()->with('success', 'Booking deleted successfully!');
     }
+
     public function review()
     {
         $reviews = Review::whereNull('house_id')->with('user')->latest()->get();
@@ -504,7 +551,6 @@ class HomeController extends Controller
 
         return view('panel.pages.review', compact('reviews'));
     }
-
 
     public function store_review(Request $request)
     {
@@ -530,15 +576,16 @@ class HomeController extends Controller
         $review->delete();
 
         return back()->with('success', 'Review deleted successfully!');
-
     }
 
     // if house booked then it will not show in home page
     public function overview()
     {
-        // Hero: all approved house 
+        // Hero: all approved house
         $heroHouses = Home::where('status', 'approved')
-            ->latest()->take(3)->get();
+            ->latest()
+            ->take(3)
+            ->get();
         $members = TeamMember::get();
         // Cards: only available house
         $houses = Home::where('status', 'approved')
@@ -549,21 +596,26 @@ class HomeController extends Controller
                     [Carbon::now()->toDateString()]
                 );
             })
-            ->latest()->take(6)->get();
+            ->latest()
+            ->take(6)
+            ->get();
 
-        // Reviews: general or admin 
+        // Reviews: general or admin
         $reviews = Review::where(function ($q) {
-            $q->whereNull('house_id')
+            $q
+                ->whereNull('house_id')
                 ->orWhereHas('user', fn($q2) => $q2->where('role', 'admin'));
         })
-            ->with('user')->latest()->take(6)->get();
+            ->with('user')
+            ->latest()
+            ->take(6)
+            ->get();
 
         return view('frontend.pages.home', compact('heroHouses', 'houses', 'reviews', 'members'));
     }
 
     public function add_team_member(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
             'role' => 'required',
@@ -582,7 +634,6 @@ class HomeController extends Controller
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
             $file->move(public_path('upload/team/'), $filename);
-
         }
         TeamMember::create([
             'name' => $request->name,
@@ -594,27 +645,25 @@ class HomeController extends Controller
             'order' => $request->order,
             'status' => $request->status,
             'image' => $filename,
-
         ]);
 
         return back()->with('success', 'Team member added successfully!');
-
     }
 
     public function see_team_members()
     {
         $members = TeamMember::get();
-
         return view('panel.pages.see_team_members', compact('members'));
 
     }
+
     public function edit_team_member($id)
     {
-
         $member = TeamMember::findOrFail($id);
 
         return view('panel.pages.edit_team_member', compact('member'));
     }
+
     public function update_team_member(Request $request, $id)
     {
         $member = TeamMember::findOrFail($id);
@@ -631,10 +680,7 @@ class HomeController extends Controller
             'portfolio' => 'required',
         ]);
 
-
         if ($request->hasFile('image')) {
-
-
             if ($member->image && file_exists(public_path('upload/team/' . $member->image))) {
                 unlink(public_path('upload/team/' . $member->image));
             }
@@ -655,12 +701,12 @@ class HomeController extends Controller
         $member->order = $request->order ?? 0;
         $member->status = $request->status;
 
-
         $member->save();
 
         return redirect('/see-team-members')
             ->with('success', 'Team member updated successfully!');
     }
+
     public function delete_team_member($id)
     {
         $member = TeamMember::findOrFail($id);
@@ -678,7 +724,8 @@ class HomeController extends Controller
 
         $member->delete();
 
-        return redirect()->route('see-team-member')
+        return redirect()
+            ->route('see-team-member')
             ->with('success', 'Team member deleted successfully.');
     }
 }

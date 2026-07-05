@@ -82,17 +82,33 @@
                 </div>
 
                 <div>
-                    <label for="bed" class="block text-sm font-medium text-gray-300 mb-2">Number of Beds *</label>
-                    <input type="text" name="bed" id="bed"
-                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                        placeholder="e.g. 3" required />
+                    <label for="bed" class="block text-sm font-medium text-gray-300 mb-2">
+                        Number of Beds *
+                    </label>
+
+                    <select name="bed" id="bed"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                        <option value="">Select Number of Beds</option>
+                        @for ($i = 1; $i <= 10; $i++)
+                            <option value="{{ $i }}">{{ $i }} Bed{{ $i > 1 ? 's' : '' }}</option>
+                        @endfor
+                    </select>
                 </div>
 
                 <div>
-                    <label for="bath" class="block text-sm font-medium text-gray-300 mb-2">Number of Baths *</label>
-                    <input type="text" name="bath" id="bath"
-                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                        placeholder="e.g. 2" required />
+                    <label for="bath" class="block text-sm font-medium text-gray-300 mb-2">
+                        Number of Baths *
+                    </label>
+
+                    <select name="bath" id="bath"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                        <option value="">Select Number of Baths</option>
+                        @for ($i = 1; $i <= 10; $i++)
+                            <option value="{{ $i }}">{{ $i }} Bath{{ $i > 1 ? 's' : '' }}</option>
+                        @endfor
+                    </select>
                 </div>
             </div>
 
@@ -118,11 +134,11 @@
             </div>
 
             <div>
-                <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload House Images (Multiple allowed) *</label>
+                <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload House Images (Multiple
+                    allowed) *</label>
                 <input type="file" name="home_image[]" id="home_image"
                     class="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-xl file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 cursor-pointer"
-                    multiple
-                    required />
+                    multiple required />
             </div>
 
             <div class="pt-4">

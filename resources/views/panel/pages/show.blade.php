@@ -27,7 +27,7 @@
         @endif
         <div class="mb-6">
             <a href="{{ route('house-detail') }}"
-                class="inline-flex items-center text-gray-600 hover:text-blue-600 font-semibold transition-colors duration-300 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200 hover:shadow-md">
+                class="inline-flex items-center text-white font-semibold transition-colors duration-300 px-4 py-2 rounded-lg shadow-sm border" style="background-color: #e53935; border-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
                 <i class="fas fa-arrow-left mr-2"></i> Back to Houses
             </a>
         </div>
@@ -112,7 +112,7 @@
                         <h3 class="text-2xl font-bold text-gray-800">Reviews ({{ count($reviews) }})</h3>
                         @auth
                             <button onclick="openReviewModal()"
-                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-md">
+                                class="text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-md" style="background-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
                                 <i class="fas fa-star mr-2"></i> Write a Review
                             </button>
                         @endauth
@@ -175,13 +175,13 @@
                             </div>
                         @else
                             <a href="{{ route('book.house', $home->id) }}"
-                                class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl py-4 rounded-xl shadow-lg hover:shadow-blue-600/40 transition-all duration-300 transform hover:-translate-y-1">
+                                class="block w-full text-center text-white font-bold text-xl py-4 rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1" style="background-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
                                 <i class="fas fa-bolt mr-2 text-yellow-300"></i> Book Property
                             </a>
                         @endif
 
                         <button onclick="openAppointmentModal()"
-                            class="block w-full text-center bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold text-lg py-3 rounded-xl shadow-sm transition-all duration-300 transform hover:-translate-y-1">
+                            class="block w-full text-center border-2 text-white font-bold text-lg py-3 rounded-xl shadow-sm transition-all duration-300 transform hover:-translate-y-1" style="background-color: #e53935; border-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
                             <i class="fas fa-calendar-alt mr-2"></i> Schedule a Visit
                         </button>
                     </div>
@@ -208,11 +208,11 @@
         </div>
     </div>
     <div id="appointmentModal"
-        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex justify-center items-center px-4 transition-opacity duration-300">
+        class="fixed top-[80px] left-0 right-0 bottom-0 z-50 hidden bg-black/60 backdrop-blur-sm flex justify-center items-center px-4 transition-opacity duration-300">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300"
             id="modalContent">
 
-            <div class="bg-blue-600 px-6 py-4 flex justify-between items-center">
+            <div class="px-6 py-4 flex justify-between items-center" style="background-color: #e53935;">
                 <h3 class="text-white text-xl font-bold"><i class="fas fa-clock mr-2"></i> Schedule a House Visit</h3>
                 <button onclick="closeAppointmentModal()"
                     class="text-white hover:text-gray-200 text-2xl font-bold leading-none">&times;</button>
@@ -248,8 +248,8 @@
                     <button type="button" onclick="closeAppointmentModal()"
                         class="px-6 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition">Cancel</button>
                     <button type="submit"
-                        class="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition">Submit
-                        Request</button>
+                        class="px-6 py-2.5 text-white font-bold rounded-lg shadow-md transition" style="background-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
+                        Submit Request</button>
                 </div>
             </form>
         </div>
@@ -261,7 +261,7 @@
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300"
             id="reviewModalContent">
 
-            <div class="bg-blue-600 px-6 py-4 flex justify-between items-center">
+            <div class="px-6 py-4 flex justify-between items-center" style="background-color: #e53935;">
                 <h3 class="text-white text-xl font-bold"><i class="fas fa-star mr-2"></i> Rate this House</h3>
                 <button onclick="closeReviewModal()"
                     class="text-white hover:text-gray-200 text-2xl font-bold leading-none">&times;</button>
@@ -293,7 +293,7 @@
                     <button type="button" onclick="closeReviewModal()"
                         class="px-6 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition">Cancel</button>
                     <button type="submit"
-                        class="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition">
+                        class="px-6 py-2.5 text-white font-bold rounded-lg shadow-md transition" style="background-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
                         Post Review
                     </button>
                 </div>

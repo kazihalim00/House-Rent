@@ -138,7 +138,7 @@
             <!-- Submit -->
             <div class="pt-4">
                 <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2"
                     name="submit">
                     ➕ Add Team Member
                 </button>

@@ -44,7 +44,7 @@
 
                 <input type="hidden" name="house_id" value="{{ $house->id }}">
 
-                <button class=" form-btn">Submit Booking</button>
+                <button class=" form-btn" style="background-color: #e53935; border-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">Submit Booking</button>
             </form>
         </div>
     </div>

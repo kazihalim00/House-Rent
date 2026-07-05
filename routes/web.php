@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
 // Public Route (Frontend)
 Route::get('/', [HomeController::class, 'overview']);
 Route::get('/house-detail', [HomeController::class, 'house_detail'])->name('house-detail');

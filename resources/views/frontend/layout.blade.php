@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/tiny-slider.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/css/aos.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
 
     <style>
         :root {
@@ -525,6 +526,7 @@
     <script src="{{ asset('frontend/js/navbar.js') }}"></script>
     <script src="{{ asset('frontend/js/counter.js') }}"></script>
     <script src="{{ asset('frontend/js/custom.js?v=2') }}"></script>
+
 </body>
 
 </html>

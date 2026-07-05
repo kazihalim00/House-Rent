@@ -1,6 +1,7 @@
 @extends('panel.layout')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <div class="container mx-auto px-4 py-10 max-w-3xl">
 
         <div class="text-center border-b border-gray-700/60 pb-8 mb-8 relative">
@@ -43,25 +44,8 @@
                         class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
                         placeholder="Enter house name" required />
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">
-                        House Owner
-                    </label>
-
-                    <div
-                        class="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 flex items-center justify-between">
-                        <span class="text-gray-200 font-medium">
-                            {{ Auth::user()->name }}
-                        </span>
-                        <input type="hidden" name="owner_name" value="{{ Auth::user()->name }}">
-                    </div>
-                </div>
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
-                    <input type="email" name="email" id="email"
-                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                        placeholder="Enter user email" required />
-                </div>
+                <input type="hidden" name="owner_name" value="{{ Auth::user()->name }}">
+                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
 
                 <div>
                     <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number *</label>
@@ -99,17 +83,33 @@
                 </div>
 
                 <div>
-                    <label for="bed" class="block text-sm font-medium text-gray-300 mb-2">Number of Beds *</label>
-                    <input type="text" name="bed" id="bed"
-                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                        placeholder="e.g. 3" required />
+                    <label for="bed" class="block text-sm font-medium text-gray-300 mb-2">
+                        Number of Beds *
+                    </label>
+
+                    <select name="bed" id="bed"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                        <option value="">Select Number of Beds</option>
+                        @for ($i = 1; $i <= 10; $i++)
+                            <option value="{{ $i }}">{{ $i }} Bed{{ $i > 1 ? 's' : '' }}</option>
+                        @endfor
+                    </select>
                 </div>
 
                 <div>
-                    <label for="bath" class="block text-sm font-medium text-gray-300 mb-2">Number of Baths *</label>
-                    <input type="text" name="bath" id="bath"
-                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-                        placeholder="e.g. 2" required />
+                    <label for="bath" class="block text-sm font-medium text-gray-300 mb-2">
+                        Number of Baths *
+                    </label>
+
+                    <select name="bath" id="bath"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                        <option value="">Select Number of Baths</option>
+                        @for ($i = 1; $i <= 10; $i++)
+                            <option value="{{ $i }}">{{ $i }} Bath{{ $i > 1 ? 's' : '' }}</option>
+                        @endfor
+                    </select>
                 </div>
             </div>
 
@@ -135,16 +135,16 @@
             </div>
 
             <div>
-                <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload House Images (Multiple allowed) *</label>
+                <label for="home_image" class="block text-sm font-medium text-gray-300 mb-2">Upload House Images (Multiple
+                    allowed) *</label>
                 <input type="file" name="home_image[]" id="home_image"
                     class="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-xl file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 cursor-pointer"
-                    multiple
-                    required />
+                    multiple required />
             </div>
 
             <div class="pt-4">
                 <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 flex justify-center items-center gap-2">
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 flex justify-center items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                         <path
                             d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />

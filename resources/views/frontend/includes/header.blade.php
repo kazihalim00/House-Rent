@@ -42,12 +42,92 @@
 
     /* Nav menu */
     .site-nav .site-menu {
-        display: flex !important;
         align-items: center !important;
         margin: 0 !important;
         padding: 0 !important;
         list-style: none;
         gap: 2px;
+    }
+
+    /* Desktop এ flex row menu */
+    @media (min-width: 992px) {
+        .site-nav .site-menu {
+            display: flex !important;
+        }
+    }
+
+    /* Mobile এ menu default hidden, toggle করলে vertical dropdown */
+    @media (max-width: 991.98px) {
+        .site-nav .site-menu {
+            display: none;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #16213e !important;
+            border: 1px solid #2a3a5c;
+            border-radius: 0 0 12px 12px;
+            padding: 12px 20px !important;
+            margin-top: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+            gap: 0;
+        }
+
+        .site-nav .site-menu.mobile-open {
+            display: flex !important;
+        }
+
+        .site-nav .site-menu>li {
+            width: 100%;
+        }
+
+        .site-nav .site-menu>li>a {
+            padding: 12px 4px !important;
+            width: 100%;
+        }
+
+        .site-nav .site-menu .has-children>.dropdown {
+            display: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            position: static !important;
+            box-shadow: none !important;
+            margin: 4px 0 8px 12px !important;
+            width: calc(100% - 12px) !important;
+            transition: none !important;
+        }
+
+        .site-nav .site-menu .has-children.mobile-dropdown-open>.dropdown {
+            display: block !important;
+        }
+
+        .site-nav .site-menu .has-children>a {
+            position: relative;
+        }
+
+        .site-nav .site-menu .has-children>a::after {
+            content: "\f107";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s;
+        }
+
+        .site-nav .site-menu .has-children.mobile-dropdown-open>a::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .site-navigation {
+            position: relative;
+            flex-wrap: wrap;
+        }
     }
 
     .site-nav .site-menu>li>a {
@@ -184,7 +264,7 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgba(0,0,0,0.6);
+        background-color: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(4px);
     }
 
@@ -196,7 +276,7 @@
         width: 90%;
         max-width: 500px;
         border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         color: #f0f4ff;
     }
 
@@ -204,28 +284,54 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         margin-bottom: 20px;
         padding-bottom: 10px;
     }
 
-    .modal-header-custom h3 { margin: 0; font-size: 20px; color: #e53935; }
-    
-    .close-modal { color: #b0bec5; font-size: 28px; font-weight: bold; cursor: pointer; }
-    .close-modal:hover { color: #fff; }
+    .modal-header-custom h3 {
+        margin: 0;
+        font-size: 20px;
+        color: #e53935;
+    }
 
-    .form-group-custom { margin-bottom: 15px; }
-    .form-group-custom label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600; color: #b0bec5; text-transform: uppercase; }
+    .close-modal {
+        color: #b0bec5;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close-modal:hover {
+        color: #fff;
+    }
+
+    .form-group-custom {
+        margin-bottom: 15px;
+    }
+
+    .form-group-custom label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #b0bec5;
+        text-transform: uppercase;
+    }
+
     .form-input-custom {
         width: 100%;
         padding: 10px;
-        background: rgba(255,255,255,0.05);
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid #2a3a5c;
         border-radius: 8px;
         color: #fff;
         outline: none;
     }
-    .form-input-custom:focus { border-color: #e53935; }
+
+    .form-input-custom:focus {
+        border-color: #e53935;
+    }
 
     .apply-btn-custom {
         background: #e53935;
@@ -239,7 +345,10 @@
         cursor: pointer;
         transition: background 0.3s;
     }
-    .apply-btn-custom:hover { background: #c62828; }
+
+    .apply-btn-custom:hover {
+        background: #c62828;
+    }
 </style>
 
 <nav class="site-nav">
@@ -297,8 +406,7 @@
                     @endauth
                 </ul>
 
-                <a href="#" class="burger light ms-auto site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
-                    data-toggle="collapse" data-target="#main-navbar">
+                <a href="#" class="burger light ms-auto site-menu-toggle d-inline-block d-lg-none">
                     <span></span>
                 </a>
             </div>
@@ -308,11 +416,13 @@
 
 <div id="filterModal" class="modal-backdrop-custom">
     <div class="modal-content-custom">
-        
+
         <div class="modal-header-custom">
             <div class="modal-title-layout">
                 <svg class="header-filter-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 5C4 4.44772 4.44772 4 5 4H19C19.5523 4 20 4.44772 20 5V7.17157C20 7.70201 19.7893 8.21071 19.4142 8.58579L14.5858 13.4142C14.2107 13.7893 14 14.298 14 14.8284V19L10 21V14.8284C10 14.298 9.78929 13.7893 9.41421 13.4142L4.58579 8.58579C4.21071 8.21071 4 7.70201 4 7.17157V5Z" fill="#e53935"/>
+                    <path
+                        d="M4 5C4 4.44772 4.44772 4 5 4H19C19.5523 4 20 4.44772 20 5V7.17157C20 7.70201 19.7893 8.21071 19.4142 8.58579L14.5858 13.4142C14.2107 13.7893 14 14.298 14 14.8284V19L10 21V14.8284C10 14.298 9.78929 13.7893 9.41421 13.4142L4.58579 8.58579C4.21071 8.21071 4 7.70201 4 7.17157V5Z"
+                        fill="#e53935" />
                 </svg>
                 <h3>Advanced Search</h3>
             </div>
@@ -320,25 +430,32 @@
         </div>
 
         <form action="{{ route('house-detail') }}" method="GET" class="modal-form-custom">
-            
+
             <div class="form-group-custom">
                 <label>LOCATION</label>
                 <div class="input-icon-wrapper">
                     <span class="input-inner-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9A9EA9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9A9EA9" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
                     </span>
-                    <input type="text" name="location" value="{{ request('location') }}" class="form-input-custom icon-padding" placeholder="City or area...">
+                    <input type="text" name="location" value="{{ request('location') }}"
+                        class="form-input-custom icon-padding" placeholder="City or area...">
                 </div>
             </div>
 
             <div class="form-row-custom">
                 <div class="form-group-custom">
                     <label>MIN PRICE (৳)</label>
-                    <input type="text" name="min_price" value="{{ request('min_price') }}" class="form-input-custom" placeholder="e.g. 5000">
+                    <input type="text" name="min_price" value="{{ request('min_price') }}" class="form-input-custom"
+                        placeholder="e.g. 5000">
                 </div>
                 <div class="form-group-custom">
                     <label>MAX PRICE (৳)</label>
-                    <input type="text" name="max_price" value="{{ request('max_price') }}" class="form-input-custom" placeholder="e.g. 20000">
+                    <input type="text" name="max_price" value="{{ request('max_price') }}" class="form-input-custom"
+                        placeholder="e.g. 20000">
                 </div>
             </div>
 
@@ -357,7 +474,8 @@
                 <div class="form-group-custom">
                     <label>AVAILABILITY</label>
                     <div class="date-wrapper-custom">
-                        <input type="date" name="date" value="{{ request('date') }}" class="form-input-custom date-custom">
+                        <input type="date" name="date" value="{{ request('date') }}"
+                            class="form-input-custom date-custom">
                     </div>
                 </div>
             </div>
@@ -365,7 +483,8 @@
             <div class="modal-footer-divider"></div>
 
             <div class="modal-footer-custom">
-                <button type="button" class="clear-filters-btn" onclick="window.location.href='{{ route('house-detail') }}'">
+                <button type="button" class="clear-filters-btn"
+                    onclick="window.location.href='{{ route('house-detail') }}'">
                     <span class="clear-x-icon">&times;</span> Clear Filters
                 </button>
                 <div class="footer-actions-right">
@@ -378,245 +497,274 @@
 </div>
 
 <style>
-:root {
-    --modal-bg: #ffffff;
-    --header-bg: #121624;
-    --text-dark: #1E232F;
-    --text-muted: #848A9C;
-    --text-placeholder: #9A9EA9;
-    --border-color: #2F3341;
-    
-    --color-purple: #5F33FF;
-    --color-cancel-bg: #E8EBF1;
-    --color-cancel-text: #464C59;
-    --color-clear-text: #F2380A;
-}
+    :root {
+        --modal-bg: #ffffff;
+        --header-bg: #121624;
+        --text-dark: #1E232F;
+        --text-muted: #848A9C;
+        --text-placeholder: #9A9EA9;
+        --border-color: #2F3341;
 
-/* Outer Backdrop Setup */
-.modal-backdrop-custom {
-    display: none; 
-    position: fixed;
-    z-index: 10000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    align-items: center;
-    justify-content: center;
-}
+        --color-purple: #5F33FF;
+        --color-cancel-bg: #E8EBF1;
+        --color-cancel-text: #464C59;
+        --color-clear-text: #F2380A;
+    }
 
-.modal-backdrop-custom[style*="display: block"] {
-    display: flex !important;
-}
+    /* Outer Backdrop Setup */
+    .modal-backdrop-custom {
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        align-items: center;
+        justify-content: center;
+    }
 
-/* Primary Card Container Frame */
-.modal-content-custom {
-    background-color: var(--modal-bg);
-    width: 100%;
-    max-width: 740px; /* Marginally widened for ideal proportion matching */
-    border-radius: 18px;
-    box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.12);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
+    .modal-backdrop-custom[style*="display: block"] {
+        display: flex !important;
+    }
 
-/* Header Banner - Top Curves explicitly added */
-.modal-header-custom {
-    background-color: var(--header-bg);
-    padding: 26px 38px; /* Perfectly aligned to match the expanded left/right form alignment */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 18px 18px 0 0; /* Ensures top corners map card perfectly */
-}
+    /* Primary Card Container Frame */
+    .modal-content-custom {
+        background-color: var(--modal-bg);
+        width: 100%;
+        max-width: 740px;
+        /* Marginally widened for ideal proportion matching */
+        border-radius: 18px;
+        box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.12);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
-.modal-title-layout {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
+    /* Header Banner - Top Curves explicitly added */
+    .modal-header-custom {
+        background-color: var(--header-bg);
+        padding: 26px 38px;
+        /* Perfectly aligned to match the expanded left/right form alignment */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 18px 18px 0 0;
+        /* Ensures top corners map card perfectly */
+    }
 
-.header-filter-icon {
-    width: 20px;
-    height: 20px;
-}
+    .modal-title-layout {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
 
-.modal-header-custom h3 {
-    color: #ffffff;
-    margin: 0;
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-}
+    .header-filter-icon {
+        width: 20px;
+        height: 20px;
+    }
 
-.close-modal {
-    font-size: 26px;
-    color: #8E94A5;
-    cursor: pointer;
-    line-height: 1;
-    font-weight: 300;
-}
+    .modal-header-custom h3 {
+        color: #ffffff;
+        margin: 0;
+        font-size: 21px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+    }
 
-.close-modal:hover {
-    color: #ffffff;
-}
+    .close-modal {
+        font-size: 26px;
+        color: #8E94A5;
+        cursor: pointer;
+        line-height: 1;
+        font-weight: 300;
+    }
 
-/* Expanded Form Layout */
-.modal-form-custom {
-    padding: 40px 38px 34px 38px; /* Significantly expanded internal canvas space */
-    margin: 0;
-}
+    .close-modal:hover {
+        color: #ffffff;
+    }
 
-.form-group-custom {
-    margin-bottom: 32px; /* Amplified separation between horizontal structural rows */
-    display: flex;
-    flex-direction: column;
-}
+    /* Expanded Form Layout */
+    .modal-form-custom {
+        padding: 40px 38px 34px 38px;
+        /* Significantly expanded internal canvas space */
+        margin: 0;
+    }
 
-.form-row-custom {
-    display: flex;
-    gap: 32px; /* Wider spacing gap between multi-column inputs */
-}
+    .form-group-custom {
+        margin-bottom: 32px;
+        /* Amplified separation between horizontal structural rows */
+        display: flex;
+        flex-direction: column;
+    }
 
-.form-row-custom .form-group-custom {
-    flex: 1;
-}
+    .form-row-custom {
+        display: flex;
+        gap: 32px;
+        /* Wider spacing gap between multi-column inputs */
+    }
 
-.form-group-custom label {
-    font-size: 11.5px;
-    font-weight: 700;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    letter-spacing: 0.6px;
-}
+    .form-row-custom .form-group-custom {
+        flex: 1;
+    }
 
-/* Input Fields Adjustments */
-.form-input-custom {
-    width: 100%;
-    height: 54px; /* Increased slightly for premium spatial layout look */
-    padding: 12px 18px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 15px;
-    color: var(--text-dark);
-    background-color: #ffffff;
-    box-sizing: border-box;
-}
+    .form-group-custom label {
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin-bottom: 12px;
+        letter-spacing: 0.6px;
+    }
 
-.form-input-custom::placeholder {
-    color: var(--text-placeholder);
-}
+    /* Input Fields Adjustments */
+    .form-input-custom {
+        width: 100%;
+        height: 54px;
+        /* Increased slightly for premium spatial layout look */
+        padding: 12px 18px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 15px;
+        color: var(--text-dark);
+        background-color: #ffffff;
+        box-sizing: border-box;
+    }
 
-.form-input-custom:focus {
-    outline: none;
-    border-color: var(--color-purple);
-}
+    .form-input-custom::placeholder {
+        color: var(--text-placeholder);
+    }
 
-/* Custom Location Icon Padding rules */
-.input-icon-wrapper {
-    position: relative;
-    width: 100%;
-}
+    .form-input-custom:focus {
+        outline: none;
+        border-color: var(--color-purple);
+    }
 
-.input-inner-icon {
-    position: absolute;
-    left: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    pointer-events: none;
-}
+    /* Custom Location Icon Padding rules */
+    .input-icon-wrapper {
+        position: relative;
+        width: 100%;
+    }
 
-.icon-padding {
-    padding-left: 48px !important;
-}
+    .input-inner-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        pointer-events: none;
+    }
 
-/* Custom dropdown and select arrows layout overrides */
-.select-custom {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E232F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 18px center;
-    background-size: 15px;
-    padding-right: 44px;
-    cursor: pointer;
-}
+    .icon-padding {
+        padding-left: 48px !important;
+    }
 
-.date-custom {
-    cursor: pointer;
-}
+    /* Custom dropdown and select arrows layout overrides */
+    .select-custom {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E232F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 18px center;
+        background-size: 15px;
+        padding-right: 44px;
+        cursor: pointer;
+    }
 
-/* Bottom separator line */
-.modal-footer-divider {
-    height: 1px;
-    background-color: #F0F2F6;
-    margin: 16px 0 32px 0;
-}
+    .date-custom {
+        cursor: pointer;
+    }
 
-/* Footer Section spacing metrics mapping */
-.modal-footer-custom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    /* Bottom separator line */
+    .modal-footer-divider {
+        height: 1px;
+        background-color: #F0F2F6;
+        margin: 16px 0 32px 0;
+    }
 
-.clear-filters-btn {
-    background: none;
-    border: none;
-    color: var(--color-clear-text);
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0;
-}
+    /* Footer Section spacing metrics mapping */
+    .modal-footer-custom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.clear-x-icon {
-    font-size: 18px;
-    font-weight: 800;
-    line-height: 1;
-}
+    .clear-filters-btn {
+        background: none;
+        border: none;
+        color: var(--color-clear-text);
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0;
+    }
 
-.footer-actions-right {
-    display: flex;
-    gap: 16px;
-}
+    .clear-x-icon {
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1;
+    }
 
-.btn-custom {
-    height: 50px;
-    padding: 0 32px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
+    .footer-actions-right {
+        display: flex;
+        gap: 16px;
+    }
 
-.btn-cancel {
-    background-color: var(--color-cancel-bg);
-    color: var(--color-cancel-text);
-}
+    .btn-custom {
+        height: 50px;
+        padding: 0 32px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.btn-cancel:hover {
-    background-color: #DDE2EC;
-}
+    .btn-cancel {
+        background-color: var(--color-cancel-bg);
+        color: var(--color-cancel-text);
+    }
 
-.btn-apply {
-    background-color: #e53935;
-    color: #ffffff;
-}
+    .btn-cancel:hover {
+        background-color: #DDE2EC;
+    }
 
-.btn-apply:hover {
-    background-color: #c62828;
-}
+    .btn-apply {
+        background-color: #e53935;
+        color: #ffffff;
+    }
+
+    .btn-apply:hover {
+        background-color: #c62828;
+    }
 </style>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var burger = document.querySelector('.site-nav .burger');
+        var menu = document.querySelector('.site-nav .site-menu');
+
+        if (burger && menu) {
+            burger.addEventListener('click', function (e) {
+                e.preventDefault();
+                menu.classList.toggle('mobile-open');
+            });
+        }
+
+        // Mobile dropdown toggle (Properties, user menu ইত্যাদি)
+        var hasChildrenLinks = document.querySelectorAll('.site-nav .site-menu .has-children > a');
+        hasChildrenLinks.forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                if (window.innerWidth < 992) {
+                    e.preventDefault();
+                    this.parentElement.classList.toggle('mobile-dropdown-open');
+                }
+            });
+        });
+    });
     function openFilterModal() {
         document.getElementById('filterModal').style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -628,15 +776,15 @@
     }
 
     // Close modal when clicking outside background element wrapper
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         var modal = document.getElementById('filterModal');
         if (event.target == modal) {
             closeFilterModal();
         }
     }
-    
+
     // Close cleanly via the Escape hardware trigger sequence
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
             closeFilterModal();
         }

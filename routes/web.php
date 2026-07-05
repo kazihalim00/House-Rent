@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');
         Route::post('/chat/{id}/send', [ChatController::class, 'send'])->name('chat.send');
         Route::get('/chat/{id}/fetch', [ChatController::class, 'fetch'])->name('chat.fetch');
+        Route::get('/chat/header/latest', [ChatController::class, 'latestHeader'])->name('chat.header.latest');
     });
     // Admin Only Routes
     Route::middleware('admin')->group(function () {

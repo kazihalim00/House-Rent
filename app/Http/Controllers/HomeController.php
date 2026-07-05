@@ -161,7 +161,7 @@ class HomeController extends Controller
                 });
         }
 
-        $houses = $query->latest()->paginate(3)->withQueryString();
+        $houses = $query->latest()->paginate(6)->withQueryString();
 
         return view('panel.pages.house_detail', compact('houses'));
     }
@@ -544,11 +544,6 @@ class HomeController extends Controller
     public function review()
     {
         $reviews = Review::whereNull('house_id')->with('user')->latest()->get();
-
-        // return response()->json([
-        // 'success' => true,
-        // 'data' => $reviews
-        // ]);
 
         return view('panel.pages.review', compact('reviews'));
     }

@@ -110,6 +110,37 @@ class ChatController extends Controller
         return redirect()->back();
     }
 
+    // Polling — fetch latest 3 messages for the header dropdown
+    public function latestHeader(Request $request)
+    {
+        $user = Auth::user();
+
+        $messages = Message::with(['user', 'conversation.userOne', 'conversation.userTwo'])
+            ->whereHas('conversation', function ($q) use ($user) {
+                $q->where('user_one_id', $user->id)
+                  ->orWhere('user_two_id', $user->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(function ($msg) use ($user) {
+                $other = $msg->conversation->otherUser($user->id);
+                return [
+                    'id' => $msg->id,
+                    'conversation_id' => $msg->conversation_id,
+                    'body' => $msg->body,
+                    'user_name' => $msg->user->name,
+                    'user_image' => $other->user_image ?? null,
+                    'is_mine' => $msg->user_id === $user->id,
+                    'time' => $msg->created_at->diffForHumans(),
+                    'created_at' => $msg->created_at->toIso8601String(),
+                ];
+            })
+            ->values();
+
+        return response()->json($messages);
+    }
+
     // Polling — fetch new messages
     public function fetch(Request $request, $conversationId)
     {

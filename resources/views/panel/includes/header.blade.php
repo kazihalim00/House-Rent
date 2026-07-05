@@ -26,7 +26,7 @@
                         $other = $msg->conversation->otherUser($user->id);
                         $avatar = $other->user_image
                             ? asset('upload/img/' . $other->user_image)
-                            : asset('default.png');
+                            : asset('default.png');  
                     @endphp
                     <a href="{{ route('chat.show', $msg->conversation_id) }}" class="dropdown-item header-message-item">
                         <div class="d-flex align-items-center">

@@ -1,0 +1,195 @@
+/* ================= MOBILE RESPONSIVE FIX (House Rent Frontend) ================= */
+
+@media (max-width: 768px) {
+
+    /* ---- Hero Section ---- */
+    .hero .heading {
+        font-size: 24px !important;
+        line-height: 1.4 !important;
+        padding: 0 12px;
+    }
+
+    .hero {
+        min-height: 60vh !important;
+    }
+
+    /* ---- Popular Properties heading + button (overlap fix) ---- */
+    #popularhouses .row.mb-5 .col-12 {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center;
+    }
+
+    #popularhouses .col-12 h2.heading {
+        width: 100% !important;
+        font-size: 20px !important;
+        margin-bottom: 16px !important;
+    }
+
+    #popularhouses .position-absolute.end-0 {
+        position: static !important;
+        /* absolute বাদ দিয়ে normal flow তে আনা হলো */
+        margin-top: 8px;
+    }
+
+    #popularhouses .position-absolute.end-0 a.btn {
+        font-size: 13px !important;
+        padding: 8px 16px !important;
+    }
+
+    @media (max-width: 768px) {
+
+        .property-item .img img,
+        .property-item a.img img {
+            height: 180px !important;
+        }
+
+        .property-img-wrapper {
+            height: 200px !important;
+        }
+    }
+
+    .property-item .img img,
+    .property-item a.img img {
+        height: 180px !important;
+    }
+
+    .property-img-wrapper {
+        height: 200px !important;
+    }
+
+    /* ---- Features section ---- */
+    .box-feature {
+        padding: 1.2rem 1rem !important;
+    }
+
+    .box-feature [class^="flaticon-"],
+    .box-feature [class*=" flaticon-"] {
+        font-size: 1.8rem !important;
+    }
+
+    /* ---- Testimonials heading + prev/next buttons ---- */
+    .sec-testimonials .row.mb-5 .col-12 {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .sec-testimonials .position-absolute.end-0 {
+        position: static !important;
+        margin-top: 12px;
+        justify-content: center !important;
+    }
+
+    /* ---- Team section ---- */
+    .team-card {
+        margin-bottom: 20px;
+    }
+
+    /* ---- Counters ---- */
+    .counter-wrap .number {
+        font-size: 1.4rem !important;
+    }
+
+    /* ---- General container padding ---- */
+    .container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero .heading {
+        font-size: 20px !important;
+    }
+
+    #popularhouses .col-12 h2.heading {
+        font-size: 18px !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .sidebar .navbar-nav .nav-link {
+        padding: 10px 16px !important;
+        font-size: 14px !important;
+    }
+
+    .sidebar .navbar-brand h3 {
+        font-size: 18px !important;
+    }
+
+    .content .container-fluid.pt-4.px-4.flex-grow-1 {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+
+    /* Navbar overall tightening */
+    .navbar.bg-secondary {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        flex-wrap: nowrap !important;
+        overflow: hidden !important;
+    }
+
+    /* Filters button — icon-only on mobile */
+    .navbar button[onclick="openFilterModal()"] {
+        padding: 8px 10px !important;
+        font-size: 0 !important;
+        /* টেক্সট hide */
+        margin-left: 8px !important;
+    }
+
+    .navbar button[onclick="openFilterModal()"] i {
+        font-size: 15px !important;
+        margin-right: 0 !important;
+    }
+
+    /* Search form hide on mobile (already d-none d-md-flex, extra safety) */
+    .navbar form.d-none.d-md-flex {
+        display: none !important;
+    }
+
+    /* Dropdown nav items - tighter spacing */
+    .navbar-nav.align-items-center {
+        gap: 2px !important;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 6px 8px !important;
+    }
+
+    .navbar-nav .nav-link img {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .navbar-nav .nav-link i {
+        font-size: 16px !important;
+    }
+
+    /* Brand icon smaller */
+    .navbar-brand h2 {
+        font-size: 20px !important;
+    }
+}
+
+/* Sidebar fixed-position bug fix — force ancestors to not break fixed positioning */
+body.panel-bg,
+.container-fluid.position-relative.d-flex.p-0,
+.content {
+    transform: none !important;
+    filter: none !important;
+    perspective: none !important;
+    will-change: auto !important;
+}
+
+/* Re-assert sidebar fixed positioning with high priority */
+.sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+}

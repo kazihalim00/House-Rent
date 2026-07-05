@@ -1,6 +1,7 @@
 @extends('panel.layout')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <div class="container mx-auto px-4 py-10 max-w-3xl">
 
         <div class="text-center border-b border-gray-700/60 pb-8 mb-8 relative">

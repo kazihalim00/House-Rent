@@ -39,6 +39,7 @@
 
         <div class="relative w-full h-[40vh] md:h-[55vh] rounded-3xl overflow-hidden shadow-2xl mb-10 group">
             <img src="{{ asset('upload/img/' . $primaryImage) }}"
+                id="mainHouseImage"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 alt="House Image">
 
@@ -100,7 +101,7 @@
                             <div class="aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition group">
                                 <img src="{{ asset('upload/img/' . $image) }}" 
                                      class="w-full h-full object-cover transition duration-500 group-hover:scale-110 cursor-pointer"
-                                     onclick="window.open(this.src, '_blank')">
+                                     onclick="changeMainImage(this.src)">
                             </div>
                         @endforeach
                     </div>
@@ -346,6 +347,15 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 300);
+        }
+
+        function changeMainImage(src) {
+            const mainImg = document.getElementById('mainHouseImage');
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+            mainImg.src = src;
+            mainImg.style.opacity = '1';
+            }, 150);
         }
     </script>
 @endsection

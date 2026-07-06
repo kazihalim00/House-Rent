@@ -180,10 +180,16 @@
                             </a>
                         @endif
 
-                        <button onclick="openAppointmentModal()"
-                            class="block w-full text-center border-2 text-white font-bold text-lg py-3 rounded-xl shadow-sm transition-all duration-300 transform hover:-translate-y-1" style="background-color: #e53935; border-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
-                            <i class="fas fa-calendar-alt mr-2"></i> Schedule a Visit
-                        </button>
+                        @if (Auth::check() && Auth::id() === $home->user_id && Auth::user()->role !== 'Admin')
+                            <div class="block w-full text-center bg-gray-400 text-white font-bold text-lg py-3 rounded-xl shadow-sm cursor-not-allowed opacity-60">
+                                <i class="fas fa-ban mr-2"></i> You cannot schedule a visit for your own listing
+                            </div>
+                        @else
+                            <button onclick="openAppointmentModal()"
+                                class="block w-full text-center border-2 text-white font-bold text-lg py-3 rounded-xl shadow-sm transition-all duration-300 transform hover:-translate-y-1" style="background-color: #e53935; border-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">
+                                <i class="fas fa-calendar-alt mr-2"></i> Schedule a Visit
+                            </button>
+                        @endif
                     </div>
                 </div>
 
@@ -215,7 +221,7 @@
             <div class="px-6 py-4 flex justify-between items-center" style="background-color: #e53935;">
                 <h3 class="text-white text-xl font-bold"><i class="fas fa-clock mr-2"></i> Schedule a House Visit</h3>
                 <button onclick="closeAppointmentModal()"
-                    class="text-white hover:text-gray-200 text-2xl font-bold leading-none">&times;</button>
+                    class="text-black hover:text-gray-200 text-2xl font-bold leading-none">&times;</button>
             </div>
 
             <form action="{{ route('book.appointment', $home->id) }}" method="POST" class="p-6">
@@ -264,7 +270,7 @@
             <div class="px-6 py-4 flex justify-between items-center" style="background-color: #e53935;">
                 <h3 class="text-white text-xl font-bold"><i class="fas fa-star mr-2"></i> Rate this House</h3>
                 <button onclick="closeReviewModal()"
-                    class="text-white hover:text-gray-200 text-2xl font-bold leading-none">&times;</button>
+                    class="text-black hover:text-gray-200 text-2xl font-bold leading-none">&times;</button>
             </div>
 
             <form action="{{ route('review.store') }}" method="POST" class="p-6">

@@ -407,7 +407,6 @@ class HomeController extends Controller
         }
 
 
-
         return view('panel.pages.booking_list', compact('bookings'));
     }
 

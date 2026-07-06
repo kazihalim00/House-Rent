@@ -14,7 +14,8 @@
                     style="border-radius: 15px;">
                     <div class="card-body p-4 p-md-5">
                         <h4 class="fw-bold mb-1">Profile Information</h4>
-                        <p class="text-secondary small mb-4">Update your account's profile information and email address.
+                        <p class="text-secondary small mb-4" style="color: #ffffff !important;">
+                            Update your account's profile information and email address.
                         </p>
 
                         <form method="post" action="{{ route('profile.update') }}">
@@ -22,14 +23,14 @@
                             @method('patch')
 
                             <div class="mb-3">
-                                <label class="form-label text-light">Name</label>
+                                <label class="form-label text-white">Name</label>
                                 <input type="text" name="name" class="form-control bg-dark text-white border-secondary"
                                     value="{{ old('name', $user->name) }}" required>
                                 @error('name') <span class="text-danger small">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label text-light">Email</label>
+                                <label class="form-label text-white">Email</label>
                                 <input type="email" name="email" class="form-control bg-dark text-white border-secondary"
                                     value="{{ old('email', $user->email) }}" required>
                                 @error('email') <span class="text-danger small">{{ $message }}</span> @enderror
@@ -44,7 +45,8 @@
                     style="border-radius: 15px;">
                     <div class="card-body p-4 p-md-5">
                         <h4 class="fw-bold mb-1">Update Password</h4>
-                        <p class="text-secondary small mb-4">Ensure your account is using a long, random password to stay
+                        <p class="text-secondary small mb-4" style="color: #ffffff !important;">
+                            Ensure your account is using a long, random password to stay
                             secure.</p>
 
                         <form method="post" action="{{ route('password.update') }}">
@@ -52,21 +54,21 @@
                             @method('put')
 
                             <div class="mb-3">
-                                <label class="form-label text-light">Current Password</label>
+                                <label class="form-label text-white">Current Password</label>
                                 <input type="password" name="current_password"
                                     class="form-control bg-dark text-white border-secondary" required>
                                 @error('current_password') <span class="text-danger small">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label text-light">New Password</label>
+                                <label class="form-label text-white">New Password</label>
                                 <input type="password" name="password"
                                     class="form-control bg-dark text-white border-secondary" required>
                                 @error('password') <span class="text-danger small">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label text-light">Confirm Password</label>
+                                <label class="form-label text-white">Confirm Password</label>
                                 <input type="password" name="password_confirmation"
                                     class="form-control bg-dark text-white border-secondary" required>
                             </div>
@@ -79,7 +81,7 @@
                 <div class="card bg-dark text-white shadow-lg border-danger border-opacity-50" style="border-radius: 15px;">
                     <div class="card-body p-4 p-md-5">
                         <h4 class="fw-bold text-danger mb-1">Delete Account</h4>
-                        <p class="text-light small mb-4">Once your account is deleted, all of its resources and data will be
+                        <p class="text-white small mb-4">Once your account is deleted, all of its resources and data will be
                             permanently
                             deleted.</p>
 

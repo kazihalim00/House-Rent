@@ -31,6 +31,14 @@ test('users can not authenticate with invalid password', function () {
     $this->assertGuest();
 });
 
+test('non-admin users see the header dashboard link pointing to properties', function () {
+    $user = User::factory()->create(['role' => 'User']);
+
+    $html = view('frontend.includes.header')->render();
+
+    expect($html)->toContain('href="/house-detail" class="dash-link">Dashboard</a>');
+});
+
 test('users can logout', function () {
     $user = User::factory()->create();
 

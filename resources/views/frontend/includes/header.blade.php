@@ -385,7 +385,11 @@
                             </a>
                             <ul class="dropdown user-dropdown">
                                 <li>
-                                    <a href="{{ url('/dashboard') }}" class="dash-link">Dashboard</a>
+                                    @if(Auth::user()->role === 'Admin')
+                                        <a href="{{ route('dashboard') }}" class="dash-link">Dashboard</a>
+                                    @else
+                                        <a href="{{ route('house-detail') }}" class="dash-link">Dashboard</a>
+                                    @endif
                                 </li>
                                 <li style="margin-top:4px;">
                                     <form method="POST" action="{{ route('logout') }}" style="margin:0;">

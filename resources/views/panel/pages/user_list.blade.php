@@ -19,12 +19,12 @@
             </a>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
 
                     <thead>
-                        <tr class="bg-gray-900 text-white text-sm uppercase tracking-wider">
+                        <tr class="bg-gray-800 text-gray-300 text-sm uppercase tracking-wider border-b border-gray-700">
                             <th class="px-6 py-4 font-semibold">#</th>
                             <th class="px-6 py-4 font-semibold">Name</th>
                             <th class="px-6 py-4 font-semibold">Email</th>
@@ -33,23 +33,23 @@
                         </tr>
                     </thead>
 
-                    <tbody class="divide-y divide-gray-200 text-gray-700">
+                    <tbody class="divide-y divide-gray-800 text-gray-300">
                         @foreach ($users as $user)
-                            <tr class="hover:bg-blue-50 transition-colors duration-200">
+                            <tr class="hover:bg-gray-800/60 transition-colors duration-200">
 
-                                <td class="px-6 py-4 font-medium">{{ $user->id }}</td>
+                                <td class="px-6 py-4 font-medium text-white">{{ $user->id }}</td>
 
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-4">
                                         @if($user->user_image)
                                             <img src="{{ asset('upload/img/' . $user->user_image) }}"
-                                                class="w-11 h-11 rounded-full object-cover shadow-sm">
+                                                class="w-11 h-11 rounded-full object-cover shadow-sm border border-gray-700">
                                         @else
                                             <img src="{{ asset('assets/img/avatar.png') }}"
-                                                class="w-11 h-11 rounded-full object-cover shadow-sm">
+                                                class="w-11 h-11 rounded-full object-cover shadow-sm border border-gray-700">
                                         @endif
                                         <div>
-                                            <h6 class="text-base font-bold text-gray-900 m-0">{{ $user->name }}</h6>
+                                            <h6 class="text-base font-bold text-white m-0">{{ $user->name }}</h6>
                                             <p class="text-xs text-gray-500 m-0">Joined {{ $user->created_at->diffForHumans() }}
                                             </p>
                                         </div>
@@ -60,11 +60,11 @@
 
                                 <td class="px-6 py-4">
                                     @if ($user->role == "Admin")
-                                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1.5 rounded-full">
+                                        <span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs font-bold px-3 py-1.5 rounded-full">
                                             {{ $user->role }}
                                         </span>
                                     @elseif($user->role == "User")
-                                        <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full">
+                                        <span class="bg-green-500/10 text-green-400 border border-green-500/30 text-xs font-bold px-3 py-1.5 rounded-full">
                                             {{ $user->role }}
                                         </span>
                                     @endif

@@ -115,15 +115,14 @@
                             </div>
 
                             {{-- Button --}}
-                            @auth
-                                <a href="{{ route('book.house', $house->id) }}" class="btn btn-primary py-2 px-3">
+                            <a href="{{ route('book.house', $house->id) }}" 
+                                class="btn {{ auth()->check() ? 'btn-primary' : 'btn-secondary' }} py-2 px-3">
+                                @auth
                                     Book Now
-                                </a>
-                            @else
-                                <a href="{{ route('login') }}" class="btn btn-secondary py-2 px-3">
+                                @else
                                     Login to Book
-                                </a>
-                            @endauth
+                                @endauth
+                            </a>
 
                         </div>
 

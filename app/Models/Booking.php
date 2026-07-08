@@ -11,6 +11,7 @@ class Booking extends Model
         'user_id', 'house_id', 'guest_name', 'guest_email', 'guest_phone', 'check_in_date', 'booking_duration', 'status',
     ];
 
+    // A booking belongs to a house and a user
     public function house(): BelongsTo
     {
         return $this->belongsTo(Home::class, 'house_id');

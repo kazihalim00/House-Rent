@@ -356,7 +356,7 @@
         <div class="menu-bg-wrap">
             <div class="site-navigation">
                 <a href="{{ url('/') }}" class="logo m-0">
-                    House <span>Rent</span>
+                    Rent <span>Cloud</span>
                 </a>
 
                 <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu align-items-center"

@@ -17,16 +17,17 @@
     </button>
     <div class="navbar-nav align-items-center ms-auto">
         @auth
+            <!-- 1. Message Dropdown -->
             <div class="nav-item dropdown">
-                <a href="/chat" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="fa fa-envelope me-lg-2"></i>
-                    <span class="d-none d-lg-inline-flex">Message</span>
+                    <span class="d-none d-lg-inline-flex" style="color:white">Message</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0"
                     id="header-messages-menu">
                     @forelse($latestMessages ?? collect() as $msg)
                         @php
-                            $other = $msg->conversation->otherUser($user->id);
+                            $other = $msg->conversation->otherUser($user->id ?? Auth::id());
                             $avatar = $other->user_image
                                 ? asset('upload/img/' . $other->user_image)
                                 : asset('default.png');  
@@ -43,27 +44,6 @@
                                     </h6>
                                     <small>{{ $msg->created_at->diffForHumans() }}</small>
                                 </div>
-        <div class="nav-item dropdown">
-            <a href="/chat" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <i class="fa fa-envelope me-lg-2"></i>
-                <span class="d-none d-lg-inline-flex" style="color:white">Message</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0" id="header-messages-menu">
-                @forelse($latestMessages ?? collect() as $msg)
-                    @php
-                        $other = $msg->conversation->otherUser($user->id);
-                        $avatar = $other->user_image
-                            ? asset('upload/img/' . $other->user_image)
-                            : asset('default.png');  
-                    @endphp
-                    <a href="{{ route('chat.show', $msg->conversation_id) }}" class="dropdown-item header-message-item">
-                        <div class="d-flex align-items-center">
-                            <img class="rounded-circle" src="{{ $avatar }}" alt="" style="width: 40px; height: 40px; object-fit:cover;">
-                            <div class="ms-2" style="overflow:hidden;">
-                                <h6 class="fw-normal mb-0" style="text-overflow:ellipsis; white-space:nowrap; overflow:hidden;">
-                                    {{ $msg->is_mine ? 'You' : $other->name }}: {{ \Illuminate\Support\Str::limit($msg->body, 30) }}
-                                </h6>
-                                <small>{{ $msg->created_at->diffForHumans() }}</small>
                             </div>
                         </a>
                         @if(!$loop->last)
@@ -78,49 +58,25 @@
                     <a href="{{ route('chat.index') }}" class="dropdown-item text-center">See all message</a>
                 </div>
             </div>
-            <!-- <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Notificatin</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
-                    </div> -->
-            <div class="nav-item dropdown">
-                <a href="/chat" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    <img class="rounded-circle me-lg-2"
-                        src="{{ Auth::user()->user_image ? asset('upload/img/' . Auth::user()->user_image) : asset('default.png') }}"
-                        style="width: 40px; height: 40px;">
-                    <span class="d-none d-lg-inline-flex">{{ Auth::user()->name }}</span>
 
+            <!-- 2. User Profile Dropdown -->
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                    <img class="rounded-circle"
+                        src="{{ !empty(Auth::user()->user_image) ? asset('upload/img/' . Auth::user()->user_image) : asset('upload/img/default.png') }}"
+                        style="width: 40px; height: 40px; object-fit:cover;"
+                        onerror="this.onerror=null; this.src='{{ asset('upload/img/default.png') }}';">
+                    <span class="d-none d-lg-inline-flex" style="color:white">{{ Auth::user()->name }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0 text-center">
-
                     <div class="py-2">
-                        <span class="badge
-                                {{ Auth::user()->role == 'Admin' ? 'bg-success' : 'bg-warning' }}">
+                        <span class="badge {{ Auth::user()->role == 'Admin' ? 'bg-success' : 'bg-warning' }}">
                             {{ Auth::user()->role }}
                         </span>
                     </div>
 
                     <a href="#" class="dropdown-item">My Profile</a>
-                    <a href=" {{ route('profile.edit') }}" class="dropdown-item">Settings</a>
+                    <a href="{{ route('profile.edit') }}" class="dropdown-item">Settings</a>
 
                     <hr class="dropdown-divider">
 
@@ -132,59 +88,6 @@
                             Log Out
                         </a>
                     </form>
-
-                    </a>
-                    @if(!$loop->last)
-                        <hr class="dropdown-divider">
-                    @endif
-                @empty
-                    <div class="dropdown-item text-center text-muted" id="header-no-messages">
-                        <small>No new messages</small>
-                    </div>
-                @endforelse
-                <hr class="dropdown-divider">
-                <a href="{{ route('chat.index') }}" class="dropdown-item text-center">See all message</a>
-            </div>
-        </div>
-        <!-- <div class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <i class="fa fa-bell me-lg-2"></i>
-                <span class="d-none d-lg-inline-flex">Notificatin</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                <a href="#" class="dropdown-item">
-                    <h6 class="fw-normal mb-0">Profile updated</h6>
-                    <small>15 minutes ago</small>
-                </a>
-                <hr class="dropdown-divider">
-                <a href="#" class="dropdown-item">
-                    <h6 class="fw-normal mb-0">New user added</h6>
-                    <small>15 minutes ago</small>
-                </a>
-                <hr class="dropdown-divider">
-                <a href="#" class="dropdown-item">
-                    <h6 class="fw-normal mb-0">Password changed</h6>
-                    <small>15 minutes ago</small>
-                </a>
-                <hr class="dropdown-divider">
-                <a href="#" class="dropdown-item text-center">See all notifications</a>
-            </div>
-        </div> -->
-        <div class="nav-item dropdown">
-            <a href="/chat" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <img class="rounded-circle me-lg-2"
-                    src="{{ Auth::user()->user_image ? asset('upload/img/' . Auth::user()->user_image) : asset('default.png') }}"
-                    style="width: 40px; height: 40px;">
-                <span class="d-none d-lg-inline-flex" style="color:white">{{ Auth::user()->name }}</span>
-
-            </a>
-            <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0 text-center">
-
-                <div class="py-2">
-                    <span class="badge
-                    {{ Auth::user()->role == 'Admin' ? 'bg-success' : 'bg-warning' }}">
-                        {{ Auth::user()->role }}
-                    </span>
                 </div>
             </div>
         @else
@@ -197,6 +100,8 @@
         @endauth
     </div>
 </nav>
+
+<!-- JS Scripts -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');

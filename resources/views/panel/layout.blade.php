@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>House Rent</title>
+    <title>Rent Cloud</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,33 +113,72 @@
             <!-- Navbar End -->
 
             <!-- Back Button Start -->
+<<<<<<< HEAD
             @if(!request()->is('/') && !request()->is('home'))
+=======
+            {{-- @if(!request()->is('/') && !request()->is('home'))
+            @php
+            $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
+
+            $fallbackUrl = $isAdmin ? url('/dashboard') : url('/');
+
+            if (request()->is('dashboard')) {
+            $fallbackUrl = url('/');
+            }
+            elseif (request()->is('edit-house/*')) {
+            $fallbackUrl = url('/house-detail');
+            } elseif (request()->is('edit-user/*')) {
+            $fallbackUrl = url('/user-list');
+            } elseif (request()->is('edit-team-member/*')) {
+            $fallbackUrl = url('/see-team-member');
+            } elseif (request()->is('booking-calendar') || request()->is('booking-calender')) {
+            $fallbackUrl = url('/booking-list');
+            }
+            @endphp
+
+            <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <a href="{{ $fallbackUrl }}" class="btn-panel-action">
+                    <i class="fas fa-arrow-left me-2"></i> Back
+                </a>
+
+                @hasSection('page-action')
+                <div class="d-flex align-items-center">
+                    @yield('page-action')
+                </div>
+                @endif
+            </div>
+            @endif --}}
+            @if(!request()->is('/') && !request()->is('home') && !request()->is('dashboard') && !request()->is('house/*'))
+>>>>>>> origin/v1
                 @php
                     $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
 
-                    // লজিক: বাই-ডিফল্ট সব পেজ (Add House, User List ইত্যাদি) থেকে ড্যাশবোর্ডে যাবে!
-                    $fallbackUrl = $isAdmin ? url('/dashboard') : url('/');
-
-                    // শুধু ডাবল পেজ (B to A) গুলোর জন্য নির্দিষ্ট প্যারেন্ট সেট করা হলো
-                    if (request()->is('dashboard')) {
-                        $fallbackUrl = url('/');
-                    } elseif (request()->is('edit-house/*')) {
+                    // Determine the fallback URL
+                    if (request()->is('add-house') || request()->is('appointments')) {
                         $fallbackUrl = url('/house-detail');
-                    } elseif (request()->is('edit-user/*')) {
-                        $fallbackUrl = url('/user-list');
-                    } elseif (request()->is('edit-team-member/*')) {
-                        $fallbackUrl = url('/see-team-member');
                     } elseif (request()->is('booking-calendar') || request()->is('booking-calender')) {
                         $fallbackUrl = url('/booking-list');
-                    } 
+                    } elseif (request()->is('add-user')) {
+                        $fallbackUrl = url('/user-list');
+                    } elseif (request()->is('add-team-member')) {
+                        $fallbackUrl = url('/see-team-member');
+                    } elseif (
+                        request()->is('house-detail') ||
+                        request()->is('booking-list') ||
+                        request()->is('user-list') ||
+                        request()->is('see-team-member') ||
+                        request()->is('reviews')
+                    ) {
+                        $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
+                    } else {
+                        $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
+                    }
                 @endphp
 
                 <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <!-- কোনো JS History নাই, সরাসরি লিংকে চলে যাবে -->
                     <a href="{{ $fallbackUrl }}" class="btn-panel-action">
                         <i class="fas fa-arrow-left me-2"></i> Back
                     </a>
-
                     @hasSection('page-action')
                         <div class="d-flex align-items-center">
                             @yield('page-action')
@@ -147,6 +186,10 @@
                     @endif
                 </div>
             @endif
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/v1
             <!-- Back Button End -->
 
             <!-- Main Content -->

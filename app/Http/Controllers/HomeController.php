@@ -219,7 +219,7 @@ class HomeController extends Controller
                 ->orWhere('email', 'like', "%$search%");
         }
 
-        $users = $query->latest()->get();
+        $users = $query->get();
 
         return view('panel.pages.user_list', compact('users'));
 

@@ -29,10 +29,15 @@
                     </thead>
 
                     <tbody class="divide-y divide-gray-800 text-gray-300">
+                        @php
+                        $var = 1;@endphp
                         @foreach ($users as $user)
                             <tr class="hover:bg-gray-800/60 transition-colors duration-200">
 
-                                <td class="px-6 py-4 font-medium text-white">{{ $user->id }}</td>
+                                <td class="px-6 py-4 font-medium text-black">{{ $var }}</td>
+                                @php
+                                $var = $var +  1;
+                                @endphp
 
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-4">
@@ -44,14 +49,14 @@
                                                 class="w-11 h-11 rounded-full object-cover shadow-sm border border-gray-700">
                                         @endif
                                         <div>
-                                            <h6 class="text-base font-bold text-white m-0">{{ $user->name }}</h6>
+                                            <h6 class="text-base font-bold text-black m-0">{{ $user->name }}</h6>
                                             <p class="text-xs text-gray-500 m-0">Joined {{ $user->created_at->diffForHumans() }}
                                             </p>
                                         </div>
                                     </div>
                                 </td>
 
-                                <td class="px-6 py-4">{{ $user->email }}</td>
+                                <td class="px-6 py-4" style="color:black">{{ $user->email }}</td>
 
                                 <td class="px-6 py-4">
                                     @if ($user->role == "Admin")
@@ -96,6 +101,7 @@
 
                 </table>
             </div>
+        </div>
         </div>
 
     </div>

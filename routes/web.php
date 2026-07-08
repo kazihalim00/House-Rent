@@ -31,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Appointment Module
     Route::post('/book-appointment/{id}', [HomeController::class, 'book_appointment'])->name('book.appointment');
     Route::get('/appointments', [HomeController::class, 'appointmentList'])->name('appointment.list');
+    Route::post('/appointment/approve/{id}', [HomeController::class, 'approveAppointment'])->name('appointment.approve');
+    Route::post('/appointment/reject/{id}', [HomeController::class, 'rejectAppointment'])->name('appointment.reject');
     Route::delete('/appointment/delete/{id}', [HomeController::class, 'deleteAppointment'])->name('appointment.delete');
 
     // Review Module
@@ -73,9 +75,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/approve-house/{id}', [HomeController::class, 'approve_house'])->name('admin.approve_house');
         Route::post('/reject-house/{id}', [HomeController::class, 'reject_house'])->name('admin.reject_house');
 
-        // Appointment Actions
-        Route::post('/appointment/approve/{id}', [HomeController::class, 'approveAppointment'])->name('appointment.approve');
-        Route::post('/appointment/reject/{id}', [HomeController::class, 'rejectAppointment'])->name('appointment.reject');
         Route::get('/add-team-member', function () {
             return view('panel.pages.add_team_member');
         });

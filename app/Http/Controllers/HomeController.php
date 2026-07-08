@@ -493,7 +493,19 @@ class HomeController extends Controller
 
     public function appointmentList()
     {
-        $appointments = Appointment::with(['house', 'user'])->latest()->get();
+        $user = Auth::user();
+
+        if ($user->role == 'Admin') {
+            $appointments = Appointment::with(['house', 'user'])->latest()->get();
+        } else {
+            $appointments = Appointment::where('user_id', $user->id)
+                ->orWhereHas('house', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->with(['house', 'user'])
+                ->latest()
+                ->get();
+        }
 
         return view('panel.pages.appointment_list', compact('appointments'));
     }
@@ -501,8 +513,20 @@ class HomeController extends Controller
     public function approveAppointment($id)
     {
         $appointment = Appointment::findOrFail($id);
+        $house = $appointment->house;
+
+        if (!$house || ($house->user_id !== Auth::id() && Auth::user()->role !== 'Admin')) {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
         $appointment->status = 'approved';
         $appointment->save();
+
+        // Reject other pending requests for the same house
+        Appointment::where('house_id', $appointment->house_id)
+            ->where('id', '!=', $appointment->id)
+            ->where('status', 'pending')
+            ->update(['status' => 'rejected']);
 
         return back()->with('success', 'Appointment has been approved successfully!');
     }
@@ -510,6 +534,12 @@ class HomeController extends Controller
     public function rejectAppointment($id)
     {
         $appointment = Appointment::findOrFail($id);
+        $house = $appointment->house;
+
+        if (!$house || ($house->user_id !== Auth::id() && Auth::user()->role !== 'Admin')) {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
         $appointment->status = 'rejected';
         $appointment->save();
 
@@ -519,7 +549,25 @@ class HomeController extends Controller
     public function deleteAppointment($id)
     {
         $appointment = Appointment::findOrFail($id);
+        $house = $appointment->house;
+        $isOwner = $house && $house->user_id === Auth::id();
+        $isRequester = $appointment->user_id === Auth::id();
+
+        if (!$isOwner && !$isRequester && Auth::user()->role !== 'Admin') {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
+        $houseId = $appointment->house_id;
+        $wasApproved = $appointment->status === 'approved';
+
         $appointment->delete();
+
+        if ($wasApproved) {
+            // If the owner deletes the approved appointment, other requests become pending again
+            Appointment::where('house_id', $houseId)
+                ->where('status', 'rejected')
+                ->update(['status' => 'pending']);
+        }
 
         return back()->with('success', 'Appointment deleted successfully!');
     }

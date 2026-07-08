@@ -62,60 +62,55 @@
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    @if($appointment->status == 'pending')
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 mb-2">
-                                            Pending
-                                        </span>
+                                    <div class="flex flex-col items-center gap-2">
+                                        @if($appointment->status == 'pending')
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                Pending
+                                            </span>
+                                        @elseif($appointment->status == 'approved')
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Approved
+                                            </span>
+                                        @else
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                Rejected
+                                            </span>
+                                        @endif
+
+                                        @php
+                                            $isOwnerOrAdmin = Auth::user()->role == 'Admin' || Auth::id() == $appointment->house?->user_id;
+                                            $canDecide = $appointment->status == 'pending' && $isOwnerOrAdmin;
+                                        @endphp
 
                                         <div class="flex justify-center gap-2 mt-1">
-                                            <!-- Approve Form -->
-                                            <form action="{{ route('appointment.approve', $appointment->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="bg-green-500 text-white p-1.5 rounded hover:bg-green-600 transition shadow-sm" title="Approve">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                            </form>
+                                            {{-- Approve/Reject: only for the house owner or an Admin, and only while pending --}}
+                                            @if($canDecide)
+                                                <form action="{{ route('appointment.approve', $appointment->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="bg-green-500 text-white p-1.5 rounded hover:bg-green-600 transition shadow-sm" title="Approve">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                </form>
 
-                                            <!-- Reject Form -->
-                                            <form action="{{ route('appointment.reject', $appointment->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" onclick="return confirm('Are you sure you want to reject this request?')" class="bg-red-500 text-white p-1.5 rounded hover:bg-red-600 transition shadow-sm" title="Reject">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </form>
+                                                <form action="{{ route('appointment.reject', $appointment->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" onclick="return confirm('Are you sure you want to reject this request?')" class="bg-red-500 text-white p-1.5 rounded hover:bg-red-600 transition shadow-sm" title="Reject">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                {{-- Delete: shown once the owner/admin has decided, or to the requester while their request is pending --}}
+                                                <form action="{{ route('appointment.delete', $appointment->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this {{ $appointment->status == 'pending' ? 'request' : 'history' }}?')"
+                                                        class="text-red-500 hover:text-red-700 text-sm font-semibold transition" title="Delete">
+                                                        <i class="fas fa-trash-alt"></i> Delete
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
-
-                                @elseif($appointment->status == 'approved')
-                                    <div class="flex flex-col items-center gap-2">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            Approved
-                                        </span>
-                                        <!-- Delete Button -->
-                                        <form action="{{ route('appointment.delete', $appointment->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Are you sure you want to delete this history?')"
-                                                class="text-red-500 hover:text-red-700 text-sm font-semibold transition" title="Delete">
-                                                <i class="fas fa-trash-alt"></i> Delete
-                                            </button>
-                                        </form>
                                     </div>
-                                @else
-                                    <div class="flex flex-col items-center gap-2">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                            Rejected
-                                        </span>
-                                        <!-- Delete Button -->
-                                        <form action="{{ route('appointment.delete', $appointment->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Are you sure you want to delete this history?')"
-                                                class="text-red-500 hover:text-red-700 text-sm font-semibold transition" title="Delete">
-                                                <i class="fas fa-trash-alt"></i> Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                @endif
                                 </td>
 
                             </tr>

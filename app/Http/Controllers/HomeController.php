@@ -583,14 +583,19 @@ class HomeController extends Controller
             ->latest()
             ->take(3)
             ->get();
-        $members = TeamMember::get();
+
+        // Members: only active members, sorted by order
+        $members = TeamMember::where('status', 'active')
+            ->orderBy('order', 'asc')
+            ->get();
+
         // Cards: only available house
         $houses = Home::where('status', 'approved')
             ->whereDoesntHave('bookings', function ($q) {
                 $q->where('status', 'approved');
                 $q->whereRaw(
                     'DATE_ADD(check_in_date, INTERVAL booking_duration MONTH) > ?',
-                    [Carbon::now()->toDateString()]
+                    [\Carbon\Carbon::now()->toDateString()]
                 );
             })
             ->latest()
@@ -599,8 +604,7 @@ class HomeController extends Controller
 
         // Reviews: general or admin
         $reviews = Review::where(function ($q) {
-            $q
-                ->whereNull('house_id')
+            $q->whereNull('house_id')
                 ->orWhereHas('user', fn($q2) => $q2->where('role', 'admin'));
         })
             ->with('user')
@@ -649,9 +653,9 @@ class HomeController extends Controller
 
     public function see_team_members()
     {
-        $members = TeamMember::get();
-        return view('panel.pages.see_team_members', compact('members'));
+        $members = TeamMember::orderBy('order', 'asc')->get();
 
+        return view('panel.pages.see_team_members', compact('members'));
     }
 
     public function edit_team_member($id)
@@ -671,7 +675,7 @@ class HomeController extends Controller
             'short_bio' => 'required',
             'order' => 'required',
             'status' => 'required',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
             'github' => 'required',
             'linkedin' => 'required',
             'portfolio' => 'required',
@@ -700,8 +704,7 @@ class HomeController extends Controller
 
         $member->save();
 
-        return redirect('/see-team-members')
-            ->with('success', 'Team member updated successfully!');
+        return redirect()->back()->with('success', 'Team member updated successfully!');
     }
 
     public function delete_team_member($id)

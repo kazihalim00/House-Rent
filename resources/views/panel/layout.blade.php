@@ -32,7 +32,6 @@
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
 
-    <!-- Tailwind CDN — শুধু filter modal এর জন্য, preflight বন্ধ রাখা হলো যাতে Bootstrap template এর সাথে সংঘর্ষ না হয় -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -108,51 +107,43 @@
                 @include('panel.includes.sidebar')
             @endauth
             <!-- Sidebar End -->
+
             <!-- Navbar Start -->
             @include('panel.includes.header')
             <!-- Navbar End -->
 
             <!-- Back Button Start -->
-@if(!request()->is('/') && !request()->is('home') && !request()->is('dashboard'))
-    @php
-        $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
+            @if(!request()->is('/') && !request()->is('home'))
+                @php
+                    $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
 
-        // Determine the fallback URL
-        if (request()->is('add-house') || request()->is('appointments')) {
-            $fallbackUrl = url('/house-detail');
-        } elseif (request()->is('booking') || request()->is('booking')) {
-            $fallbackUrl = url('/booking-list');
-        } elseif (request()->is('add-user')) {
-            $fallbackUrl = url('/user-list');
-        } elseif (request()->is('add-team-member')) {
-            $fallbackUrl = url('/see-team-member');
-        } elseif (
-            request()->is('house-detail') ||
-            request()->is('booking-list') ||
-            request()->is('user-list') ||
-            request()->is('see-team-member') ||
-            request()->is('reviews')
-        ) {
-            $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
-        } else {
-            $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
-        }
-    @endphp
+                    $fallbackUrl = $isAdmin ? url('/dashboard') : url('/');
 
-    <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <a href="{{ $fallbackUrl }}" class="btn-panel-action">
-            <i class="fas fa-arrow-left me-2"></i> Back
-        </a>
+                    if (request()->is('dashboard')) {
+                        $fallbackUrl = url('/');
+                    } elseif (request()->is('edit-house/*')) {
+                        $fallbackUrl = url('/house-detail');
+                    } elseif (request()->is('edit-user/*')) {
+                        $fallbackUrl = url('/user-list');
+                    } elseif (request()->is('edit-team-member/*')) {
+                        $fallbackUrl = url('/see-team-member');
+                    } elseif (request()->is('booking-calendar') || request()->is('booking-calender')) {
+                        $fallbackUrl = url('/booking-list');
+                    } 
+                @endphp
 
-        @hasSection('page-action')
-            <div class="d-flex align-items-center">
-                
-                @yield('page-action')
-            </div>
-        @endif
-    </div>
-@endif
+                <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <a href="{{ $fallbackUrl }}" class="btn-panel-action">
+                        <i class="fas fa-arrow-left me-2"></i> Back
+                    </a>
 
+                    @hasSection('page-action')
+                        <div class="d-flex align-items-center">
+                            @yield('page-action')
+                        </div>
+                    @endif
+                </div>
+            @endif
             <!-- Back Button End -->
 
             <!-- Main Content -->
@@ -183,6 +174,7 @@
     <!-- Template Javascript -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
     @yield('scripts')
+
     <!-- Advanced Filter Modal  -->
     <div id="globalFilterModal"
         class="fixed inset-0 z-[9999] hidden bg-black/60 backdrop-blur-sm flex justify-center items-center px-4 transition-opacity duration-300">
@@ -191,8 +183,7 @@
 
             <div class="bg-gray-900 px-6 py-4 flex justify-between items-center">
                 <h3 class="text-white text-xl font-bold"><i class="fas fa-filter text-red-500 mr-2"
-                        style="color: #e53935;"></i> Advanced
-                    Search
+                        style="color: #e53935;"></i> Advanced Search
                 </h3>
                 <button onclick="closeFilterModal()"
                     class="text-gray-400 hover:text-white text-2xl font-bold leading-none">&times;</button>
@@ -258,8 +249,7 @@
                             class="px-6 py-2.5 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition">Cancel</button>
                         <button type="submit" class="px-6 py-2.5 text-white font-bold rounded-lg shadow-md transition"
                             style="background-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'"
-                            onmouseout="this.style.backgroundColor='#e53935'">Apply
-                            Filters</button>
+                            onmouseout="this.style.backgroundColor='#e53935'">Apply Filters</button>
                     </div>
                 </div>
             </form>

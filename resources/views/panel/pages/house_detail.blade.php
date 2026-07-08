@@ -14,9 +14,11 @@
 
     
 
-        <div class="text-end mb-4">
-            <a href="{{ url('/add-house') }}" class="btn" style="background-color: #e53935; color: white; border-color: #e53935;" onmouseover="this.style.backgroundColor='#c62828'" onmouseout="this.style.backgroundColor='#e53935'">Add House</a>
-        </div>
+        @section('page-action')
+            <a href="{{ url('/add-house') }}" class="btn-panel-action">
+                <i class="fas fa-plus me-1"></i> Add House
+            </a>
+        @endsection
 
         @if ($houses->isEmpty())
             <div class="mb-6 p-6 bg-gray-100 text-gray-700 rounded-xl shadow-sm text-center">
@@ -26,7 +28,7 @@
 
         <div class="text-center mb-10">
             <h2 class="text-3xl font-bold text-white-800 mb-4">Available Houses for Rent</h2>
-            <p class="text-white-600 max-w-2xl mx-auto">
+            <p class="text-white-600 max-w-2xl mx-auto" style="color: #fff;">
                 Find your dream house from our premium collection. We offer the best facilities at an affordable price.
             </p>
         </div>

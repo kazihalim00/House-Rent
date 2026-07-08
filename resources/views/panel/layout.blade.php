@@ -67,6 +67,26 @@
         .content.no-sidebar .navbar .sidebar-toggler {
             display: none !important;
         }
+
+        .btn-panel-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #EB1616;
+            color: #fff;
+            height: 38px;
+            padding: 0 18px;
+            border-radius: 50px;
+            font-weight: 500;
+            text-decoration: none;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-panel-action:hover {
+            background-color: #c62828;
+            color: #fff;
+        }
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -91,6 +111,82 @@
             <!-- Navbar Start -->
             @include('panel.includes.header')
             <!-- Navbar End -->
+
+            <!-- Back Button Start -->
+@if(!request()->is('/') && !request()->is('home'))
+    @php
+        $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
+        
+        // 1. Determine the exact fallback URL
+        if (request()->is('dashboard')) {
+            $fallbackUrl = url('/');
+        } elseif (request()->is('add-house') || request()->is('appointments')) {
+            $fallbackUrl = url('/house-detail');
+        } elseif (request()->is('booking-calendar') || request()->is('booking-calender')) {
+            $fallbackUrl = url('/booking-list');
+        } elseif (request()->is('add-user')) {
+            $fallbackUrl = url('/user-list');
+        } elseif (request()->is('add-team-member')) {
+            $fallbackUrl = url('/see-team-members');
+        } elseif (request()->is('house-detail') || request()->is('booking-list') || request()->is('user-list') || request()->is('see-team-members') || request()->is('reviews')) {
+            $fallbackUrl = url('/dashboard');
+        } else {
+            $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
+        }
+
+        // 2. Mark if this page must STRICTLY use the fallback URL instead of browser history
+        $isStrictPage = request()->is('dashboard') || 
+                        request()->is('add-house') || 
+                        request()->is('appointments') || 
+                        request()->is('booking-calendar') || 
+                        request()->is('booking-calender') || 
+                        request()->is('add-user') || 
+                        request()->is('add-team-member') || 
+                        request()->is('house-detail') || 
+                        request()->is('booking-list') || 
+                        request()->is('user-list') || 
+                        request()->is('see-team-members') || 
+                        request()->is('reviews');
+    @endphp
+
+    <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <a href="{{ $fallbackUrl }}" id="panelBackBtn" data-strict="{{ $isStrictPage ? 'true' : 'false' }}" class="btn-panel-action">
+            <i class="fas fa-arrow-left me-2"></i> Back
+        </a>
+        @hasSection('page-action')
+            <div class="d-flex align-items-center">
+                @yield('page-action')
+            </div>
+        @endif
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const backBtn = document.getElementById('panelBackBtn');
+        if (!backBtn) return;
+        
+        backBtn.addEventListener('click', function (e) {
+            // Read the reliable data attribute directly from Blade
+            const isStrict = backBtn.getAttribute('data-strict') === 'true';
+            
+            if (isStrict) {
+                // FORCE the link to go to the exact fallbackUrl ($fallbackUrl)
+                // Do not intercept or use history.back()
+                return; 
+            }
+            
+            // Fallback strategy for general tracking pages only
+            if (document.referrer && document.referrer.startsWith(window.location.origin) && window.history.length > 1) {
+                if (document.referrer !== window.location.href) {
+                    e.preventDefault();
+                    window.history.back();
+                }
+            }
+        });
+    });
+</script>
+@endif
+            <!-- Back Button End -->
 
             <!-- Main Content -->
             <div class="container-fluid pt-4 px-4 flex-grow-1">

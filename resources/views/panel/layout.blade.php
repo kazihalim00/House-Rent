@@ -113,43 +113,7 @@
             <!-- Navbar End -->
 
             <!-- Back Button Start -->
-<<<<<<< HEAD
-            @if(!request()->is('/') && !request()->is('home'))
-=======
-            {{-- @if(!request()->is('/') && !request()->is('home'))
-            @php
-            $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
-
-            $fallbackUrl = $isAdmin ? url('/dashboard') : url('/');
-
-            if (request()->is('dashboard')) {
-            $fallbackUrl = url('/');
-            }
-            elseif (request()->is('edit-house/*')) {
-            $fallbackUrl = url('/house-detail');
-            } elseif (request()->is('edit-user/*')) {
-            $fallbackUrl = url('/user-list');
-            } elseif (request()->is('edit-team-member/*')) {
-            $fallbackUrl = url('/see-team-member');
-            } elseif (request()->is('booking-calendar') || request()->is('booking-calender')) {
-            $fallbackUrl = url('/booking-list');
-            }
-            @endphp
-
-            <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <a href="{{ $fallbackUrl }}" class="btn-panel-action">
-                    <i class="fas fa-arrow-left me-2"></i> Back
-                </a>
-
-                @hasSection('page-action')
-                <div class="d-flex align-items-center">
-                    @yield('page-action')
-                </div>
-                @endif
-            </div>
-            @endif --}}
             @if(!request()->is('/') && !request()->is('home') && !request()->is('dashboard') && !request()->is('house/*'))
->>>>>>> origin/v1
                 @php
                     $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
 
@@ -190,11 +154,8 @@
                     @endif
                 </div>
             @endif
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/v1
             <!-- Back Button End -->
+
 
             <!-- Main Content -->
             <div class="container-fluid pt-4 px-4 flex-grow-1">

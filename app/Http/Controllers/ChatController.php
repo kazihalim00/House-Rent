@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    // List conversations for the logged-in user
-    public function index()
+    // List conversations for the logged-in user (now also loads the active one if ?conversation= is present)
+    public function index(Request $request)
     {
         $user = Auth::user();
 
@@ -21,7 +21,20 @@ class ChatController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        return view('panel.pages.chat', compact('conversations', 'user'));
+        $activeConversation = null;
+        $messages = collect();
+
+        if ($request->filled('conversation')) {
+            $conversation = Conversation::with(['messages.user', 'userOne', 'userTwo'])
+                ->find($request->query('conversation'));
+
+            if ($conversation && ($conversation->user_one_id === $user->id || $conversation->user_two_id === $user->id)) {
+                $activeConversation = $conversation;
+                $messages = $conversation->messages()->with('user')->orderBy('created_at', 'asc')->get();
+            }
+        }
+
+        return view('panel.pages.chat', compact('conversations', 'user', 'activeConversation', 'messages'));
     }
 
     // Show list of all registered users to start a chat with
@@ -36,24 +49,10 @@ class ChatController extends Controller
         return view('panel.pages.chat_users', compact('users', 'user'));
     }
 
-    // Open a specific conversation
+    // Open a specific conversation — now just redirects into the merged chat.index view
     public function show($id)
     {
-        $user = Auth::user();
-
-        $conversation = Conversation::with(['messages.user', 'userOne', 'userTwo'])
-            ->findOrFail($id);
-
-        if ($conversation->user_one_id !== $user->id && $conversation->user_two_id !== $user->id) {
-            abort(403, 'Unauthorized');
-        }
-
-        $messages = $conversation->messages()
-            ->with('user')
-            ->orderBy('created_at', 'asc')
-            ->get();
-
-        return view('panel.pages.chat_room', compact('conversation', 'messages', 'user'));
+        return redirect()->route('chat.index', ['conversation' => $id]);
     }
 
     // Start (or open existing) conversation with a chosen user

@@ -117,10 +117,8 @@
                 @php
                     $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
 
-                    // লজিক: বাই-ডিফল্ট সব পেজ (Add House, User List ইত্যাদি) থেকে ড্যাশবোর্ডে যাবে!
                     $fallbackUrl = $isAdmin ? url('/dashboard') : url('/');
 
-                    // শুধু ডাবল পেজ (B to A) গুলোর জন্য নির্দিষ্ট প্যারেন্ট সেট করা হলো
                     if (request()->is('dashboard')) {
                         $fallbackUrl = url('/');
                     } elseif (request()->is('edit-house/*')) {
@@ -135,7 +133,6 @@
                 @endphp
 
                 <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <!-- কোনো JS History নাই, সরাসরি লিংকে চলে যাবে -->
                     <a href="{{ $fallbackUrl }}" class="btn-panel-action">
                         <i class="fas fa-arrow-left me-2"></i> Back
                     </a>

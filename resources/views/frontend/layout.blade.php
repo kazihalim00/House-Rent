@@ -494,7 +494,7 @@
         }
     </style>
 
-    <title>House Rent - Find Your Dream Home</title>
+    <title>Rent Cloud - Find Your Dream Home</title>
 </head>
 
 <body>

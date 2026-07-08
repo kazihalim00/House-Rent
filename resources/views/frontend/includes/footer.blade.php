@@ -179,7 +179,7 @@
         <div class="container">
             <p style="text-align:center; width:100%;">
                 Copyright &copy; {{ date('Y') }}
-                <strong style="color:#f0f4ff;"> House Rent</strong>. All Rights Reserved.
+                <strong style="color:#f0f4ff;"> Rent Cloud</strong>. All Rights Reserved.
             </p>
         </div>
     </div>

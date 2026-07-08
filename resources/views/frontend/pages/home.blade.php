@@ -234,7 +234,7 @@
                                     </div>
 
                                     <h3 class="h5 text-primary mb-4">
-                                        {{ $review->user->name ?? 'House Rent User' }}
+                                        {{ $review->user->name ?? 'Rent Cloud User' }}
                                     </h3>
 
                                     <blockquote style="max-width:700px; margin:0 auto;">
@@ -274,7 +274,7 @@
         <div class="container">
             <div class="row justify-content-center text-center mb-5">
                 <div class="col-lg-5">
-                    <h2 class="font-weight-bold heading text-primary mb-4">About House Rent</h2>
+                    <h2 class="font-weight-bold heading text-primary mb-4">About Rent Cloud</h2>
                     <p class="text-black-50">
                         We are the most trusted platform for finding your perfect home in the city. Our goal is to connect
                         property owners with genuine tenants easily, transparently, and securely.

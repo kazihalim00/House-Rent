@@ -28,6 +28,7 @@
                             <th class="px-6 py-4 font-semibold">#</th>
                             <th class="px-6 py-4 font-semibold">Name</th>
                             <th class="px-6 py-4 font-semibold">Email</th>
+                            <th class="px-6 py-4 font-semibold">Phone</th>
                             <th class="px-6 py-4 font-semibold">Role</th>
                             <th class="px-6 py-4 font-semibold text-center">Actions</th>
                         </tr>
@@ -50,13 +51,18 @@
                                         @endif
                                         <div>
                                             <h6 class="text-base font-bold text-white m-0">{{ $user->name }}</h6>
-                                            <p class="text-xs text-gray-500 m-0">Joined {{ $user->created_at->diffForHumans() }}
+                                            <p class="text-xs text-gray-500 m-0">
+                                                Joined {{ $user->created_at ? $user->created_at->diffForHumans() : 'N/A' }}
                                             </p>
                                         </div>
                                     </div>
                                 </td>
 
                                 <td class="px-6 py-4">{{ $user->email }}</td>
+
+                                <td class="px-6 py-4">
+                                    {{ $user->phone ?? '—' }}
+                                </td>
 
                                 <td class="px-6 py-4">
                                     @if ($user->role == "Admin")

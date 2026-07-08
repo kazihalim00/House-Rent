@@ -158,12 +158,16 @@
                         $fallbackUrl = url('/user-list');
                     } elseif (request()->is('add-team-member')) {
                         $fallbackUrl = url('/see-team-member');
+                    } elseif (request()->is('chat/users') || request()->is('chat/*')) {
+                        // Redirect to the main chat page when returning from a new chat or a specific user's chat
+                        $fallbackUrl = url('/chat');
                     } elseif (
                         request()->is('house-detail') ||
                         request()->is('booking-list') ||
                         request()->is('user-list') ||
                         request()->is('see-team-member') ||
-                        request()->is('reviews')
+                        request()->is('reviews') ||
+                        request()->is('chat') // Redirect to dashboard when returning from the main chat page
                     ) {
                         $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
                     } else {

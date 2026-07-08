@@ -30,6 +30,7 @@ class Home extends Model
 
     ];
 
+    // a house can have multiple bookings and reviews, and belongs to a user (owner)
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class, 'house_id');

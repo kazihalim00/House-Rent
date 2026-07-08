@@ -10,11 +10,11 @@
                     <h3 class="text-white mb-0 fw-bold">Account Settings</h3>
                 </div>
 
-                <div class="card bg-dark text-white shadow-lg border-secondary border-opacity-50 mb-4"
-                    style="border-radius: 15px;">
+                <!-- Profile Info Card -->
+                <div class="card bg-white shadow-lg border-0 mb-4" style="border-radius: 15px;">
                     <div class="card-body p-4 p-md-5">
-                        <h4 class="fw-bold mb-1">Profile Information</h4>
-                        <p class="text-secondary small mb-4" style="color: #ffffff !important;">
+                        <h4 class="fw-bold mb-1 text-dark">Profile Information</h4>
+                        <p class="text-muted small mb-4">
                             Update your account's profile information and email address.
                         </p>
 
@@ -23,15 +23,16 @@
                             @method('patch')
 
                             <div class="mb-3">
-                                <label class="form-label text-white">Name</label>
-                                <input type="text" name="name" class="form-control bg-dark text-white border-secondary"
+                                <label class="form-label fw-semibold text-dark">Name</label>
+                                <!-- bg-white text-dark border অ্যাড করা হয়েছে -->
+                                <input type="text" name="name" class="form-control bg-white text-dark border"
                                     value="{{ old('name', $user->name) }}" required>
                                 @error('name') <span class="text-danger small">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label text-white">Email</label>
-                                <input type="email" name="email" class="form-control bg-dark text-white border-secondary"
+                                <label class="form-label fw-semibold text-dark">Email</label>
+                                <input type="email" name="email" class="form-control bg-white text-dark border"
                                     value="{{ old('email', $user->email) }}" required>
                                 @error('email') <span class="text-danger small">{{ $message }}</span> @enderror
                             </div>
@@ -41,36 +42,36 @@
                     </div>
                 </div>
 
-                <div class="card bg-dark text-white shadow-lg border-secondary border-opacity-50 mb-4"
-                    style="border-radius: 15px;">
+                <!-- Password Card -->
+                <div class="card bg-white shadow-lg border-0 mb-4" style="border-radius: 15px;">
                     <div class="card-body p-4 p-md-5">
-                        <h4 class="fw-bold mb-1">Update Password</h4>
-                        <p class="text-secondary small mb-4" style="color: #ffffff !important;">
-                            Ensure your account is using a long, random password to stay
-                            secure.</p>
+                        <h4 class="fw-bold mb-1 text-dark">Update Password</h4>
+                        <p class="text-muted small mb-4">
+                            Ensure your account is using a long, random password to stay secure.
+                        </p>
 
                         <form method="post" action="{{ route('password.update') }}">
                             @csrf
                             @method('put')
 
                             <div class="mb-3">
-                                <label class="form-label text-white">Current Password</label>
+                                <label class="form-label fw-semibold text-dark">Current Password</label>
                                 <input type="password" name="current_password"
-                                    class="form-control bg-dark text-white border-secondary" required>
+                                    class="form-control bg-white text-dark border" required>
                                 @error('current_password') <span class="text-danger small">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label text-white">New Password</label>
-                                <input type="password" name="password"
-                                    class="form-control bg-dark text-white border-secondary" required>
+                                <label class="form-label fw-semibold text-dark">New Password</label>
+                                <input type="password" name="password" class="form-control bg-white text-dark border"
+                                    required>
                                 @error('password') <span class="text-danger small">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label text-white">Confirm Password</label>
+                                <label class="form-label fw-semibold text-dark">Confirm Password</label>
                                 <input type="password" name="password_confirmation"
-                                    class="form-control bg-dark text-white border-secondary" required>
+                                    class="form-control bg-white text-dark border" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary px-4 rounded-pill">Update Password</button>
@@ -78,12 +79,13 @@
                     </div>
                 </div>
 
-                <div class="card bg-dark text-white shadow-lg border-danger border-opacity-50" style="border-radius: 15px;">
+                <!-- Delete Account Card -->
+                <div class="card bg-white shadow-lg border-0" style="border-radius: 15px;">
                     <div class="card-body p-4 p-md-5">
                         <h4 class="fw-bold text-danger mb-1">Delete Account</h4>
-                        <p class="text-white small mb-4">Once your account is deleted, all of its resources and data will be
-                            permanently
-                            deleted.</p>
+                        <p class="text-muted small mb-4">
+                            Once your account is deleted, all of its resources and data will be permanently deleted.
+                        </p>
 
                         <form method="post" action="{{ route('profile.destroy') }}">
                             @csrf
@@ -91,8 +93,9 @@
 
                             <div class="alert alert-danger bg-opacity-10 border-danger mb-4">
                                 <label class="form-label text-danger fw-bold">Enter Password to Confirm Deletion</label>
-                                <input type="password" name="password" class="form-control bg-dark text-white border-danger"
-                                    placeholder="Password" required>
+                                <input type="password" name="password"
+                                    class="form-control bg-white text-dark border border-danger" placeholder="Password"
+                                    required>
                                 @error('password') <span class="text-danger small mt-1 d-block">{{ $message }}</span>
                                 @enderror
                             </div>

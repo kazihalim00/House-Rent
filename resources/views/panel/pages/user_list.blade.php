@@ -29,10 +29,15 @@
                     </thead>
 
                     <tbody class="divide-y divide-gray-800 text-gray-300">
+                        @php
+                        $var = 1;@endphp
                         @foreach ($users as $user)
                             <tr class="hover:bg-gray-800/60 transition-colors duration-200">
 
-                                <td class="px-6 py-4 font-medium text-black">{{ $user->id }}</td>
+                                <td class="px-6 py-4 font-medium text-black">{{ $var }}</td>
+                                @php
+                                $var = $var +  1;
+                                @endphp
 
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-4">

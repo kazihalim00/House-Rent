@@ -3,7 +3,7 @@
 @section('content')
     <div class="pt-4 px-4">
         <h2>My Dashboard</h2>
-        <p>Welcome to your admin control panel.</p>
+        <p style="color: #fff;">Welcome to your admin control panel.</p>
     </div>
 
     <div class="container-fluid pt-4 px-4">

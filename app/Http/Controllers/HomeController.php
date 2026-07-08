@@ -705,6 +705,8 @@ class HomeController extends Controller
         $member->save();
 
         return redirect()->back()->with('success', 'Team member updated successfully!');
+        return redirect('/see-team-member')
+            ->with('success', 'Team member updated successfully!');
     }
 
     public function delete_team_member($id)

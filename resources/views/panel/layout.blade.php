@@ -113,6 +113,9 @@
             <!-- Navbar End -->
 
             <!-- Back Button Start -->
+<<<<<<< HEAD
+            @if(!request()->is('/') && !request()->is('home'))
+=======
             {{-- @if(!request()->is('/') && !request()->is('home'))
             @php
             $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
@@ -146,6 +149,7 @@
             </div>
             @endif --}}
             @if(!request()->is('/') && !request()->is('home') && !request()->is('dashboard') && !request()->is('house/*'))
+>>>>>>> origin/v1
                 @php
                     $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
 
@@ -186,7 +190,10 @@
                     @endif
                 </div>
             @endif
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/v1
             <!-- Back Button End -->
 
             <!-- Main Content -->

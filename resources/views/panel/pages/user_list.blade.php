@@ -23,6 +23,7 @@
                             <th class="px-6 py-4 font-semibold">#</th>
                             <th class="px-6 py-4 font-semibold">Name</th>
                             <th class="px-6 py-4 font-semibold">Email</th>
+                            <th class="px-6 py-4 font-semibold">Phone</th>
                             <th class="px-6 py-4 font-semibold">Role</th>
                             <th class="px-6 py-4 font-semibold text-center">Actions</th>
                         </tr>
@@ -57,6 +58,10 @@
                                 </td>
 
                                 <td class="px-6 py-4" style="color:black">{{ $user->email }}</td>
+
+                                <td class="px-6 py-4">
+                                    {{ $user->phone ?? '—' }}
+                                </td>
 
                                 <td class="px-6 py-4">
                                     @if ($user->role == "Admin")

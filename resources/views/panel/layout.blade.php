@@ -121,11 +121,9 @@
 
                     if (request()->is('dashboard')) {
                         $fallbackUrl = url('/');
-                    } 
-                    elseif (request()->is('edit-house/*')) {
+                    } elseif (request()->is('edit-house/*')) {
                         $fallbackUrl = url('/house-detail');
-                    } 
-                    elseif (request()->is('edit-user/*')) {
+                    } elseif (request()->is('edit-user/*')) {
                         $fallbackUrl = url('/user-list');
                     } elseif (request()->is('edit-team-member/*')) {
                         $fallbackUrl = url('/see-team-member');

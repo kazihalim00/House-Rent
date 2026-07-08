@@ -18,7 +18,7 @@
         <div class="nav-item dropdown">
             <a href="/chat" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <i class="fa fa-envelope me-lg-2"></i>
-                <span class="d-none d-lg-inline-flex">Message</span>
+                <span class="d-none d-lg-inline-flex" style="color:white">Message</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0" id="header-messages-menu">
                 @forelse($latestMessages ?? collect() as $msg)
@@ -80,7 +80,7 @@
                 <img class="rounded-circle me-lg-2"
                     src="{{ Auth::user()->user_image ? asset('upload/img/' . Auth::user()->user_image) : asset('default.png') }}"
                     style="width: 40px; height: 40px;">
-                <span class="d-none d-lg-inline-flex">{{ Auth::user()->name }}</span>
+                <span class="d-none d-lg-inline-flex" style="color:white">{{ Auth::user()->name }}</span>
 
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0 text-center">

@@ -86,18 +86,21 @@
                             </div>
                         @endif
                         <!-- Header -->
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h2 class="text-3xl font-bold mb-6 text-white-800 pb-3">
+                        <div class="mb-4">
+                            <h2 class="text-3xl font-bold mb-2 text-white-800 pb-1">
                                 Team Members
                             </h2>
 
     <p class="text-white fw-semibold fs-6 mb-0" style="opacity: 0.85; letter-spacing: 0.3px;">
         Manage your development team efficiently
     </p>
-                 <a href="{{ route('add_team_member') }}" class="btn btn-primary">
-                                <i class="fa-solid fa-plus"></i> Add Member
-                            </a>
                         </div>
+
+                        @section('page-action')
+                            <a href="{{ route('add_team_member') }}" class="btn-panel-action">
+                                <i class="fa-solid fa-plus me-1"></i> Add Member
+                            </a>
+                        @endsection
 
                         <!-- Card -->
                         <div class="card border-0 shadow-lg bg-dark">

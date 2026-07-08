@@ -113,7 +113,7 @@
             <!-- Navbar End -->
 
             <!-- Back Button Start -->
-            @if(!request()->is('/') && !request()->is('home'))
+            {{-- @if(!request()->is('/') && !request()->is('home'))
                 @php
                     $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
 
@@ -144,7 +144,48 @@
                         </div>
                     @endif
                 </div>
-            @endif
+            @endif --}}
+            
+@if(!request()->is('/') && !request()->is('home') && !request()->is('dashboard'))
+    @php
+        $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
+
+        // Determine the fallback URL
+        if (request()->is('add-house') || request()->is('appointments')) {
+            $fallbackUrl = url('/house-detail');
+        } elseif (request()->is('booking-calendar') || request()->is('booking-calender')) {
+            $fallbackUrl = url('/booking-list');
+        } elseif (request()->is('add-user')) {
+            $fallbackUrl = url('/user-list');
+        } elseif (request()->is('add-team-member')) {
+            $fallbackUrl = url('/see-team-member');
+        } elseif (
+            request()->is('house-detail') ||
+            request()->is('booking-list') ||
+            request()->is('user-list') ||
+            request()->is('see-team-member') ||
+            request()->is('reviews')
+        ) {
+            $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
+        } else {
+            $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
+        }
+    @endphp
+
+    <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <a href="{{ $fallbackUrl }}" class="btn-panel-action">
+            <i class="fas fa-arrow-left me-2"></i> Back
+        </a>
+
+        @hasSection('page-action')
+            <div class="d-flex align-items-center">
+                @yield('page-action')
+            </div>
+        @endif
+    </div>
+@endif
+
+
             <!-- Back Button End -->
 
             <!-- Main Content -->

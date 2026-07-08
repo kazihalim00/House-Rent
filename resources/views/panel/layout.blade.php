@@ -113,79 +113,46 @@
             <!-- Navbar End -->
 
             <!-- Back Button Start -->
-@if(!request()->is('/') && !request()->is('home'))
+@if(!request()->is('/') && !request()->is('home') && !request()->is('dashboard'))
     @php
         $isAdmin = auth()->check() && auth()->user()->role === 'Admin';
-        
-        // 1. Determine the exact fallback URL
-        if (request()->is('dashboard')) {
-            $fallbackUrl = url('/');
-        } elseif (request()->is('add-house') || request()->is('appointments')) {
+
+        // Determine the fallback URL
+        if (request()->is('add-house') || request()->is('appointments')) {
             $fallbackUrl = url('/house-detail');
-        } elseif (request()->is('booking-calendar') || request()->is('booking-calender')) {
+        } elseif (request()->is('booking') || request()->is('booking')) {
             $fallbackUrl = url('/booking-list');
         } elseif (request()->is('add-user')) {
             $fallbackUrl = url('/user-list');
         } elseif (request()->is('add-team-member')) {
-            $fallbackUrl = url('/see-team-members');
-        } elseif (request()->is('house-detail') || request()->is('booking-list') || request()->is('user-list') || request()->is('see-team-members') || request()->is('reviews')) {
-            $fallbackUrl = url('/dashboard');
+            $fallbackUrl = url('/see-team-member');
+        } elseif (
+            request()->is('house-detail') ||
+            request()->is('booking-list') ||
+            request()->is('user-list') ||
+            request()->is('see-team-member') ||
+            request()->is('reviews')
+        ) {
+            $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
         } else {
             $fallbackUrl = $isAdmin ? route('dashboard') : url('/');
         }
-
-        // 2. Mark if this page must STRICTLY use the fallback URL instead of browser history
-        $isStrictPage = request()->is('dashboard') || 
-                        request()->is('add-house') || 
-                        request()->is('appointments') || 
-                        request()->is('booking-calendar') || 
-                        request()->is('booking-calender') || 
-                        request()->is('add-user') || 
-                        request()->is('add-team-member') || 
-                        request()->is('house-detail') || 
-                        request()->is('booking-list') || 
-                        request()->is('user-list') || 
-                        request()->is('see-team-members') || 
-                        request()->is('reviews');
     @endphp
 
     <div class="container-fluid pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <a href="{{ $fallbackUrl }}" id="panelBackBtn" data-strict="{{ $isStrictPage ? 'true' : 'false' }}" class="btn-panel-action">
+        <a href="{{ $fallbackUrl }}" class="btn-panel-action">
             <i class="fas fa-arrow-left me-2"></i> Back
         </a>
+
         @hasSection('page-action')
             <div class="d-flex align-items-center">
+                
                 @yield('page-action')
             </div>
         @endif
     </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const backBtn = document.getElementById('panelBackBtn');
-        if (!backBtn) return;
-        
-        backBtn.addEventListener('click', function (e) {
-            // Read the reliable data attribute directly from Blade
-            const isStrict = backBtn.getAttribute('data-strict') === 'true';
-            
-            if (isStrict) {
-                // FORCE the link to go to the exact fallbackUrl ($fallbackUrl)
-                // Do not intercept or use history.back()
-                return; 
-            }
-            
-            // Fallback strategy for general tracking pages only
-            if (document.referrer && document.referrer.startsWith(window.location.origin) && window.history.length > 1) {
-                if (document.referrer !== window.location.href) {
-                    e.preventDefault();
-                    window.history.back();
-                }
-            }
-        });
-    });
-</script>
 @endif
+
             <!-- Back Button End -->
 
             <!-- Main Content -->

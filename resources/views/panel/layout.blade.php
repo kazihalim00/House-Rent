@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>House Rent</title>
+    <title>Rent Cloud</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -121,9 +121,11 @@
 
                     if (request()->is('dashboard')) {
                         $fallbackUrl = url('/');
-                    } elseif (request()->is('edit-house/*')) {
+                    } 
+                    elseif (request()->is('edit-house/*')) {
                         $fallbackUrl = url('/house-detail');
-                    } elseif (request()->is('edit-user/*')) {
+                    } 
+                    elseif (request()->is('edit-user/*')) {
                         $fallbackUrl = url('/user-list');
                     } elseif (request()->is('edit-team-member/*')) {
                         $fallbackUrl = url('/see-team-member');

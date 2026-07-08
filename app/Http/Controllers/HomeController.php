@@ -90,7 +90,7 @@ class HomeController extends Controller
         return view('panel.pages.add_house', compact('users'));
     }
 
-    // after booking period finish the status will show available again
+    // after booking period(date) finish the status will show available again
     public function house_detail(Request $request)
     {
         $query = Home::withCount([
@@ -272,6 +272,7 @@ class HomeController extends Controller
         return back()->with('success', 'User deleted successfully.');
     }
 
+    //admin dashboard
     public function summery()
     {
         $total_users = User::count();
@@ -328,6 +329,7 @@ class HomeController extends Controller
         $house = Home::findOrFail($id);
         $currentUser = Auth::user();
 
+        //owner can't book
         if ($house->user_id === $currentUser->id) {
             return redirect()->route('house-detail')->with('error', 'You cannot book your own house!');
         }

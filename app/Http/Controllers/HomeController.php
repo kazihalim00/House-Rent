@@ -304,6 +304,7 @@ class HomeController extends Controller
         ));
     }
 
+    //booking-calender
     public function showBookingPage()
     {
         $dbAvailableDates = Home::where('status', 'approved')
